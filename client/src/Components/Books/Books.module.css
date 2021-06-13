@@ -1,0 +1,12 @@
+.w60{
+    width:60%;
+}
+
+.btnAdd{
+    background-color: #27ae60;
+    margin-top: 50px;
+}
+
+.btnAdd:hover{
+    background-color: #27ae60;
+}
