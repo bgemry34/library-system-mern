@@ -55,7 +55,7 @@ app.delete("/api/books/:id", (req, res) => {
     .catch((err) => console.log(err.message));
 });
 
-//UPDATE book date
+//UPDATE book data
 app.put("/api/books/:id", (req, res) => {
   const body = req.body;
   const id = req.params.id;
