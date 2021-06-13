@@ -26,6 +26,8 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:4000/api/books/60c5b14baac9b9f1fb1e24f4
+DELETE http://localhost:4000/api/books/60bf74039de0b554b477afed
+
+###
 
 

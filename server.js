@@ -55,6 +55,29 @@ app.delete("/api/books/:id", (req, res) => {
     .catch((err) => console.log(err.message));
 });
 
+//UPDATE book date
+app.put("/api/books/:id", (req, res) => {
+  const body = req.body;
+  const id = req.params.id;
+
+  const book = {
+    title: body.title,
+    author: body.author,
+    genre: body.genre,
+    available: body["available"],
+    created_date: new Date(),
+  };
+
+  Book.findByIdAndUpdate(id, book, { new: true })
+    .then((updatedBook) => {
+      return res.json(updatedBook);
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.status(400).end(err.message);
+    });
+});
+
 // for UKNOWN endpoint
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: "unknown endpoint" });
