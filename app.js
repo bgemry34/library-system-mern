@@ -2,6 +2,7 @@ const config = require('./utils/config')
 const express = require('express')
 const app = express()
 const cors = require('cors')
+require('express-async-errors')
 
 const booksRouter = require('./controllers/books')
 

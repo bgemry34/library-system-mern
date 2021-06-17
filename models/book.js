@@ -1,35 +1,27 @@
 const mongoose = require('mongoose')
-
-const url = process.env.MONGODB_URI
-
-mongoose
-  .connect(url, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-    useCreateIndex: true,
-  })
-  .then(() => console.log('connected to MongoDB'))
-  .catch((err) => console.log(err.message))
+const uniqueValidator = require('mongoose-unique-validator')
 
 const bookSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
+    unique: true,
   },
   author: {
     type: String,
     required: true,
   },
+  publish: {
+    type: String,
+  },
   genre: {
+    type: String,
+  },
+  status: {
     type: String,
     required: true,
   },
-  available: {
-    type: Boolean,
-    default: false,
-  },
-  created_date: {
+  dateCreated: {
     type: Date,
   },
 })
@@ -41,5 +33,7 @@ bookSchema.set('toJSON', {
     delete returnedObject.__v
   },
 })
+
+bookSchema.plugin(uniqueValidator)
 
 module.exports = mongoose.model('Book', bookSchema)

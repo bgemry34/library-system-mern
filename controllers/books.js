@@ -2,77 +2,52 @@ const booksRouter = require('express').Router()
 const Book = require('../models/book')
 
 // GET all books
-booksRouter.get('/', (req, res) => {
-  Book.find({}).then((books) => {
-    return res.json(books)
-  })
+booksRouter.get('/', async (req, res) => {
+  const books = await Book.find({})
+  return res.json(books)
 })
 
 // GET a specific book
-booksRouter.get('/:id', (req, res) => {
-  Book.findById(req.params.id).then((book) => {
-    return res.json(book)
-  })
+booksRouter.get('/:id', async (req, res) => {
+  const book = await Book.findById(req.params.id)
+  return res.json(book)
 })
 
 //CREATE a book
-booksRouter.post('/', (req, res) => {
+booksRouter.post('/', async (req, res) => {
   const body = req.body
-
-  if (!body.title || !body.author || !body.genre) {
-    res
-      .status(400)
-      .end(
-        `missing book ${
-          !body.title ? 'title' : !body.author ? 'author' : 'genre'
-        }`
-      )
-  }
 
   const book = new Book({
     title: body.title,
     author: body.author,
+    publish: body.publish,
     genre: body.genre,
-    available: body['available'],
-    created_date: new Date(),
+    status: body.status,
+    dateCreated: new Date().toISOString(),
   })
 
-  book.save().then((book) => {
-    return res.json(book)
-  })
+  const newBook = await book.save()
+  return newBook ? res.json(newBook) : res.status(400).end()
 })
 
 //DELETE a book
-booksRouter.delete('/:id', (req, res) => {
+booksRouter.delete('/:id', async (req, res) => {
   const id = req.params.id
-  Book.deleteOne({ _id: id })
-    .then(() => {
-      return res.status(204).end()
-    })
-    .catch((err) => console.log(err.message))
+  await Book.findByIdAndRemove(id)
+  return res.status(204).end()
 })
 
 //UPDATE book data
-booksRouter.put('/:id', (req, res) => {
+booksRouter.put('/:id', async (req, res) => {
   const body = req.body
   const id = req.params.id
 
   const book = {
-    title: body.title,
-    author: body.author,
-    genre: body.genre,
-    available: body['available'] || false,
-    created_date: new Date(),
+    status: body.status,
   }
 
-  Book.findByIdAndUpdate(id, book, { new: true })
-    .then((updatedBook) => {
-      return res.json(updatedBook)
-    })
-    .catch((err) => {
-      console.log(err)
-      return res.status(400).end(err.message)
-    })
+  const newBook = await Book.findByIdAndUpdate(id, book, { new: true })
+  return newBook ? res.json(newBook) : res.status(404).end()
 })
 
 module.exports = booksRouter
