@@ -6,10 +6,10 @@ POST http://localhost:4000/api/users/
 Content-Type: application/json
 
 {
-    "username": "sarah",
-    "name": "Sarah Q.",
-    "password": "sarah",
-    "userType": "admin"
+    "username": "student",
+    "name": "Stu Dent",
+    "password": "student",
+    "userType": "student"
 }
 
 ###

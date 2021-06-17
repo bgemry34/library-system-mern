@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
 require('dotenv')
 const logger = require('./logger')
+const User = require('../models/user')
 
 const requestLogger = (req, res, next) => {
   logger.info('Method:', req.method)

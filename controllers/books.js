@@ -1,5 +1,7 @@
+const jwt = require('jsonwebtoken')
 const booksRouter = require('express').Router()
 const Book = require('../models/book')
+const userExtractor = require('../utils/middleware').userExtractor
 
 // GET all books
 booksRouter.get('/', async (req, res) => {
@@ -14,8 +16,16 @@ booksRouter.get('/:id', async (req, res) => {
 })
 
 //CREATE a book
-booksRouter.post('/', async (req, res) => {
+booksRouter.post('/', userExtractor, async (req, res) => {
   const body = req.body
+  const user = req.user
+
+  if (user.userType !== 'admin') {
+    return res
+      .status(401)
+      .send({ error: `You're not an Admin to add a book` })
+      .end()
+  }
 
   const book = new Book({
     title: body.title,
@@ -31,16 +41,33 @@ booksRouter.post('/', async (req, res) => {
 })
 
 //DELETE a book
-booksRouter.delete('/:id', async (req, res) => {
+booksRouter.delete('/:id', userExtractor, async (req, res) => {
   const id = req.params.id
+  const user = req.user
+
+  if (user.userType !== 'admin') {
+    return res
+      .status(401)
+      .send({ error: `You're not an Admin to remove a book` })
+      .end()
+  }
+
   await Book.findByIdAndRemove(id)
   return res.status(204).end()
 })
 
 //UPDATE book data
-booksRouter.put('/:id', async (req, res) => {
+booksRouter.put('/:id', userExtractor, async (req, res) => {
   const body = req.body
   const id = req.params.id
+  const user = req.user
+
+  if (user.userType !== 'admin') {
+    return res
+      .status(401)
+      .send({ error: `You're not an Admin to update a book` })
+      .end()
+  }
 
   const book = {
     status: body.status,
