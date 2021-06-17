@@ -1,0 +1,36 @@
+GET http://localhost:4000/api/users/
+
+###
+
+POST http://localhost:4000/api/users/
+Content-Type: application/json
+
+{
+    "username": "sarah",
+    "name": "Sarah Q.",
+    "password": "sarah",
+    "userType": "admin"
+}
+
+###
+
+POST http://localhost:4000/api/users/
+Content-Type: application/json
+
+{
+    "username": "",
+    "name": "Sarah",
+    "password": "sarah"
+}
+
+###
+
+POST http://localhost:4000/api/users/
+Content-Type: application/json
+
+{
+    "username": "sarah2",
+    "name": "Sarah",
+    "password": "s"
+}
+
