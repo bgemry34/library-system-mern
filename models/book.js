@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
 
-const url = process.env.MONGODB_URI;
+const url = process.env.MONGODB_URI
 
 mongoose
   .connect(url, {
@@ -9,8 +9,8 @@ mongoose
     useFindAndModify: false,
     useCreateIndex: true,
   })
-  .then(() => console.log("connected to MongoDB"))
-  .catch((err) => console.log(err.message));
+  .then(() => console.log('connected to MongoDB'))
+  .catch((err) => console.log(err.message))
 
 const bookSchema = new mongoose.Schema({
   title: {
@@ -32,14 +32,14 @@ const bookSchema = new mongoose.Schema({
   created_date: {
     type: Date,
   },
-});
+})
 
-bookSchema.set("toJSON", {
+bookSchema.set('toJSON', {
   transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString();
-    delete returnedObject._id;
-    delete returnedObject.__v;
+    returnedObject.id = returnedObject._id.toString()
+    delete returnedObject._id
+    delete returnedObject.__v
   },
-});
+})
 
-module.exports = mongoose.model("Book", bookSchema);
+module.exports = mongoose.model('Book', bookSchema)
