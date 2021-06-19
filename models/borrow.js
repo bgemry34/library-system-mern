@@ -5,9 +5,7 @@ const borrowSchema = new mongoose.Schema({
   dateBorrowed: {
     type: Date,
   },
-  returnDate: {
-    type: Date,
-  },
+  returnDate: String,
   dateCreated: {
     type: Date,
   },

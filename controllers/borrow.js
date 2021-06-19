@@ -2,7 +2,6 @@ const borrowRouter = require('express').Router()
 const Borrow = require('../models/borrow')
 const User = require('../models/user')
 const Book = require('../models/book')
-const userExtractor = require('../utils/middleware').userExtractor
 
 // GET all borrow data
 borrowRouter.get('/', async (req, res) => {
@@ -20,7 +19,7 @@ borrowRouter.get('/', async (req, res) => {
 //req.body = {
 //  bookId
 //}
-borrowRouter.post('/', userExtractor, async (req, res) => {
+borrowRouter.post('/', async (req, res) => {
   const user = req.user
   const body = req.body
 
@@ -30,8 +29,6 @@ borrowRouter.post('/', userExtractor, async (req, res) => {
       .send({ error: 'You must provide a book id to borrow' })
       .end()
   }
-
-  const book = Book.findById(body.bookId)
 
   const borrow = new Borrow({
     dateBorrowed: new Date(),
@@ -44,7 +41,7 @@ borrowRouter.post('/', userExtractor, async (req, res) => {
   user.borrowedBooks = user.borrowedBooks.concat(borrowedBook._id)
   await user.save()
 
-  borrowedBook ? res.json(borrowedBook) : res.status(400).end()
+  borrowedBook ? res.status(201).json(borrowedBook) : res.status(400).end()
 })
 
 const addDays = (date, days) => {
@@ -57,7 +54,7 @@ const addDays = (date, days) => {
 // req.body = {
 //   approved: Boolean
 // }
-borrowRouter.put('/:id', userExtractor, async (req, res) => {
+borrowRouter.put('/:id', async (req, res) => {
   const user = req.user
   const body = req.body
   const id = req.params.id
@@ -71,21 +68,22 @@ borrowRouter.put('/:id', userExtractor, async (req, res) => {
 
   const borrow = {
     approved: body.approved,
-    approvedDate: body.approved ? new Date() : '--',
-    cancelledDate: body.approved ? '--' : new Date(),
+    approvedDate: body.approved ? new Date().toISOString() : '--',
+    cancelledDate: body.approved ? '--' : new Date().toISOString(),
   }
+  const borrowData = await Borrow.findById(id)
+  const bookId = borrowData.borrowedBook
 
   if (body.approved) {
-    const updatedBook = await Book.findByIdAndUpdate(
-      body.bookId,
-      { status: 'borrowed' },
-      { new: true }
-    )
-    borrow.books = updatedBook
+    await Book.findByIdAndUpdate(bookId, { status: 'borrowed' }, { new: true })
     borrow.returnDate = addDays(borrow.approvedDate, 3)
+  } else {
+    await Book.findByIdAndUpdate(bookId, { status: 'available' }, { new: true })
+    borrow.returnDate = '--'
   }
-
-  const updatedBorrow = await Borrow(id, borrow, { new: true })
+  const updatedBorrow = await Borrow.findByIdAndUpdate(id, borrow, {
+    new: true,
+  })
   return updatedBorrow ? res.json(updatedBorrow) : res.status(400).end()
 })
 

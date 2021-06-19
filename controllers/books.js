@@ -1,23 +1,22 @@
 const jwt = require('jsonwebtoken')
 const booksRouter = require('express').Router()
 const Book = require('../models/book')
-const userExtractor = require('../utils/middleware').userExtractor
 
 // GET all books
-booksRouter.get('/', userExtractor, async (req, res) => {
+booksRouter.get('/', async (req, res) => {
   const books = await Book.find({})
   return res.json(books)
 })
 
 // GET a specific book
-booksRouter.get('/:id', userExtractor, async (req, res) => {
+booksRouter.get('/:id', async (req, res) => {
   const user = req.user
   const book = await Book.findById(req.params.id)
   return res.json(book)
 })
 
 //CREATE a book
-booksRouter.post('/', userExtractor, async (req, res) => {
+booksRouter.post('/', async (req, res) => {
   const body = req.body
   const user = req.user
 
@@ -36,11 +35,11 @@ booksRouter.post('/', userExtractor, async (req, res) => {
   })
 
   const newBook = await book.save()
-  return newBook ? res.json(newBook) : res.status(400).end()
+  return newBook ? res.status(201).json(newBook) : res.status(400).end()
 })
 
 //DELETE a book
-booksRouter.delete('/:id', userExtractor, async (req, res) => {
+booksRouter.delete('/:id', async (req, res) => {
   const id = req.params.id
   const user = req.user
 
@@ -56,7 +55,7 @@ booksRouter.delete('/:id', userExtractor, async (req, res) => {
 })
 
 //UPDATE book data
-booksRouter.put('/:id', userExtractor, async (req, res) => {
+booksRouter.put('/:id', async (req, res) => {
   const body = req.body
   const id = req.params.id
   const user = req.user
