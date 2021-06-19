@@ -5,22 +5,13 @@ const userExtractor = require('../utils/middleware').userExtractor
 
 // GET all books
 booksRouter.get('/', userExtractor, async (req, res) => {
-  const user = req.user
-  if (user.userType !== 'admin' || user.userType !== 'student') {
-    return res.status(401).end()
-  }
-
   const books = await Book.find({})
-  return res.json(books.concat(user))
+  return res.json(books)
 })
 
 // GET a specific book
-booksRouter.get('/:id', async (req, res) => {
+booksRouter.get('/:id', userExtractor, async (req, res) => {
   const user = req.user
-  if (user.userType !== 'admin' || user.userType !== 'student') {
-    return res.status(401).end()
-  }
-
   const book = await Book.findById(req.params.id)
   return res.json(book)
 })
