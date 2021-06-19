@@ -12,7 +12,10 @@ import { useHistory } from 'react-router-dom';
 // import {loginUser} from './../../Api/users';
 // import { Alert } from '@material-ui/lab';
 import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
-import {useForm} from '../../Custom-Hook/userForm'
+import {useForm} from './../../Custom-Hook/userForm';
+import {loginUser} from './../../Api/Users/Users';
+import Alert from '@material-ui/lab/Alert';
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -35,31 +38,31 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignIn() {
+export default function Login() {
   const classes = useStyles();
   const history = useHistory();
 
-  const [values, handleChange] = useForm({email:'', password:'', usertype:''});
+  const [values, handleChange] = useForm({username:'', password:'', usertype:''});
   const [alert, setAlert] = useState('');
 
 
   const login = async (e) =>{
     e.preventDefault();
     setAlert('');
-    history.push('/dashboard');
-    // try{
-    //   const res = await loginUser(form);
-    //   if(res.status===200){
-    //     sessionStorage.setItem('userToken',JSON.stringify(res.data.idToken));
-    //     history.push('/dashboard');
-    //   }else{
-    //     setAlert((
-    //       <Alert severity="error">Incorrect Email or Password</Alert>
-    //     ))
-    //   }
-    // }catch(e){
-    //   console.log(e);
-    // }
+
+    const res = await loginUser(values);
+    if(res.status===200){
+      const {token} = res.data;
+      sessionStorage.setItem("userToken", token);
+      history.push('/dashboard')
+    }else{
+      setAlert((
+        <Alert style={{marginBottom:'20px'}} severity="error">Incorrect username or password. Pls Try Again</Alert>
+      ));
+      setTimeout(()=>{
+        setAlert('');
+      }, 10000)
+    }
   }
 
   return (
@@ -81,7 +84,9 @@ export default function SignIn() {
           labelId="demo-simple-select-outlined-label"
           id="demo-simple-select-outlined"
           value={values.usertype}
+          name="usertype"
           onChange={handleChange}
+          required
           label="Select User Type"
         >
           <MenuItem value="">
@@ -96,12 +101,12 @@ export default function SignIn() {
             margin="normal"
             fullWidth
             id="email"
-            label="Email Address"
-            name="email"
-            value={values.email}
+            label="Username"
+            name="username"
+            value={values.username}
             onChange={handleChange}
             required
-            autoComplete="email"
+            autoComplete="username"
             autoFocus
           />
           <TextField

@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import {Paper, 
     Grid, 
     TextField, 
@@ -16,16 +16,42 @@ import {Paper,
 import { Container, Button } from '@material-ui/core';
 import styles from './Books.module.css';
 import AddIcon from '@material-ui/icons/Add';
-import EditIcon from '@material-ui/icons/EditAttributesTwoTone';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 import SaveIcon from '@material-ui/icons/Save';
 import {useForm} from './../../Custom-Hook/userForm';
+import {fetchBooks} from './../../Api/Books/Books'
+import {formatDate} from './../../Tools/Tools'
 
 function Books() {
-
     const [createModal, setCreateModal] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
+    const [books, setBooks] = useState([]);
 
     const [values, handleChange] = useForm({email:'', password:'', usertype:''});
+
+    useEffect(()=>{
+        let isCancelled = false;
+        
+        const fetchApi = async () =>{
+            let booksData = await fetchBooks();
+            if(!isCancelled){
+                setBooks(booksData);
+            }
+        }
+        try{
+            fetchApi();
+          }catch(e){
+            console.log(e)
+          }
+    
+          return ()=>isCancelled=true;
+    }, []);
+
+    const addBook = async (e) =>{
+        e.preventDefault();
+        console.log('submit')
+    }
 
      //Dialogs
      const addDialog = (
@@ -35,17 +61,19 @@ function Books() {
           scroll="body"
           fullWidth
         >
-          <form method="post">
+          <form onSubmit={addBook} method="post">
+            <Container>
             <DialogTitle className="mt-2">{isEdit ? 'Edit' : 'Add'} Book</DialogTitle>
+            </Container>
             <DialogContent>
                 <Container>
                     <FormControl margin="normal" fullWidth>
                         <TextField
                             required
-                            name="name"
+                            name="title"
                             onChange = {handleChange}
-                            value={values.name}
-                            label="Name"
+                            value={values.title}
+                            label="Title"
                             type="text"
                             fullWidth
                         />
@@ -55,7 +83,7 @@ function Books() {
                             required
                             name="author"
                             onChange = {handleChange}
-                            value={values.name}
+                            value={values.author}
                             label="Author"
                             type="text"
                             fullWidth
@@ -66,7 +94,7 @@ function Books() {
                             required
                             name="genre"
                             onChange = {handleChange}
-                            value={values.name}
+                            value={values.genre}
                             label="Genre"
                             type="text"
                             fullWidth
@@ -98,7 +126,7 @@ function Books() {
                         id='editBtn'
                         variant="contained"
                         color="primary"
-                        
+                        style={{marginBottom:'20px'}}
                         endIcon={<SaveIcon />}
                         size="large"
                         fullWidth
@@ -157,25 +185,18 @@ function Books() {
                         </TableRow>
                         </TableHead>
                         <TableBody>
-                            {/* {companies.map(company=>(
-                                <TableRow key={company.id}>
-                                    <TableCell>{company.name}</TableCell>
+                            {books.map(book=>(
+                                <TableRow key={book.id}>
+                                    <TableCell>{book.title  }</TableCell>
+                                    <TableCell>{book.author}</TableCell>
+                                    <TableCell>{book.genre}</TableCell>
+                                    <TableCell>{formatDate(book.dateCreated)}</TableCell>
                                     <TableCell align="center">
-                                        <EditIcon 
-                                        style={{color:'#2ecc71' , 
-                                        marginRight:'5px', 
-                                        cursor:'pointer'}} 
-                                        onClick={()=>{
-                                            setIsEdit(true);
-                                            setCreateModal(true);
-                                            setForm(company)
-                                        }} />
-                                        <DeleteIcon onClick={()=>{
-                                            removeCompany(company.id)
-                                        }} style={{color:'#e74c3c' , marginLeft:'5px', cursor:'pointer'}} />
+                                        <EditIcon style={{color:'#27ae60' , marginLeft:'5px', cursor:'pointer'}} />
+                                        <DeleteIcon style={{color:'#e74c3c' , marginLeft:'5px', cursor:'pointer'}} />
                                     </TableCell>
                                 </TableRow>
-                            ))} */}
+                            ))}
                         </TableBody>
                     </Table>
                 </TableContainer>

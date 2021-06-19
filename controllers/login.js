@@ -34,4 +34,32 @@ loginRouter.post('/', async (req, res) => {
     .send({ token, username: user.username, name: user.name })
 })
 
+loginRouter.post('/me/:token', async (req, res) => {
+  const token = req.params.token;
+  try{
+    const decoded = await jwt_decode(token);
+
+    const user = await User.findOne({ _id: decoded.id });
+
+    if(user){
+      const {username, userType} = user
+      return res.json({
+        username,
+        userType
+      })
+    }else{
+      return res.status(401).json({
+        error: 'invalid token',
+      })
+    }
+  }catch(e){
+    return res.status(401).json({
+      error: 'invalid token',
+    })
+  }
+  //   .send({ token, username: user.username, name: user.name })
+})
+
+
+
 module.exports = loginRouter
