@@ -1,23 +1,22 @@
 const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
 
-const bookSchema = new mongoose.Schema({
-  title: {
+const userSchema = new mongoose.Schema({
+  username: {
     type: String,
-    required: true,
     unique: true,
+    required: true,
+    minLength: 3,
   },
-  author: {
+  name: {
     type: String,
     required: true,
+    minLength: 3,
   },
-  publish: {
+  passwordHash: {
     type: String,
   },
-  genre: {
-    type: String,
-  },
-  status: {
+  userType: {
     type: String,
     required: true,
   },
@@ -26,14 +25,17 @@ const bookSchema = new mongoose.Schema({
   },
 })
 
-bookSchema.set('toJSON', {
+userSchema.set('toJSON', {
   transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString()
+    returnedObject.id = returnedObject._id
     delete returnedObject._id
     delete returnedObject.__v
+    delete returnedObject.passwordHash
   },
 })
 
-bookSchema.plugin(uniqueValidator)
+userSchema.plugin(uniqueValidator)
 
-module.exports = mongoose.model('Book', bookSchema)
+const User = mongoose.model('User', userSchema)
+
+module.exports = User
