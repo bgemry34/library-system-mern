@@ -11,15 +11,13 @@ const bookSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  publish: {
-    type: String,
-  },
   genre: {
     type: String,
   },
   status: {
     type: String,
     required: true,
+    default: 'available',
   },
   dateCreated: {
     type: Date,

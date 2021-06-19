@@ -31,9 +31,7 @@ booksRouter.post('/', userExtractor, async (req, res) => {
   const book = new Book({
     title: body.title,
     author: body.author,
-    publish: body.publish,
     genre: body.genre,
-    status: body.status,
     dateCreated: new Date().toISOString(),
   })
 

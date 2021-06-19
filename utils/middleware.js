@@ -39,11 +39,22 @@ const userExtractor = async (req, res, next) => {
 
 const errorHandler = (error, req, res, next) => {
   logger.error(error.message)
+  logger.error(error.data)
 
   if (error.name === 'CastError') {
     return res.status(400).send({ error: 'malformed id' })
   } else if (error.name === 'ValidationError') {
-    return res.status(400).json({ error: error.message })
+    if (error.message.includes('unique')) {
+      return res.status(400).json({ error: 'username must be unique' })
+    } else if (error.message.includes('`username` is required.')) {
+      return res.status(400).json({ error: 'username is required' })
+    } else if (error.message.includes('`userType` is required.')) {
+      return res.status(400).json({ error: 'userType is required' })
+    } else if (error.message.includes('`password` is required.')) {
+      return res.status(400).json({ error: 'password is required' })
+    } else {
+      return res.status(400).json({ error: error.message })
+    }
   } else if (error.name === 'JsonWebTokenError') {
     return res.status(401).json({
       error: 'invalid token',
