@@ -23,6 +23,18 @@ const userSchema = new mongoose.Schema({
   dateCreated: {
     type: Date,
   },
+  borrowedBooks: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Borrow',
+    },
+  ],
+  reservedBooks: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Reserve',
+    },
+  ],
 })
 
 userSchema.set('toJSON', {

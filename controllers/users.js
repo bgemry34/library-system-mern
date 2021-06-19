@@ -5,13 +5,16 @@ const User = require('../models/user')
 
 // GET all users
 usersRouter.get('/', async (req, res) => {
-  const users = await User.find({})
+  const users = await User.find({}).populate('borrowedBooks')
   return res.json(users)
 })
 
 // GET specific user
 usersRouter.get('/:id', async (req, res) => {
-  const user = await User.findById(req.params.id)
+  const user = await User.findById(req.params.id).populate('borrowedBooks', {
+    title: 1,
+    author: 1,
+  })
   return res.json(user)
 })
 
@@ -23,7 +26,8 @@ usersRouter.post('/', async (req, res) => {
   if (!password || password.length < 3) {
     return res
       .status(400)
-      .send({ error: 'password must be at least 3 characters long' }).end()
+      .send({ error: 'password must be at least 3 characters long' })
+      .end()
   }
 
   const saltRounds = 10
