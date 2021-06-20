@@ -1,14 +1,10 @@
 const mongoose = require('mongoose')
-const uniqueValidator = require('mongoose-unique-validator')
 
 const borrowSchema = new mongoose.Schema({
   dateBorrowed: {
     type: Date,
   },
   returnDate: String,
-  dateCreated: {
-    type: Date,
-  },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
@@ -17,20 +13,13 @@ const borrowSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Book',
   },
-  isApproved: {
-    type: Boolean,
-    default: false,
+  status: {
+    type: String,
+    default: 'pending',
   },
+  bookTitle: String,
   approvedDate: String,
-  isReturned: {
-    type: Boolean,
-    default: false,
-  },
   returnedDate: String,
-  isCancelled: {
-    type: Boolean,
-    default: false,
-  },
   cancelledDate: String,
 })
 
