@@ -17,14 +17,12 @@ export const loginUser = async (login) => {
 }       
 
 export const checkToken = async () => {
-    const userToken = sessionStorage.getItem("userToken")
-    // try{
-    //     const data = await axios.post(`${url}/login/me/`, {
-    //         username,
-    //         password
-    //     });
-    //     return data;
-    // }catch(error){
-    //     return error.response
-    // }
+    const userToken = sessionStorage.getItem("userToken");
+    try{
+        const data = await axios.post(`${url}/login/me/`+userToken, {
+        });
+        return data;
+    }catch(error){
+        return error.response
+    }
 }       

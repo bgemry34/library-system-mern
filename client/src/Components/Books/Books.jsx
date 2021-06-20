@@ -12,6 +12,7 @@ import {Paper,
     DialogContent,
     FormControl,
     DialogActions,
+    DialogContentText,
     TableBody} from '@material-ui/core';
 import { Container, Button } from '@material-ui/core';
 import styles from './Books.module.css';
@@ -20,9 +21,10 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import SaveIcon from '@material-ui/icons/Save';
 import {useForm} from './../../Custom-Hook/userForm';
-import {fetchBooks, createBook, editBook} from './../../Api/Books/Books'
+import {fetchBooks, createBook, editBook, deleteBook} from './../../Api/Books/Books'
 import {formatDate} from './../../Tools/Tools'
 import Alert from '@material-ui/lab/Alert';
+import CancelOutlinedIcon from '@material-ui/icons/CancelOutlined';
 
 function Books() {
     const [createModal, setCreateModal] = useState(false);
@@ -31,6 +33,7 @@ function Books() {
     const [alert, setAlert] = useState('');
     const [errorAlert, setErrorAlert] = useState('');
     const [processing, setProcessing] = useState(false)
+    const [deleteAlert, setDeleteAlert] = useState(false)
 
     const [bookForm, handleChange, setBookForm] = useForm({title:'', author:'', genre:''});
     
@@ -82,6 +85,24 @@ function Books() {
             }, 10000)
         }
         setProcessing(false);
+    }
+
+    const destroyBook = async () => {
+        setProcessing(true);
+        const res = await deleteBook(bookForm);
+        console.log(res);
+        if(res.status === 200 || res.status === 204){
+            setProcessing(false);
+            setDeleteAlert(false);
+            setBooks(books.filter(book=>book.id!==bookForm.id))
+            setBookForm({title:'', author:'', genre:''});
+            setErrorAlert((
+                <Alert style={{textTransform:'capitalize'}} severity="error">You Have Successfully Delete Book.</Alert>
+            ))
+            setTimeout(()=>{
+                setErrorAlert('');
+            }, 10000)
+        }
     }
 
      //Dialogs
@@ -177,6 +198,53 @@ function Books() {
         </Dialog>
     )
 
+    const deleteDialog = (
+        <div>
+                <Dialog
+                open={deleteAlert}
+                onClose={()=>{
+                    setBookForm({title:'', author:'', genre:''})
+                    setDeleteAlert(false);
+                }}
+                maxWidth={'xs'}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+                >
+                <DialogContent>
+                    <CancelOutlinedIcon
+                    style={{
+                        color:'#e74c3c' ,
+                         marginLeft:'auto',
+                         marginRight:'auto',
+                        textAlign:'center', 
+                        display:'block',
+                        fontSize:'250px'}} />
+                    <DialogContentText style={{textAlign:'center'}} id="alert-dialog-description">
+                    Are you sure you want to delete <strong>{bookForm.title}</strong>?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button 
+                    onClick={()=>{
+                        destroyBook();
+                    }}
+                    disabled={processing}
+                    color="primary">
+                    Proceed
+                    </Button>
+                    <Button  color="primary" autoFocus 
+                    onClick={()=>{
+                        setBookForm({title:'', author:'', genre:''})
+                        setDeleteAlert(false);
+                    }}
+                    >
+                    No
+                    </Button>
+                </DialogActions>
+                </Dialog>
+            </div>
+    )
+
     return (
         <div>
             <Container>
@@ -226,7 +294,7 @@ function Books() {
                         <TableBody>
                             {books.map(book=>(
                                 <TableRow key={book.id}>
-                                    <TableCell>{book.title  }</TableCell>
+                                    <TableCell>{book.title}</TableCell>
                                     <TableCell>{book.author}</TableCell>
                                     <TableCell>{book.genre}</TableCell>
                                     <TableCell>{formatDate(book.dateCreated)}</TableCell>
@@ -238,7 +306,12 @@ function Books() {
                                             setCreateModal(true)
                                         }}
                                         />
-                                        <DeleteIcon style={{color:'#e74c3c' , marginLeft:'5px', cursor:'pointer'}} />
+                                        <DeleteIcon style={{color:'#e74c3c' , marginLeft:'5px', cursor:'pointer'}} 
+                                        onClick={()=>{
+                                            setBookForm(book);
+                                            setDeleteAlert(true);
+                                        }}
+                                        />
                                     </TableCell>
                                 </TableRow>
                             ))}
@@ -248,6 +321,7 @@ function Books() {
                 </Grid>
             </Grid>
             {addDialog}
+            {deleteDialog}
             </Container>
         </div>
     )

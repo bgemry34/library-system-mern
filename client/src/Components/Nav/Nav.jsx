@@ -36,7 +36,13 @@ export default function Nav(props) {
 
 
   useEffect(()=>{
-    checkToken();
+    const fetchApi = async () => {
+      const res = await checkToken();
+      if(res.status === 401)
+      history.push('/');
+    }
+
+    fetchApi();
   }, [])
 
   const handleDrawer = () => {
