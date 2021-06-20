@@ -7,8 +7,10 @@ const userExtractor = require('../utils/middleware').userExtractor
 // GET all users
 usersRouter.get('/', userExtractor, async (req, res) => {
   const users = await User.find({}).populate('borrowedBooks', {
-    title: 1,
-    author: 2,
+    isApproved: 1,
+    dateBorrowed: 1,
+    returnedDate: 1,
+    bookTitle: 1,
   })
   return res.json(users)
 })
@@ -16,7 +18,7 @@ usersRouter.get('/', userExtractor, async (req, res) => {
 // GET specific user
 usersRouter.get('/:id', userExtractor, async (req, res) => {
   const user = await User.findById(req.params.id).populate('borrowedBooks', {
-    title: 1,
+    borrowedBook: 1,
     author: 1,
   })
   return res.json(user)

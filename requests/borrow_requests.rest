@@ -3,7 +3,7 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNhcmFoIiwiaWQiOiI2MGNkZjlmNzkxMjQ4MjI3YjBiNTEzYzEiLCJ1c2VyVHlwZSI6ImFkbWluIiwiaWF0IjoxNjI0MTExNjY0fQ.nUfpgGl7vg1JO62zdMqnIAza25_gswLB_CbNfy_D5vU
 
 {
-  "bookId": "60cdfb8c91248227b0b513c4"
+  "bookId": "60cdfb5391248227b0b513c3"
 }
 
 ###
@@ -13,10 +13,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNhc
 
 ###
 
-PUT http://localhost:4000/api/borrow/60cdfc1d91248227b0b513c6
+PUT http://localhost:4000/api/borrow/approve/60cdfc1d91248227b0b513c6
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNhcmFoIiwiaWQiOiI2MGNkZjlmNzkxMjQ4MjI3YjBiNTEzYzEiLCJ1c2VyVHlwZSI6ImFkbWluIiwiaWF0IjoxNjI0MTExNjY0fQ.nUfpgGl7vg1JO62zdMqnIAza25_gswLB_CbNfy_D5vU
-
-{
-  "isApproved": true
-}
