@@ -2,15 +2,19 @@ const bcrypt = require('bcrypt')
 const app = require('../app')
 const usersRouter = require('express').Router()
 const User = require('../models/user')
+const userExtractor = require('../utils/middleware').userExtractor
 
 // GET all users
-usersRouter.get('/', async (req, res) => {
-  const users = await User.find({}).populate('borrowedBooks')
+usersRouter.get('/', userExtractor, async (req, res) => {
+  const users = await User.find({}).populate('borrowedBooks', {
+    title: 1,
+    author: 2,
+  })
   return res.json(users)
 })
 
 // GET specific user
-usersRouter.get('/:id', async (req, res) => {
+usersRouter.get('/:id', userExtractor, async (req, res) => {
   const user = await User.findById(req.params.id).populate('borrowedBooks', {
     title: 1,
     author: 1,
@@ -42,7 +46,7 @@ usersRouter.post('/', async (req, res) => {
   })
 
   const savedUser = await user.save()
-  return savedUser ? res.json(savedUser) : res.status(400).end()
+  return savedUser ? res.status(201).json(savedUser) : res.status(400).end()
 })
 
 module.exports = usersRouter

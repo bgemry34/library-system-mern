@@ -5,9 +5,7 @@ const borrowSchema = new mongoose.Schema({
   dateBorrowed: {
     type: Date,
   },
-  returnDate: {
-    type: Date,
-  },
+  returnDate: String,
   dateCreated: {
     type: Date,
   },
@@ -19,11 +17,20 @@ const borrowSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Book',
   },
-  approved: {
+  isApproved: {
     type: Boolean,
     default: false,
   },
   approvedDate: String,
+  isReturned: {
+    type: Boolean,
+    default: false,
+  },
+  returnedDate: String,
+  isCancelled: {
+    type: Boolean,
+    default: false,
+  },
   cancelledDate: String,
 })
 

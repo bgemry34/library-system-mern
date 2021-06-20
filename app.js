@@ -31,11 +31,12 @@ app.use(express.json())
 
 app.use(middleware.requestLogger)
 app.use(middleware.tokenExtractor)
+const userExtractor = middleware.userExtractor
 
-app.use('/api/books', booksRouter)
+app.use('/api/books', userExtractor, booksRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
-app.use('/api/borrow', borrowRouter)
+app.use('/api/borrow', userExtractor, borrowRouter)
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
