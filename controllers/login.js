@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const loginRouter = require('express').Router()
 const User = require('../models/user')
+const jwt_decode = require('jwt-decode')
 
 loginRouter.post('/', async (req, res) => {
   const body = req.body
@@ -55,6 +56,7 @@ loginRouter.post('/me/:token', async (req, res) => {
       })
     }
   }catch(e){
+    console.log(e)
     return res.status(401).json({
       error: 'invalid token',
     })
