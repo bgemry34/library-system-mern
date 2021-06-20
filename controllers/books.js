@@ -1,5 +1,3 @@
-const jwt = require('jsonwebtoken')
-const book = require('../models/book')
 const booksRouter = require('express').Router()
 const Book = require('../models/book')
 
@@ -11,7 +9,6 @@ booksRouter.get('/', async (req, res) => {
 
 // GET a specific book
 booksRouter.get('/:id', async (req, res) => {
-  const user = req.user
   const book = await Book.findById(req.params.id)
   return res.json(book)
 })
@@ -73,7 +70,7 @@ booksRouter.put('/:id', async (req, res) => {
     return res.status(404).send({ error: 'invalid book' })
   }
 
-  let book = {
+  const book = {
     title: body.title ? body.title : bookData.title,
     author: body.author ? body.author : bookData.author,
     genre: body.genre ? body.genre : bookData.genre,
