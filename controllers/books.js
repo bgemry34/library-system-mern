@@ -67,8 +67,20 @@ booksRouter.put('/:id', async (req, res) => {
       .end()
   }
 
-  const book = {
-    status: body.status,
+  if (!body.title || !body.author) {
+    return res.status(400).end()
+  }
+
+  const book = ''
+
+  if (body.title) {
+    book = {
+      title: body.title,
+    }
+  } else {
+    book = {
+      author: body.author,
+    }
   }
 
   const newBook = await Book.findByIdAndUpdate(id, book, { new: true })
