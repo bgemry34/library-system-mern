@@ -21,7 +21,9 @@ booksRouter.get('/:id', async (req, res) => {
     book = await Book.findById(id)
   } else {
     const title = sanitizeString(decodeURI(id))
-    book = await Book.findOne({ title: { $regex: new RegExp(title, 'i') } })
+    book = await Book.find({
+      title: { $regex: new RegExp(title, 'i')},
+    })
   }
 
   return book
