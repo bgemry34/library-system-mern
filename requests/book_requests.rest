@@ -1,5 +1,13 @@
+<<<<<<< HEAD
 GET http://localhost:4000/api/books/to-kill a mocking bird
+=======
+GET http://localhost:4000/api/books
+<<<<<<< HEAD
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNhcmFoIiwiaWQiOiI2MGNkZjlmNzkxMjQ4MjI3YjBiNTEzYzEiLCJ1c2VyVHlwZSI6ImFkbWluIiwiaWF0IjoxNjI0MTY3ODcxfQ.3OkXtspFktWlxSV_9aNFQna478ojG1FeYg81VptCu4w
+=======
+>>>>>>> 4f51846d4e22a81921110ee0596038f3ce5a7e1c
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNhcmFoIiwiaWQiOiI2MGNkZjlmNzkxMjQ4MjI3YjBiNTEzYzEiLCJ1c2VyVHlwZSI6ImFkbWluIiwiaWF0IjoxNjI0MTExNjY0fQ.nUfpgGl7vg1JO62zdMqnIAza25_gswLB_CbNfy_D5vU
+>>>>>>> fd68495d8bf192431aa4cc2d048163cdaf5561a5
 
 ###
 

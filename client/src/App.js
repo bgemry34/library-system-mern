@@ -6,6 +6,7 @@ import Login from './Components/Login/Login';
 import Nav from './Components/Nav/Nav';
 import Dashboard from './Components/Dashboard/Dashboard';
 import Books from './Components/Books/Books';
+import Borrow from './Components/Borrow/Borrow';
 
 
 // import Dashboard from './Components/Dashboard/Das1board'
@@ -27,12 +28,12 @@ export default function App() {
                       <Books />
                     </Nav>
                   </Route>
-                  {/* <Route path="/company" exact >
+                  <Route path="/borrow" exact >
                     <Nav>
-                      <Company />
+                      <Borrow />
                     </Nav>
                   </Route>
-                  <Route path="/department" exact >
+                  {/* <Route path="/department" exact >
                     <Nav>
                       <Department />
                     </Nav>

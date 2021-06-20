@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const loginRouter = require('express').Router()
 const User = require('../models/user')
+const jwt_decode = require('jwt-decode')
 
 loginRouter.post('/', async (req, res) => {
   const body = req.body
@@ -35,5 +36,34 @@ loginRouter.post('/', async (req, res) => {
       userType: user.userType,
     })
 })
+
+loginRouter.post('/me/:token', async (req, res) => {
+  const token = req.params.token;
+  try{
+    const decoded = await jwt_decode(token);
+
+    const user = await User.findOne({ _id: decoded.id });
+
+    if(user){
+      const {username, userType} = user
+      return res.json({
+        username,
+        userType
+      })
+    }else{
+      return res.status(401).json({
+        error: 'invalid token',
+      })
+    }
+  }catch(e){
+    console.log(e)
+    return res.status(401).json({
+      error: 'invalid token',
+    })
+  }
+  //   .send({ token, username: user.username, name: user.name })
+})
+
+
 
 module.exports = loginRouter
