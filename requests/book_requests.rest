@@ -1,5 +1,5 @@
 GET http://localhost:4000/api/books
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNhcmFoIiwiaWQiOiI2MGNhYmMwOWM3OWMwOTJiZTQzZDkyYzciLCJ1c2VyVHlwZSI6ImFkbWluIiwiaWF0IjoxNjI0MDkxNTQxfQ.Va5UbnsG9BSjwtPJC_R1EIMf20yYuKI1m7S746o1OrE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNhcmFoIiwiaWQiOiI2MGNkZjlmNzkxMjQ4MjI3YjBiNTEzYzEiLCJ1c2VyVHlwZSI6ImFkbWluIiwiaWF0IjoxNjI0MTY3ODcxfQ.3OkXtspFktWlxSV_9aNFQna478ojG1FeYg81VptCu4w
 
 ###
 
@@ -36,12 +36,13 @@ DELETE http://localhost:4000/api/books/60bf74039de0b554b477afed
 
 ###
 
-PUT http://localhost:4000/api/books/60bf74879fdb373f90cc556d
+PUT http://localhost:4000/api/books/60cdfb5391248227b0b513c3
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNhcmFoIiwiaWQiOiI2MGNkZjlmNzkxMjQ4MjI3YjBiNTEzYzEiLCJ1c2VyVHlwZSI6ImFkbWluIiwiaWF0IjoxNjI0MTY3ODcxfQ.3OkXtspFktWlxSV_9aNFQna478ojG1FeYg81VptCu4w
 
 {
-    "title": "Super Junior",
-    "author": "Kyu Hyun",
-    "genre": "non-fiction"
+    "title": "Harry Roque",
+    "author": "JK R.",
+    "genre": "fiction"
 }
 

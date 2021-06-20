@@ -18,7 +18,6 @@ export const loginUser = async (login) => {
 
 export const checkToken = async () => {
     const userToken = sessionStorage.getItem("userToken")
-    console.log(userToken);
     // try{
     //     const data = await axios.post(`${url}/login/me/`, {
     //         username,

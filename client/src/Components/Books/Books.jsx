@@ -20,15 +20,20 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import SaveIcon from '@material-ui/icons/Save';
 import {useForm} from './../../Custom-Hook/userForm';
-import {fetchBooks} from './../../Api/Books/Books'
+import {fetchBooks, createBook, editBook} from './../../Api/Books/Books'
 import {formatDate} from './../../Tools/Tools'
+import Alert from '@material-ui/lab/Alert';
 
 function Books() {
     const [createModal, setCreateModal] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
     const [books, setBooks] = useState([]);
+    const [alert, setAlert] = useState('');
+    const [errorAlert, setErrorAlert] = useState('');
+    const [processing, setProcessing] = useState(false)
 
-    const [values, handleChange] = useForm({email:'', password:'', usertype:''});
+    const [bookForm, handleChange, setBookForm] = useForm({title:'', author:'', genre:''});
+    
 
     useEffect(()=>{
         let isCancelled = false;
@@ -50,14 +55,43 @@ function Books() {
 
     const addBook = async (e) =>{
         e.preventDefault();
-        console.log('submit')
+        setProcessing(true);
+        const res = isEdit ? await editBook(bookForm) :  await createBook(bookForm);
+        if(res.status === 200 || res.status === 201){
+            setCreateModal(false);
+           if(isEdit){
+                setBooks(books.map(book=>book.id === res.data.id ? res.data : book));
+                setAlert((
+                    <Alert severity="success">Successfully edited book.</Alert>
+                )); 
+           }else{
+                setBooks([res.data, ...books]);
+                setAlert((
+                    <Alert severity="success">Successfully added new book.</Alert>
+                )); 
+           }
+            setTimeout(()=>{
+                setAlert('');
+            }, 5000);
+        }else{
+            setErrorAlert((
+                <Alert style={{textTransform:'capitalize'}} severity="error">{res.data.error}</Alert>
+            ))
+            setTimeout(()=>{
+                setErrorAlert('');
+            }, 10000)
+        }
+        setProcessing(false);
     }
 
      //Dialogs
      const addDialog = (
         <Dialog
           open={createModal}
-          onClose={()=>setCreateModal(false)}
+          onClose={()=>{
+            setCreateModal(false);
+            setBookForm({title:'', author:'', genre:''});
+          }}
           scroll="body"
           fullWidth
         >
@@ -67,12 +101,13 @@ function Books() {
             </Container>
             <DialogContent>
                 <Container>
+                    {errorAlert}
                     <FormControl margin="normal" fullWidth>
                         <TextField
                             required
                             name="title"
                             onChange = {handleChange}
-                            value={values.title}
+                            value={bookForm.title}
                             label="Title"
                             type="text"
                             fullWidth
@@ -83,7 +118,7 @@ function Books() {
                             required
                             name="author"
                             onChange = {handleChange}
-                            value={values.author}
+                            value={bookForm.author}
                             label="Author"
                             type="text"
                             fullWidth
@@ -94,7 +129,7 @@ function Books() {
                             required
                             name="genre"
                             onChange = {handleChange}
-                            value={values.genre}
+                            value={bookForm.genre}
                             label="Genre"
                             type="text"
                             fullWidth
@@ -104,36 +139,38 @@ function Books() {
             </DialogContent>
             <DialogActions>
                 <Container>
-                    {/* {
+                    {
                         !isEdit ? (
                         <Button
                         id='addBtn'
                         variant="contained"
                         color="primary"
-                        style={{float:'right', marginRight:'15px', marginBottom: '5px'}}
                         endIcon={<AddIcon />}
-                        disabled={form.onProcess}
+                        disabled={processing}
+                        style={{marginBottom:'20px'}}
                         size="large"
                         type="submit"
+                        fullWidth
                         >
                             Add
                         </Button> 
                         ) : (
-                        
+                            <Button
+                            id='editBtn'
+                            variant="contained"
+                            color="primary"
+                            style={{marginBottom:'20px'}}
+                            endIcon={<SaveIcon />}
+                            disabled={processing}
+                            size="large"
+                            fullWidth
+                            type="submit"
+                            >
+                                Save
+                            </Button> 
                         )
-                    }  */}
-                    <Button
-                        id='editBtn'
-                        variant="contained"
-                        color="primary"
-                        style={{marginBottom:'20px'}}
-                        endIcon={<SaveIcon />}
-                        size="large"
-                        fullWidth
-                        type="submit"
-                        >
-                            Save
-                        </Button> 
+                    } 
+                   
                 </Container>
             </DialogActions>
           </form>
@@ -162,7 +199,8 @@ function Books() {
                             color="primary"
                             className={styles.btnAdd}
                             endIcon={<AddIcon />}
-                            onClick={()=>setCreateModal(true)}
+                            onClick={()=>{setIsEdit(false);
+                                setCreateModal(true);}}
                             fullWidth
                         >
                             Add Book
@@ -171,6 +209,7 @@ function Books() {
                     </Grid>
                 </Grid>
             </Grid>
+            {alert}
             <Grid container style={{marginTop:'30px'}}>
                 <Grid item xs={12}>
                 <TableContainer component={Paper}>
@@ -192,7 +231,13 @@ function Books() {
                                     <TableCell>{book.genre}</TableCell>
                                     <TableCell>{formatDate(book.dateCreated)}</TableCell>
                                     <TableCell align="center">
-                                        <EditIcon style={{color:'#27ae60' , marginLeft:'5px', cursor:'pointer'}} />
+                                        <EditIcon style={{color:'#27ae60' , marginLeft:'5px', cursor:'pointer'}} 
+                                        onClick={()=>{
+                                            setIsEdit(true);
+                                            setBookForm(book);
+                                            setCreateModal(true)
+                                        }}
+                                        />
                                         <DeleteIcon style={{color:'#e74c3c' , marginLeft:'5px', cursor:'pointer'}} />
                                     </TableCell>
                                 </TableRow>
