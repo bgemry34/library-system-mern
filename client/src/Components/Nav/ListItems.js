@@ -42,7 +42,7 @@ export const mainListItems = (
 
     <ListItem button
       component={NavLink}
-      to="/inventory"
+      to="/borrow"
       exact
       activeStyle={{
         backgroundColor:'#ecf0f1'

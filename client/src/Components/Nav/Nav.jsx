@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import clsx from 'clsx';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
@@ -13,6 +13,7 @@ import { mainListItems, secondaryListItems } from './ListItems';
 import {useStyles} from './Nav.style'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { useHistory } from 'react-router';
+import {checkToken} from './../../Api/Users/Users'
 
 
 // function Copyright() {
@@ -32,6 +33,17 @@ export default function Nav(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   const history = useHistory()
+
+
+  useEffect(()=>{
+    const fetchApi = async () => {
+      const res = await checkToken();
+      if(res.status === 401)
+      history.push('/');
+    }
+
+    fetchApi();
+  }, [])
 
   const handleDrawer = () => {
     setOpen(!open);

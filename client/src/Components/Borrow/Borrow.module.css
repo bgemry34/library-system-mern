@@ -1,0 +1,16 @@
+.container{
+    margin-top: 15px;
+}
+
+.bookContainer{
+    margin-top: 15px;
+    height:350px;
+    overflow: auto;
+    border: 0.5px solid rgba(44, 62, 80,0.5);
+}
+
+.borrowedBookContainer{
+    height:200px;
+    overflow: auto;
+    border: 0.5px solid rgba(44, 62, 80,0.5);
+}

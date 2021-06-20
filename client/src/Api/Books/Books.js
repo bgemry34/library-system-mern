@@ -1,51 +1,69 @@
 
 import axios from 'axios'
 
-const url = 'http://localhost:4000/api/';
+const url = 'http://localhost:4000/api';
 
-export const fetchBooks = async () => {
+export const fetchBooks = async () => {    
+    const token = await sessionStorage.getItem("userToken")
     try{
-        const {data} = await axios.get(`${url}/books`);
+        const res = await axios.get(`${url}/books`, {
+        headers: {
+            Authorization: 'Bearer ' + token //the token is a variable which holds the token
+        }
+        });
+        const {data} = res;
         return data;
     }catch(error){
+        return []
         return error.response
     }
 }
 
-export const searchItems = async (name) => {
+export const createBook = async (book) => {
+    const token = await sessionStorage.getItem("userToken")
+    const {title, genre, author} = book
     try{
-        const {data} = await axios.get(`${url}/app/api/items/search/`+name);
+        const data = await axios.post(`${url}/books`, {
+                title, genre, author
+            }, {
+                headers: {
+                    Authorization: 'Bearer ' + token //the token is a variable which holds the token
+                }
+              })
         return data;
     }catch(error){
-        return error.response
+        return error.response;
     }
 }
 
-
-export const createItem = async (name, company, department, qty, price, depre_price, purchase_order_no, model) => {
+export const editBook = async (book) => {
+    const token = await sessionStorage.getItem("userToken")
+    const {title, genre, author, id} = book
     try{
-        const data = await axios.post(`${url}/app/api/items/create`, {name, company, department, qty, price, depre_price, purchase_order_no, model });
+        const data = await axios.put(`${url}/books/`+id, {
+                title, genre, author
+            }, {
+                headers: {
+                    Authorization: 'Bearer ' + token //the token is a variable which holds the token
+                }
+              })
         return data;
     }catch(error){
-        return error.response
+        return error.response;
     }
 }
 
-export const updateItem = async (form) => {
+export const deleteBook = async (book) => {
+    const token = await sessionStorage.getItem("userToken")
+    const {id} = book;
     try{
-        const {id, name, company, department, qty, price, depre_price, purchase_order_no, model} = form;
-        const data = await axios.put(`${url}/app/api/items/update/`+id, {name, company, department, qty, price, depre_price, purchase_order_no, model });
+        const data = await axios.delete(`${url}/books/`+id, {
+            headers: {
+                Authorization: 'Bearer ' + token //the token is a variable which holds the token
+            }
+        })
         return data;
     }catch(error){
-        return error.response
-    }
-}
-
-export const deleteItem = async (id) => {
-    try{
-        const data = await axios.delete(`${url}/app/api/items/delete/`+id);
-        return data;
-    }catch(error){
-        return error.response
+        return error.response;
     }
 }
