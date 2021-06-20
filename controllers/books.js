@@ -67,7 +67,7 @@ booksRouter.put('/:id', async (req, res) => {
       .end()
   }
 
-  if (!body.title || !body.author) {
+  if (!body.title && !body.author) {
     return res.status(400).end()
   }
 

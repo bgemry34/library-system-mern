@@ -6,7 +6,10 @@ const userExtractor = require('../utils/middleware').userExtractor
 
 // GET all users
 usersRouter.get('/', userExtractor, async (req, res) => {
-  const users = await User.find({}).populate('borrowedBooks')
+  const users = await User.find({}).populate('borrowedBooks', {
+    title: 1,
+    author: 2,
+  })
   return res.json(users)
 })
 

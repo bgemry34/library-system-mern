@@ -8,7 +8,7 @@ borrowRouter.get('/', async (req, res) => {
   const borrowList = await Borrow.find({})
     .populate('user', {
       name: 1,
-      borrowedBooks: 1,
+      username: 1,
     })
     .populate('borrowedBook', { title: 1, author: 1 })
 
