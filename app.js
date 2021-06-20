@@ -7,7 +7,7 @@ require('express-async-errors')
 const booksRouter = require('./controllers/books')
 const usersRouter = require('./controllers/users')
 const loginRouter = require('./controllers/login')
-const borrowRouter = require('./controllers/borrow')
+const borrowRouter = require('./controllers/borrows')
 
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')

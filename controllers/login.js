@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const loginRouter = require('express').Router()
 const User = require('../models/user')
-const jwt_decode = require('jwt-decode')
 
 loginRouter.post('/', async (req, res) => {
   const body = req.body
@@ -26,8 +25,6 @@ loginRouter.post('/', async (req, res) => {
   }
 
   const token = jwt.sign(userForToken, process.env.SECRET)
-
-  // console.log('decoded token:', await jwt_decode(token))
 
   return res
     .status(200)
