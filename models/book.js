@@ -21,6 +21,7 @@ const bookSchema = new mongoose.Schema({
   },
   dateCreated: {
     type: Date,
+    default: new Date().toISOString(),
   },
 })
 

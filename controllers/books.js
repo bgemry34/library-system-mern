@@ -1,5 +1,10 @@
 const booksRouter = require('express').Router()
 const Book = require('../models/book')
+const mongoose = require('mongoose')
+
+function sanitizeString(str) {
+  return str.replace(/[-_]/g, ' ')
+}
 
 // GET all books
 booksRouter.get('/', async (req, res) => {
@@ -9,8 +14,19 @@ booksRouter.get('/', async (req, res) => {
 
 // GET a specific book
 booksRouter.get('/:id', async (req, res) => {
-  const book = await Book.findById(req.params.id)
-  return res.json(book)
+  const id = req.params.id
+  let book = ''
+
+  if (mongoose.isValidObjectId(id)) {
+    book = await Book.findById(id)
+  } else {
+    const title = sanitizeString(decodeURI(id))
+    book = await Book.findOne({ title: { $regex: new RegExp(title, 'i') } })
+  }
+
+  return book
+    ? res.json(book)
+    : res.status(404).send({ error: `Book not found` }).end()
 })
 
 //CREATE a book
