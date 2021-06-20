@@ -2,15 +2,16 @@ const bcrypt = require('bcrypt')
 const app = require('../app')
 const usersRouter = require('express').Router()
 const User = require('../models/user')
+const userExtractor = require('../utils/middleware').userExtractor
 
 // GET all users
-usersRouter.get('/', async (req, res) => {
+usersRouter.get('/', userExtractor, async (req, res) => {
   const users = await User.find({}).populate('borrowedBooks')
   return res.json(users)
 })
 
 // GET specific user
-usersRouter.get('/:id', async (req, res) => {
+usersRouter.get('/:id', userExtractor, async (req, res) => {
   const user = await User.findById(req.params.id).populate('borrowedBooks', {
     title: 1,
     author: 1,

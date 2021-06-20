@@ -52,7 +52,11 @@ const addDays = (date, days) => {
 
 // UPDATE a borrow request
 // req.body = {
-//   approved: Boolean
+//   isApproved: Boolean
+// }
+// BOOK is returned
+// req.body = {
+//   isReturned: Boolean
 // }
 borrowRouter.put('/:id', async (req, res) => {
   const user = req.user
@@ -62,29 +66,78 @@ borrowRouter.put('/:id', async (req, res) => {
   if (user.userType !== 'admin') {
     return res
       .status(401)
-      .send({ error: 'You are not allowed to approve a borrow request' })
+      .send({ error: 'You are not allowed to approve/cancel a borrow request' })
       .end()
   }
 
-  const borrow = {
-    approved: body.approved,
-    approvedDate: body.approved ? new Date().toISOString() : '--',
-    cancelledDate: body.approved ? '--' : new Date().toISOString(),
-  }
   const borrowData = await Borrow.findById(id)
   const bookId = borrowData.borrowedBook
+  const userData = await User.findById(borrowData.user)
+  const userBorrowList = userData.borrowedBooks
 
-  if (body.approved) {
-    await Book.findByIdAndUpdate(bookId, { status: 'borrowed' }, { new: true })
-    borrow.returnDate = addDays(borrow.approvedDate, 3)
-  } else {
-    await Book.findByIdAndUpdate(bookId, { status: 'available' }, { new: true })
-    borrow.returnDate = '--'
+  if (borrowData.isReturned || borrowData.isCancelled) {
+    return res
+      .status(401)
+      .send({
+        error: `Borrow request has been ${
+          borrowData.isReturned ? 'returned' : 'cancelled'
+        }`,
+      })
+      .end()
   }
-  const updatedBorrow = await Borrow.findByIdAndUpdate(id, borrow, {
-    new: true,
-  })
-  return updatedBorrow ? res.json(updatedBorrow) : res.status(400).end()
+
+  let borrow = ''
+
+  // FOR RETURN
+  if (body.isReturned) {
+    await Book.findByIdAndUpdate(bookId, { status: 'available' }, { new: true })
+    borrow = {
+      returnedDate: new Date().toISOString(),
+      isReturned: true,
+    }
+    const updatedBorrow = await Borrow.findByIdAndUpdate(id, borrow, {
+      new: true,
+    })
+    //remove borrow from user
+    const updatedUserBorrowList = userBorrowList.filter(
+      (list) => list !== bookId
+    )
+    await User.findByIdAndUpdate(
+      borrowData.user,
+      { borrowedBooks: updatedUserBorrowList },
+      { new: true }
+    )
+    return res.json(updatedBorrow).end()
+  } else if (body.isCancelled) {
+    borrow = {
+      isCancelled: true,
+      cancelledDate: new Date().toISOString(),
+    }
+    await Book.findByIdAndUpdate(bookId, { status: 'available' }, { new: true })
+    borrow.returnDate = ''
+    const updatedUserBorrowList = userBorrowList.filter(
+      (list) => list !== bookId
+    )
+    await User.findByIdAndUpdate(
+      borrowData.user,
+      { borrowedBooks: updatedUserBorrowList },
+      { new: true }
+    )
+  } else if (body.isApproved) {
+    borrow = {
+      isApproved: body.isApproved,
+      approvedDate: new Date().toISOString(),
+    }
+    await Book.findByIdAndUpdate(bookId, { status: 'borrowed' }, { new: true })
+    borrow.returnDate = addDays(borrow.approvedDate, 3).toISOString()
+  }
+  if (borrow) {
+    const updatedBorrow = await Borrow.findByIdAndUpdate(id, borrow, {
+      new: true,
+    })
+    return res.json(updatedBorrow)
+  }
+  return res.status(400).end()
 })
 
 module.exports = borrowRouter
