@@ -3,23 +3,17 @@ const Borrow = require('../models/borrow')
 const User = require('../models/user')
 const Book = require('../models/book')
 
-const userIsAdmin = (res, user) => {
+const userIsAdmin = (next, user) => {
   return (
     user.userType === 'admin' ||
-    res
-      .status(401)
-      .send({ error: 'You are not allowed to approve a borrow request' })
-      .end()
+    next(new Error('You are not allowed to approve a borrow request'))
   )
 }
 
-const validBorrowStatus = (res, currentStatus, expectedStatus) => {
+const validBorrowStatus = (next, currentStatus, expectedStatus) => {
   return (
     currentStatus === expectedStatus ||
-    res
-      .status(400)
-      .send({ error: `Borrow request is already ${currentStatus}` })
-      .end()
+    next(new Error(`Borrow request has been ${currentStatus}`))
   )
 }
 
@@ -40,17 +34,16 @@ borrowRouter.get('/', async (req, res) => {
 
 // CREATE a new borrow request
 //req.body = bookId
-borrowRouter.post('/', async (req, res) => {
+borrowRouter.post('/', async (req, res, next) => {
   const user = req.user
   const body = req.body
   const bookData = await Book.findById(body.bookId)
 
-  body.bookId ||
-    res
-      .status(404)
-      .send({ error: 'You must provide a book id to borrow' })
-      .end()
-  bookData || res.status(404).send({ error: 'Invalid book' }).end()
+  if (!body.bookId) {
+    return next(new Error('You must provide a book id to borrow'))
+  } else if (!bookData) {
+    return next(new Error('Invalid book'))
+  }
 
   const borrow = new Borrow({
     dateBorrowed: new Date(),
@@ -71,15 +64,18 @@ borrowRouter.post('/', async (req, res) => {
 // APPROVE a borrow request
 // user: ADMIN only
 // PUT http://localhost:4000/api/borrow/approve/:id
-borrowRouter.put('/approve/:id', async (req, res) => {
+borrowRouter.put('/approve/:id', async (req, res, next) => {
   const user = req.user
   const id = req.params.id
   const borrowData = await Borrow.findById(id)
 
-  borrowData || res.status(404).send({ error: 'Invalid borrow request' }).end()
+  if (!borrowData) {
+    return next(new Error('Invalid borrow request'))
+  }
+
   if (
-    userIsAdmin(res, user) &&
-    validBorrowStatus(res, borrowData.status, 'pending')
+    userIsAdmin(next, user) &&
+    validBorrowStatus(next, borrowData.status, 'pending')
   ) {
     const bookId = borrowData.borrowedBook
     await Book.findByIdAndUpdate(bookId, { status: 'borrowed' })
@@ -99,14 +95,15 @@ borrowRouter.put('/approve/:id', async (req, res) => {
 // CANCEL a borrow request
 // user: STUDENT and ADMIN
 // PUT http://localhost:4000/api/borrow/cancel/:id
-borrowRouter.put('/cancel/:id', async (req, res) => {
-  const user = req.user
+borrowRouter.put('/cancel/:id', async (req, res, next) => {
   const id = req.params.id
   const borrowData = await Borrow.findById(id)
 
-  borrowData || res.status(404).send({ error: 'Invalid borrow request' }).end()
+  if (!borrowData) {
+    return next(new Error('Invalid borrow request'))
+  }
 
-  if (validBorrowStatus(res, borrowData.status, 'pending')) {
+  if (validBorrowStatus(next, borrowData.status, 'pending')) {
     const bookId = borrowData.borrowedBook
     const userData = await User.findById(borrowData.user)
     const userBorrowList = userData.borrowedBooks
@@ -133,16 +130,18 @@ borrowRouter.put('/cancel/:id', async (req, res) => {
 // RETURN a book
 // user: STUDENT and ADMIN
 // PUT http://localhost:4000/api/borrow/return/:id
-borrowRouter.put('/return/:id', async (req, res) => {
+borrowRouter.put('/return/:id', async (req, res, next) => {
   const user = req.user
   const id = req.params.id
   const borrowData = await Borrow.findById(id)
 
-  borrowData || res.status(404).send({ error: 'Invalid borrow request' }).end()
+  if (!borrowData) {
+    return next(new Error('Invalid borrow request'))
+  }
 
   if (
-    userIsAdmin(res, user) &&
-    validBorrowStatus(res, borrowData.status, 'approved')
+    userIsAdmin(next, user) &&
+    validBorrowStatus(next, borrowData.status, 'approved')
   ) {
     const bookId = borrowData.borrowedBook
     const userData = await User.findById(borrowData.user)
