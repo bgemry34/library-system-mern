@@ -1,10 +1,11 @@
 const mongoose = require('mongoose')
 
 const reserveSchema = new mongoose.Schema({
-  dateReserved: {
-    type: Date,
+  reservationDate: String,
+  dateCreated: {
+    type: String,
+    default: new Date().toISOString(),
   },
-  returnDate: String,
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
@@ -18,8 +19,8 @@ const reserveSchema = new mongoose.Schema({
   cancelledDate: String,
   status: {
     type: String,
-    default: 'pending'
-  }
+    default: 'pending',
+  },
 })
 // STATUS: pending || borrowed || cancelled
 

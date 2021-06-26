@@ -29,13 +29,24 @@ borrowRouter.get('/', async (req, res) => {
   return res.json(borrowList)
 })
 
+// GET all 'pending/approved/cancelled' requests
+borrowRouter.get('/:id', async (req, res) => {
+  const id = req.params.id
+  let borrowList = await Borrow.find({}).populate('user', {
+    name: 1,
+    username: 1,
+  })
+  borrowList = borrowList.filter((list) => list.status === id)
+  return res.json(borrowList)
+})
+
 // CREATE a new borrow request
-//req.body = bookId, borrower
+//req.body = bookId, borrowerId
 borrowRouter.post('/', async (req, res, next) => {
   const user = req.user
   const body = req.body
   const bookData = await Book.findById(body.bookId)
-  const borrower = body.borrower ? await User.findById(body.borrower) : user
+  const borrower = body.borrower ? await User.findById(body.borrowerId) : user
 
   if (!body.bookId) {
     return next(new Error('You must provide a book id to borrow'))
