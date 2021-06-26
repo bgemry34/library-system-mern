@@ -8,6 +8,6 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNhcmFoIiwiaWQiOiI2MGNkZjlmNzkxMjQ4MjI3YjBiNTEzYzEiLCJ1c2VyVHlwZSI6ImFkbWluIiwiaWF0IjoxNjI0MTExNjY0fQ.nUfpgGl7vg1JO62zdMqnIAza25_gswLB_CbNfy_D5vU
 
 {
-  "bookId": "60cf2c41b9b55145c0e99cfc",
-  "reservationDate": "2021-06-19T14:15:57.327Z"
+  "bookId": "60cf2c41b9b55145c0e99cf1",
+  "reservationDate": "2021/07/30"
 }
