@@ -22,7 +22,7 @@ booksRouter.get('/:id', async (req, res) => {
   } else {
     const title = sanitizeString(decodeURI(id))
     book = await Book.find({
-      title: { $regex: new RegExp(title, 'i')},
+      title: { $regex: new RegExp(title, 'i') },
     })
   }
 
