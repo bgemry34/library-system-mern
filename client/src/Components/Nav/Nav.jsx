@@ -43,7 +43,7 @@ export default function Nav(props) {
     }
 
     fetchApi();
-  }, [])
+  }, [history])
 
   const handleDrawer = () => {
     setOpen(!open);

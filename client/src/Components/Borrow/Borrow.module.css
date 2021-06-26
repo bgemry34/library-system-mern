@@ -4,7 +4,7 @@
 
 .bookContainer{
     margin-top: 15px;
-    height:350px;
+    height:75vh;
     overflow: auto;
     border: 0.5px solid rgba(44, 62, 80,0.5);
 }
@@ -14,3 +14,25 @@
     overflow: auto;
     border: 0.5px solid rgba(44, 62, 80,0.5);
 }
+
+.borrowersNameContainer{
+    width: 100% !important;
+    margin-top:50px;
+}
+
+.mt1{
+    margin-top: 10px;
+}
+
+.mt2{
+    margin-top: 20px !important;
+}
+
+.bgSuccess{
+    background-color: #27ae60 !important;
+}
+
+.floatRight{
+    float:right;
+}
+

@@ -56,6 +56,20 @@ export const mainListItems = (
 
     <ListItem button
       component={NavLink}
+      to="/requests"
+      exact
+      activeStyle={{
+        backgroundColor:'#ecf0f1'
+      }}
+      >
+        <ListItemIcon>
+        <StorageIcon />
+      </ListItemIcon>
+      <ListItemText primary="Borrow Requests" />
+    </ListItem>
+
+    <ListItem button
+      component={NavLink}
       to="/company"
       exact
       activeStyle={{

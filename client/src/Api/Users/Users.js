@@ -25,4 +25,24 @@ export const checkToken = async () => {
     }catch(error){
         return error.response
     }
-}       
+}  
+
+export const fetchUsers = async () => {    
+    const token = await sessionStorage.getItem("userToken")
+    try{
+        const res = await axios.get(`${url}/users`, {
+        headers: {
+            Authorization: 'Bearer ' + token //the token is a variable which holds the token
+        }
+        });
+        const {data} = res;
+        return data;
+    }catch(error){
+        return []
+        //return error.response
+    }
+}
+
+
+
+
