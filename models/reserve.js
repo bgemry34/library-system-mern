@@ -4,23 +4,24 @@ const reserveSchema = new mongoose.Schema({
   dateReserved: {
     type: Date,
   },
-  returnDate: {
-    type: Date,
-  },
-  dateCreated: {
-    type: Date,
-  },
+  returnDate: String,
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   },
-  books: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Book',
-    },
-  ],
+  reservedBook: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Book',
+  },
+  bookTitle: String,
+  approvedDate: String,
+  cancelledDate: String,
+  status: {
+    type: String,
+    default: 'pending'
+  }
 })
+// STATUS: pending || borrowed || cancelled
 
 reserveSchema.set('toJSON', {
   transform: (document, returnedObject) => {
