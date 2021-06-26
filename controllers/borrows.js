@@ -4,10 +4,7 @@ const User = require('../models/user')
 const Book = require('../models/book')
 
 const userIsAdmin = (next, user) => {
-  return (
-    user.userType === 'admin' ||
-    next(new Error('You are not allowed to approve a borrow request'))
-  )
+  return user.userType === 'admin' || next(new Error('For admin only'))
 }
 
 const validBorrowStatus = (next, currentStatus, expectedStatus) => {
@@ -33,11 +30,12 @@ borrowRouter.get('/', async (req, res) => {
 })
 
 // CREATE a new borrow request
-//req.body = bookId
+//req.body = bookId, borrower
 borrowRouter.post('/', async (req, res, next) => {
   const user = req.user
   const body = req.body
   const bookData = await Book.findById(body.bookId)
+  const borrower = body.borrower ? await User.findById(body.borrower) : user
 
   if (!body.bookId) {
     return next(new Error('You must provide a book id to borrow'))
@@ -45,11 +43,15 @@ borrowRouter.post('/', async (req, res, next) => {
     return next(new Error('Invalid book'))
   }
 
-  //check if user already borrowed the book
-  const userData = await User.findById(user._id).populate('borrowedBooks')
-  const userBorrowList = userData.borrowedBooks.map((book) => book.borrowedBook)
-  if (userBorrowList.indexOf(body.bookId) !== -1) {
-    return next(new Error('You already borrowed this book'))
+  //check if borrower already borrowed the book
+  const borrowerData = await User.findById(borrower._id).populate(
+    'borrowedBooks'
+  )
+  const borrowerBorrowList = borrowerData.borrowedBooks.map(
+    (book) => book.borrowedBook
+  )
+  if (borrowerBorrowList.indexOf(body.bookId) !== -1) {
+    return next(new Error(`${borrower.name} already borrowed this book`))
   }
 
   let borrow = {}
@@ -57,7 +59,7 @@ borrowRouter.post('/', async (req, res, next) => {
   if (bookData.status === 'available' && user.userType === 'admin') {
     borrow = new Borrow({
       dateBorrowed: new Date().toISOString(),
-      user: user._id,
+      user: borrower._id,
       borrowedBook: body.bookId,
       bookTitle: bookData.title,
       status: 'approved',
@@ -68,14 +70,14 @@ borrowRouter.post('/', async (req, res, next) => {
   } else {
     borrow = new Borrow({
       dateBorrowed: new Date().toISOString(),
-      user: user._id,
+      user: borrower._id,
       borrowedBook: body.bookId,
       bookTitle: bookData.title,
     })
   }
   const borrowedBook = await borrow.save()
-  user.borrowedBooks = user.borrowedBooks.concat(borrowedBook._id)
-  await user.save()
+  borrower.borrowedBooks = borrower.borrowedBooks.concat(borrowedBook._id)
+  await borrower.save()
 
   return borrowedBook
     ? res.status(201).json(borrowedBook)

@@ -26,5 +26,4 @@ reservationRouter.get('/', async (req, res) => {
   return res.json(reserveList)
 })
 
-
 module.exports = reservationRouter
