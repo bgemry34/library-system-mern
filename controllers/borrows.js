@@ -45,14 +45,35 @@ borrowRouter.post('/', async (req, res, next) => {
     return next(new Error('Invalid book'))
   }
 
-  const borrow = new Borrow({
-    dateBorrowed: new Date(),
-    user: user._id,
-    borrowedBook: body.bookId,
-    bookTitle: bookData.title,
-  })
-  const borrowedBook = await borrow.save()
+  //check if user already borrowed the book
+  const userData = await User.findById(user._id).populate('borrowedBooks')
+  const userBorrowList = userData.borrowedBooks.map((book) => book.borrowedBook)
+  if (userBorrowList.indexOf(body.bookId) !== -1) {
+    return next(new Error('You already borrowed this book'))
+  }
 
+  let borrow = {}
+
+  if (bookData.status === 'available' && user.userType === 'admin') {
+    borrow = new Borrow({
+      dateBorrowed: new Date().toISOString(),
+      user: user._id,
+      borrowedBook: body.bookId,
+      bookTitle: bookData.title,
+      status: 'approved',
+      approvedDate: new Date().toISOString(),
+      returnDate: addDays(new Date(), 3).toISOString(),
+    })
+    await Book.findByIdAndUpdate(body.bookId, { status: 'borrowed' })
+  } else {
+    borrow = new Borrow({
+      dateBorrowed: new Date().toISOString(),
+      user: user._id,
+      borrowedBook: body.bookId,
+      bookTitle: bookData.title,
+    })
+  }
+  const borrowedBook = await borrow.save()
   user.borrowedBooks = user.borrowedBooks.concat(borrowedBook._id)
   await user.save()
 
