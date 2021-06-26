@@ -15,14 +15,13 @@ const reserveSchema = new mongoose.Schema({
     ref: 'Book',
   },
   bookTitle: String,
-  approvedDate: String,
   cancelledDate: String,
   status: {
     type: String,
-    default: 'pending',
+    default: 'reserved',
   },
 })
-// STATUS: pending || borrowed || cancelled
+// STATUS: reserved || cancelled
 
 reserveSchema.set('toJSON', {
   transform: (document, returnedObject) => {
