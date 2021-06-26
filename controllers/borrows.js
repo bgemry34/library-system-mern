@@ -46,7 +46,7 @@ borrowRouter.post('/', async (req, res, next) => {
   const user = req.user
   const body = req.body
   const bookData = await Book.findById(body.bookId)
-  const borrower = body.borrower ? await User.findById(body.borrowerId) : user
+  const borrower = body.borrowerId ? await User.findById(body.borrowerId) : user
 
   if (!body.bookId) {
     return next(new Error('You must provide a book id to borrow'))
