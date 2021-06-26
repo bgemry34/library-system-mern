@@ -121,6 +121,9 @@ borrowRouter.put('/approve/:id', async (req, res, next) => {
     }
     const updatedBorrow = await Borrow.findByIdAndUpdate(id, borrow, {
       new: true,
+    }).populate('user', {
+      name: 1,
+      username: 1,
     })
     return updatedBorrow ? res.json(updatedBorrow) : res.status(400).end()
   }
@@ -156,6 +159,9 @@ borrowRouter.put('/cancel/:id', async (req, res, next) => {
     }
     const updatedBorrow = await Borrow.findByIdAndUpdate(id, borrow, {
       new: true,
+    }).populate('user', {
+      name: 1,
+      username: 1,
     })
     return updatedBorrow ? res.json(updatedBorrow) : res.status(400).end()
   }
@@ -195,6 +201,9 @@ borrowRouter.put('/return/:id', async (req, res, next) => {
     }
     const updatedBorrow = await Borrow.findByIdAndUpdate(id, borrow, {
       new: true,
+    }).populate('user', {
+      name: 1,
+      username: 1,
     })
     return updatedBorrow ? res.json(updatedBorrow) : res.status(400).end()
   }
