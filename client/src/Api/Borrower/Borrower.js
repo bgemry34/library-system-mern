@@ -51,6 +51,22 @@ export const fetchCancell = async () => {
     }
 }
 
+export const borrowBook = async (borrower, bookId) =>{
+    const token = await sessionStorage.getItem("userToken")
+    try{
+        const data = await axios.post(`${url}/borrow`, {
+                bookId, borrowerId:borrower
+            }, {
+                headers: {
+                    Authorization: 'Bearer ' + token //the token is a variable which holds the token
+                }
+              })
+        return data;
+    }catch(error){
+        return error.response;
+    }
+}
+
 export const approvedBorrowedRequest = async (borrow) => {
     const token = await sessionStorage.getItem("userToken");
     const {id} = borrow;

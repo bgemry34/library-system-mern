@@ -50,18 +50,21 @@ export default function Login() {
     e.preventDefault();
     setAlert('');
 
-    const res = await loginUser(values);
-    if(res.status===200){
-      const {token} = res.data;
-      sessionStorage.setItem("userToken", token);
-      history.push('/dashboard')
-    }else{
-      setAlert((
-        <Alert style={{marginBottom:'20px'}} severity="error">Incorrect username or password. Pls Try Again</Alert>
-      ));
-      setTimeout(()=>{
-        setAlert('');
-      }, 10000)
+    try{
+      const res = await loginUser(values);
+      if(res.status===200){
+        const {token} = res.data;
+        sessionStorage.setItem("userToken", token);
+        history.push('/dashboard')
+      }else{
+        setAlert((
+          <Alert style={{marginBottom:'20px'}} severity="error">Incorrect username or password. Pls Try Again</Alert>
+        ));
+        setTimeout(()=>{
+          setAlert('');
+        }, 10000)
+      }
+    }catch(e){
     }
   }
 

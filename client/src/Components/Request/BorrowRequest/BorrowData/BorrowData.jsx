@@ -3,7 +3,7 @@ import React from 'react'
 import { formatDate } from '../../../../Tools/Tools';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import {approvedBorrowedRequest, cancelBorrowedRequest} from './../../../../Api/Borrower/Borrower'
 
 
 function Pending({borrows, status}) {
@@ -28,30 +28,30 @@ function Pending({borrows, status}) {
                      </Tooltip>
                     </>
                  )
-            case "approved":
-                return (
-                    <>
-                        <Tooltip title="Set As Cancell">
-                        <CloseIcon style={{color:'#e74c3c' , marginLeft:'5px', cursor:'pointer'}} 
-                        onClick={()=>{
-                            console.log(borrow.id)
-                        }}
-                        />
-                        </Tooltip>
-                    </>
-                    )
-            case "cancelled":
-                return (
-                    <>
-                        <Tooltip title="Set as Approved">
-                            <CheckIcon style={{color:'#27ae60' , marginLeft:'5px', cursor:'pointer'}} 
-                            onClick={()=>{
-                                console.log(borrow.id)
-                            }}
-                            />
-                        </Tooltip>
-                    </>
-                    )
+            // case "approved":
+            //     return (
+            //         <>
+            //             <Tooltip title="Set As Cancell">
+            //             <CloseIcon style={{color:'#e74c3c' , marginLeft:'5px', cursor:'pointer'}} 
+            //             onClick={()=>{
+            //                 console.log(borrow.id)
+            //             }}
+            //             />
+            //             </Tooltip>
+            //         </>
+            //         )
+            // case "cancelled":
+            //     return (
+            //         <>
+            //             <Tooltip title="Set as Approved">
+            //                 <CheckIcon style={{color:'#27ae60' , marginLeft:'5px', cursor:'pointer'}} 
+            //                 onClick={()=>{
+            //                     console.log(borrow.id)
+            //                 }}
+            //                 />
+            //             </Tooltip>
+            //         </>
+            //         )
              default:
         }
     }
@@ -64,7 +64,7 @@ function Pending({borrows, status}) {
                             <TableCell><strong>Borrower's Name</strong></TableCell>
                             <TableCell><strong>Book Title</strong></TableCell>
                             <TableCell><strong>Borrowed Date</strong></TableCell>
-                            <TableCell align="center"><strong>Action</strong></TableCell>
+                            {status !=='pending' ? '' : (<TableCell align="center"><strong>Action</strong></TableCell>)}
                         </TableRow>
                         </TableHead>
                         <TableBody>

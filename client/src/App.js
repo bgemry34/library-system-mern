@@ -8,6 +8,7 @@ import Dashboard from './Components/Dashboard/Dashboard';
 import Books from './Components/Books/Books';
 import Borrow from './Components/Borrow/Borrow';
 import Request from './Components/Request/Request';
+import UserManagement from './Components/UserManagement/UserManagement';
 
 
 // import Dashboard from './Components/Dashboard/Das1board'
@@ -39,11 +40,11 @@ export default function App() {
                       <Request />
                     </Nav>
                   </Route>
-                  {/* <Route path="/users" exact >
+                  <Route path="/users" exact >
                     <Nav>
-                      <Users />
+                      <UserManagement />
                     </Nav>
-                  </Route> */}
+                  </Route>
                 </Switch>
         </Switch>
     </Router> 
