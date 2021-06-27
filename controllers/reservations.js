@@ -4,14 +4,6 @@ const User = require('../models/user')
 const Book = require('../models/book')
 const moment = require('moment')
 const Borrow = require('../models/borrow')
-const borrowRouter = require('./borrows')
-
-const userIsAdmin = (next, user) => {
-  return (
-    user.userType === 'admin' ||
-    next(new Error('You are not allowed to approve a reservation request'))
-  )
-}
 
 const validReserveStatus = (
   next,
@@ -190,7 +182,6 @@ reservationRouter.put('/cancel/:id', async (req, res, next) => {
 
   if (validReserveStatus(next, reserveData.status, 'pending', 'reserved')) {
     const userData = await User.findById(reserveData.user)
-    const bookId = reserveData.reservedBook
     const userReserveList = userData.reservedBooks
 
     const updatedUserReserveList = userReserveList.filter((reserveItem) => {
