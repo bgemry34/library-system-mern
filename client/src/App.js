@@ -8,6 +8,7 @@ import Dashboard from './Components/Dashboard/Dashboard';
 import Books from './Components/Books/Books';
 import Borrow from './Components/Borrow/Borrow';
 import Request from './Components/Request/Request';
+import ReturnBook from './Components/ReturnBook/ReturnBook';
 import UserManagement from './Components/UserManagement/UserManagement';
 
 
@@ -38,6 +39,11 @@ export default function App() {
                   <Route path="/requests" exact >
                     <Nav>
                       <Request />
+                    </Nav>
+                  </Route>
+                  <Route path="/return" exact >
+                    <Nav>
+                      <ReturnBook />
                     </Nav>
                   </Route>
                   <Route path="/users" exact >
