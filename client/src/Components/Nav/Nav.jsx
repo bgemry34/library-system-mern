@@ -1,20 +1,23 @@
-import React, {useEffect} from 'react';
-import clsx from 'clsx';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Drawer from '@material-ui/core/Drawer';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import { mainListItems, secondaryListItems } from './ListItems';
-import {useStyles} from './Nav.style'
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import { useHistory } from 'react-router';
-import {checkToken} from './../../Api/Users/Users'
-
+import React, { useEffect, useState } from 'react'
+import clsx from 'clsx'
+import CssBaseline from '@material-ui/core/CssBaseline'
+import Drawer from '@material-ui/core/Drawer'
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import List from '@material-ui/core/List'
+import Typography from '@material-ui/core/Typography'
+import Divider from '@material-ui/core/Divider'
+import IconButton from '@material-ui/core/IconButton'
+import MenuIcon from '@material-ui/icons/Menu'
+import {
+  adminListItems,
+  studentListItems,
+  secondaryListItems,
+} from './ListItems'
+import { useStyles } from './Nav.style'
+import ExitToAppIcon from '@material-ui/icons/ExitToApp'
+import { useHistory } from 'react-router'
+import { checkToken } from './../../Api/Users/Users'
 
 // function Copyright() {
 //   return (
@@ -30,39 +33,43 @@ import {checkToken} from './../../Api/Users/Users'
 // }
 
 export default function Nav(props) {
-  const classes = useStyles();
-  const [open, setOpen] = React.useState(true);
+  const classes = useStyles()
+  const [open, setOpen] = useState(true)
   const history = useHistory()
+  const [userType, setUserType] = useState(null)
 
-
-  useEffect(()=>{
+  useEffect(() => {
     const fetchApi = async () => {
-      const res = await checkToken();
-      if(res===undefined){
-        history.push('/');
-      }
-      else if(res.status === 401)
-      history.push('/');
+      const res = await checkToken()
+      console.log('check token nav:', res.data.userType)
+
+      if (res === undefined) {
+        history.push('/')
+      } else if (res.status === 401) history.push('/')
+      setUserType(res.data.userType)
     }
 
-    fetchApi();
+    fetchApi()
   }, [history])
 
   const handleDrawer = () => {
-    setOpen(!open);
-  };
+    setOpen(!open)
+  }
 
   //const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   const logout = () => {
-    sessionStorage.clear();
-    history.push('/');
+    sessionStorage.clear()
+    history.push('/')
   }
 
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
+      <AppBar
+        position="absolute"
+        className={clsx(classes.appBar, open && classes.appBarShift)}
+      >
         <Toolbar className={classes.toolbar}>
           <IconButton
             edge="start"
@@ -73,8 +80,14 @@ export default function Nav(props) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-              {/* Title here */}
+          <Typography
+            component="h1"
+            variant="h6"
+            color="inherit"
+            noWrap
+            className={classes.title}
+          >
+            {/* Title here */}
           </Typography>
           <IconButton onClick={logout} color="inherit">
             <ExitToAppIcon />
@@ -89,17 +102,16 @@ export default function Nav(props) {
         open={open}
       >
         <div className={classes.sidebarLogo}>
-          <p className={classes.title1}>Library <span>SYSTEM</span></p>
-          
+          <p className={classes.title1}>
+            Library <span>SYSTEM</span>
+          </p>
         </div>
         <Divider />
-        <List>{mainListItems}</List>
+        <List>{userType === 'admin' ? adminListItems : studentListItems}</List>
         <Divider />
         <List>{secondaryListItems}</List>
       </Drawer>
-      <main className={classes.content}>
-          {props.children}
-      </main>
+      <main className={classes.content}>{props.children}</main>
     </div>
-  );
+  )
 }
