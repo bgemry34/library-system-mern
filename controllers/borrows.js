@@ -36,8 +36,8 @@ borrowRouter.get('/:id', async (req, res) => {
     name: 1,
     username: 1,
   })
-  borrowList = borrowList.filter((list) => list.status === id)
-  return res.json(borrowList)
+  filteredBorrowList = borrowList.filter((list) => list.status === id)
+  return res.json(filteredBorrowList)
 })
 
 // CREATE a new borrow request
