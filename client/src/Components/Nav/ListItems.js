@@ -1,118 +1,189 @@
-import React from 'react';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import PeopleIcon from '@material-ui/icons/People';
-import StorageIcon from '@material-ui/icons/Storage';
-import BusinessIcon from '@material-ui/icons/Business';
-import {NavLink} from 'react-router-dom'
+import React from 'react'
+import { NavLink } from 'react-router-dom'
+import { ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
+import {
+  Assignment as AssignmentIcon,
+  AssignmentReturn as AssignmentReturnIcon,
+  AssignmentReturned as AssignmentReturnedIcon,
+  Dashboard as DashboardIcon,
+  Event as EventIcon,
+  LibraryAdd as LibraryAddIcon,
+  People as PeopleIcon,
+  Search as SearchIcon,
+} from '@material-ui/icons'
 
-export const mainListItems = (
+export const adminListItems = (
   <div>
-    
-
-    <ListItem button
+    <ListItem
+      button
       component={NavLink}
       to="/dashboard"
       exact
       activeStyle={{
-        backgroundColor:'#ecf0f1'
+        backgroundColor: '#ecf0f1',
       }}
-      >
-        <ListItemIcon>
+    >
+      <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
       <ListItemText primary="Dashboard" />
     </ListItem>
 
-    <ListItem button
+    <ListItem
+      button
       component={NavLink}
       to="/books"
       exact
       activeStyle={{
-        backgroundColor:'#ecf0f1'
+        backgroundColor: '#ecf0f1',
       }}
-      >
-        <ListItemIcon>
-        <StorageIcon />
+    >
+      <ListItemIcon>
+        <LibraryAddIcon />
       </ListItemIcon>
       <ListItemText primary="Book Management" />
     </ListItem>
 
-    <ListItem button
-      component={NavLink}
-      to="/borrow"
-      exact
-      activeStyle={{
-        backgroundColor:'#ecf0f1'
-      }}
-      >
-        <ListItemIcon>
-        <StorageIcon />
-      </ListItemIcon>
-      <ListItemText primary="Borrow Book" />
-    </ListItem>
-
-    <ListItem button
+    <ListItem
+      button
       component={NavLink}
       to="/requests"
       exact
       activeStyle={{
-        backgroundColor:'#ecf0f1'
+        backgroundColor: '#ecf0f1',
       }}
-      >
-        <ListItemIcon>
-        <StorageIcon />
+    >
+      <ListItemIcon>
+        <AssignmentIcon />
       </ListItemIcon>
       <ListItemText primary="Borrow Requests" />
     </ListItem>
 
-    <ListItem button
+    <ListItem
+      button
+      component={NavLink}
+      to="/borrow"
+      exact
+      activeStyle={{
+        backgroundColor: '#ecf0f1',
+      }}
+    >
+      <ListItemIcon>
+        <AssignmentReturnIcon />
+      </ListItemIcon>
+      <ListItemText primary="Borrow Book" />
+    </ListItem>
+
+    <ListItem
+      button
       component={NavLink}
       to="/company"
       exact
       activeStyle={{
-        backgroundColor:'#ecf0f1'
+        backgroundColor: '#ecf0f1',
       }}
-      >
-        <ListItemIcon>
-        <BusinessIcon />
+    >
+      <ListItemIcon>
+        <AssignmentReturnedIcon />
       </ListItemIcon>
       <ListItemText primary="Return Book" />
     </ListItem>
 
-    <ListItem button
+    <ListItem
+      button
       component={NavLink}
       to="/department"
       exact
       activeStyle={{
-        backgroundColor:'#ecf0f1'
+        backgroundColor: '#ecf0f1',
       }}
-      >
-        <ListItemIcon>
-        <PeopleIcon />
+    >
+      <ListItemIcon>
+        <SearchIcon />
       </ListItemIcon>
       <ListItemText primary="Search Book" />
     </ListItem>
 
-    <ListItem button
+    <ListItem
+      button
       component={NavLink}
       to="/users"
       exact
       activeStyle={{
-        backgroundColor:'#ecf0f1'
+        backgroundColor: '#ecf0f1',
       }}
-      >
-        <ListItemIcon>
+    >
+      <ListItemIcon>
         <PeopleIcon />
       </ListItemIcon>
       <ListItemText primary="User Management" />
     </ListItem>
-
-
   </div>
-);
+)
+
+export const studentListItems = (
+  <div>
+    <ListItem
+      button
+      component={NavLink}
+      to="/dashboard"
+      exact
+      activeStyle={{
+        backgroundColor: '#ecf0f1',
+      }}
+    >
+      <ListItemIcon>
+        <DashboardIcon />
+      </ListItemIcon>
+      <ListItemText primary="Dashboard" />
+    </ListItem>
+
+    <ListItem
+      button
+      component={NavLink}
+      to="/requests"
+      exact
+      activeStyle={{
+        backgroundColor: '#ecf0f1',
+      }}
+    >
+      <ListItemIcon>
+        <AssignmentIcon />
+      </ListItemIcon>
+      <ListItemText primary="Borrow Requests" />
+    </ListItem>
+
+    <ListItem
+      button
+      component={NavLink}
+      to="/reserve"
+      exact
+      activeStyle={{
+        backgroundColor: '#ecf0f1',
+      }}
+    >
+      <ListItemIcon>
+        <EventIcon />
+      </ListItemIcon>
+      <ListItemText primary="Reserve Book" />
+    </ListItem>
+
+    <ListItem
+      button
+      component={NavLink}
+      to="/search"
+      exact
+      activeStyle={{
+        backgroundColor: '#ecf0f1',
+      }}
+    >
+      <ListItemIcon>
+        <SearchIcon />
+      </ListItemIcon>
+      <ListItemText primary="Search Book" />
+    </ListItem>
+  </div>
+)
 
 export const secondaryListItems = (
   <div>
@@ -143,4 +214,4 @@ export const secondaryListItems = (
       <ListItemText primary="Receivee History" />
     </ListItem> */}
   </div>
-);
+)
