@@ -77,7 +77,7 @@ export const adminListItems = (
     <ListItem
       button
       component={NavLink}
-      to="/return"
+      to="/company"
       exact
       activeStyle={{
         backgroundColor: '#ecf0f1',

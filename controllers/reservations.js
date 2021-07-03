@@ -37,6 +37,17 @@ reservationRouter.get('/', async (req, res) => {
   return res.json(reserveList)
 })
 
+// GET all 'pending/approved/cancelled' requests
+reservationRouter.get('/:id', async (req, res) => {
+  const id = req.params.id
+  let reserveList = await Reserve.find({}).populate('user', {
+    name: 1,
+    username: 1,
+  })
+  filteredReserveList = reserveList.filter((list) => list.status === id)
+  return res.json(filteredReserveList)
+})
+
 //GET a specific reservation data
 reservationRouter.get('/:id', async (req, res) => {
   const reserveList = await Reserve.findById(req.params.id).populate('user', {
