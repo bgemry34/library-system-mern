@@ -18,10 +18,10 @@ const reserveSchema = new mongoose.Schema({
   cancelledDate: String,
   status: {
     type: String,
-    default: 'reserved',
+    default: 'pending',
   },
 })
-// STATUS: reserved || cancelled
+// STATUS: pending || reserved || cancelled
 
 reserveSchema.set('toJSON', {
   transform: (document, returnedObject) => {

@@ -25,6 +25,8 @@ const bookSchema = new mongoose.Schema({
   },
 })
 
+// status: available, borrowed
+
 bookSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()
