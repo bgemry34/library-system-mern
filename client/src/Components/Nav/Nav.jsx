@@ -41,14 +41,10 @@ export default function Nav(props) {
   useEffect(() => {
     const fetchApi = async () => {
       const res = await checkToken()
-      console.log('check token nav:', res.data.userType)
-
-      if (res === undefined) {
-        history.push('/')
-      } else if (res.status === 401) history.push('/')
+      if (res === undefined) history.push('/')
+      else if (res.status === 401) history.push('/')
       setUserType(res.data.userType)
     }
-
     fetchApi()
   }, [history])
 
