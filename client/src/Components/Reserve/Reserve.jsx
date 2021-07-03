@@ -19,7 +19,6 @@ import {
   Typography,
 } from '@material-ui/core'
 import { fetchUsers } from './../../Api/Users/Users'
-import Autocomplete from '@material-ui/lab/Autocomplete'
 import ClearIcon from '@material-ui/icons/Clear'
 import { formatDate } from './../../Tools/Tools'
 import SendIcon from '@material-ui/icons/Send'
@@ -43,7 +42,7 @@ function Reserve() {
   const [selectedUser, setSelectedUser] = useState('')
   const [loading, setLoading] = useState(false)
   const [loadingProgress, setLoadingProgress] = useState(0)
-  const [reservationDate, setReservationDate] = useState(null)
+  const [reservationDate, setReservationDate] = useState(formatDate(new Date()))
 
   useEffect(() => {
     let isCancelled = false
@@ -238,15 +237,15 @@ function Reserve() {
               id="date"
               label="Date of Reservation"
               type="date"
+              name="reserve-date"
               defaultValue={formatDate(new Date())}
               className={styles.mt2}
               InputLabelProps={{
                 shrink: true,
               }}
               fullWidth
-              onChange={(event, newValue) => {
-                // setSelectedUser(newValue)
-                console.log('date:',newValue)
+              onChange={(event) => {
+                setReservationDate(event.target.value)
               }}
             />
             <Typography className={styles.mt2} variant={'h6'}>

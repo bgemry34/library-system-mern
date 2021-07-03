@@ -120,9 +120,8 @@ export default function ReservationRequest() {
           variant="fullWidth"
           aria-label="full width tabs example"
         >
-          <Tab label="Pending" {...a11yProps(0)} />
-          <Tab label="Approved" {...a11yProps(1)} />
-          <Tab label="Cancelled" {...a11yProps(2)} />
+          <Tab label="Approved" {...a11yProps(0)} />
+          <Tab label="Returned" {...a11yProps(1)} />
         </Tabs>
       </AppBar>
       <SwipeableViews
@@ -151,6 +150,7 @@ export default function ReservationRequest() {
             userType={user && user.userType}
           />
         </TabPanel>
+
       </SwipeableViews>
     </div>
   )
