@@ -17,34 +17,33 @@ import styles from './Dashboard.module.css'
 import PeopleIcon from '@material-ui/icons/People'
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks'
 import GetAppIcon from '@material-ui/icons/GetApp'
+import { fetchDashBoardData } from '../../Api/Dashboard/Dashboard'
+import { formatDate } from '../../Tools/Tools'
 
 const Dashboard = () => {
-  useEffect(() => {
-    // const getCounts = async () =>{
-    //     const ItemCount = await getInventoryCount();
-    //     const DepCount = await getDepartmentCount();
-    //     const UsersCount = await getUsersCount();
-    //     const getItems = await fetchItems();
-    //     const resUsers = await getUsers();
-    //     setCounts({
-    //         items:ItemCount.data,
-    //         departments:DepCount.data,
-    //         users:UsersCount.count
-    //     });
-    //     setItems(getItems.data.reverse()[0])
-    //     setUsers(resUsers.data.users.reverse()[0]);
-    // }
-    // getCounts();
-  }, [])
-
   const [counts, setCounts] = useState({
-    items: '---',
-    departments: '---',
-    users: '---',
+    totalBooks: '---',
+    totalBorrowedBooks: '---',
+    totalStudents: '---',
   })
 
-  const [items, setItems] = useState({})
-  const [users, setUsers] = useState({})
+  const [recentAddedBooks, setRecentAddedBooks] = useState([])
+  const [recentAddedStudents, setRecentAddedStudents] = useState([])
+  const [recentBorrows, setRecentBorrows] = useState([])
+  const [recentReservations, setRecentReservations] = useState([])
+
+  useEffect(() => {
+    const fetchApi = async () => {
+      const data = await fetchDashBoardData()
+      setCounts(data.counts)
+      setRecentAddedBooks(data.recentBooks)
+      setRecentAddedStudents(data.recentStudents)
+      setRecentBorrows(data.recentBorrows)
+      setRecentReservations(data.recentReservations)
+      console.log(data.recentBorrows)
+    }
+    fetchApi()
+  }, [])
 
   return (
     <div>
@@ -88,7 +87,7 @@ const Dashboard = () => {
                     </Typography>
                     <Divider />
                     <Typography variant={'h5'} className={styles.ContentValue}>
-                      {counts.items}
+                      {counts.totalBooks}
                     </Typography>
                   </div>
                 </Paper>
@@ -111,11 +110,11 @@ const Dashboard = () => {
                   </div>
                   <div className={styles.Content}>
                     <Typography variant={'h5'} className={styles.ContentTitle}>
-                      Borrowed Book
+                      Borrowed Books
                     </Typography>
                     <Divider />
                     <Typography variant={'h5'} className={styles.ContentValue}>
-                      {counts.departments}
+                      {counts.totalBorrowedBooks}
                     </Typography>
                   </div>
                 </Paper>
@@ -142,7 +141,7 @@ const Dashboard = () => {
                     </Typography>
                     <Divider />
                     <Typography variant={'h5'} className={styles.ContentValue}>
-                      {counts.users}
+                      {counts.totalStudents}
                     </Typography>
                   </div>
                 </Paper>
@@ -151,29 +150,44 @@ const Dashboard = () => {
           </Grid>
         </Grid>
         {/* 2 tables */}
-        <Grid style={{ marginTop: '35px' }} container spacing={3}>
+        <Grid
+          style={{ marginTop: '35px' }}
+          justify="center"
+          alignItems="stretch"
+          container
+          spacing={3}
+        >
           <Grid item md={6}>
             <Typography
               style={{ opacity: 0.5, marginBottom: '10px' }}
               variant="h5"
             >
-              Recent Added Books
+              Recent Borrow Requests
             </Typography>
             <TableContainer component={Paper}>
               <Table aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Name</TableCell>
-                    <TableCell align="right">Model</TableCell>
-                    <TableCell align="right">Qty.</TableCell>
+                    <TableCell>Date Created</TableCell>
+                    <TableCell>Borrower</TableCell>
+                    <TableCell>Title</TableCell>
+                    <TableCell>Status</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  <TableRow>
-                    <TableCell>{items.name}</TableCell>
-                    <TableCell align="right">{items.model}</TableCell>
-                    <TableCell align="right">{items.qty}</TableCell>
-                  </TableRow>
+                  {recentBorrows &&
+                    recentBorrows.map((borrow) => {
+                      return (
+                        <TableRow key={borrow.id}>
+                          <TableCell>
+                            {formatDate(borrow.dateCreated)}
+                          </TableCell>
+                          <TableCell>{borrow.user.name}</TableCell>
+                          <TableCell>{borrow.bookTitle}</TableCell>
+                          <TableCell>{borrow.status}</TableCell>
+                        </TableRow>
+                      )
+                    })}
                 </TableBody>
               </Table>
             </TableContainer>
@@ -183,21 +197,111 @@ const Dashboard = () => {
               style={{ opacity: 0.5, marginBottom: '10px' }}
               variant="h5"
             >
-              Recent Added Student
+              Recent Reservation Requests
             </Typography>
             <TableContainer component={Paper}>
               <Table aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Name</TableCell>
-                    <TableCell>Created Date</TableCell>
+                    <TableCell>Date Created</TableCell>
+                    <TableCell>Student</TableCell>
+                    <TableCell>Title</TableCell>
+                    <TableCell>Date Needed</TableCell>
+                    <TableCell>Status</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
+                  {recentReservations &&
+                    recentReservations.map((reserve) => {
+                      return (
+                        <TableRow key={reserve.id}>
+                          <TableCell>
+                            {formatDate(reserve.dateCreated)}
+                          </TableCell>
+                          <TableCell>{reserve.user.name}</TableCell>
+                          <TableCell>{reserve.bookTitle}</TableCell>
+                          <TableCell>
+                            {formatDate(reserve.reservationDate)}
+                          </TableCell>
+                          <TableCell>{reserve.status}</TableCell>
+                        </TableRow>
+                      )
+                    })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Grid>
+        </Grid>
+        {/* 2 tables */}
+        <Grid
+          style={{ marginTop: '35px' }}
+          justify="center"
+          alignItems="stretch"
+          container
+          spacing={3}
+        >
+          <Grid item md={6}>
+            <Typography
+              style={{ opacity: 0.5, marginBottom: '10px' }}
+              variant="h5"
+            >
+              Recently Added Books
+            </Typography>
+            <TableContainer component={Paper}>
+              <Table aria-label="simple table">
+                <TableHead>
                   <TableRow>
-                    <TableCell>{users.email}</TableCell>
-                    <TableCell>{users.create_date}</TableCell>
+                    <TableCell>Date Added</TableCell>
+                    <TableCell>Title</TableCell>
+                    <TableCell>Author</TableCell>
+                    <TableCell>Genre</TableCell>
                   </TableRow>
+                </TableHead>
+                <TableBody>
+                  {recentAddedBooks &&
+                    recentAddedBooks.map((book) => {
+                      return (
+                        <TableRow key={book.id}>
+                          <TableCell>{formatDate(book.dateCreated)}</TableCell>
+                          <TableCell>{book.title}</TableCell>
+                          <TableCell>{book.author}</TableCell>
+                          <TableCell>{book.genre}</TableCell>
+                        </TableRow>
+                      )
+                    })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Grid>
+          <Grid item md={6}>
+            <Typography
+              style={{ opacity: 0.5, marginBottom: '10px' }}
+              variant="h5"
+            >
+              Recently Added Students
+            </Typography>
+            <TableContainer component={Paper}>
+              <Table aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Date Added</TableCell>
+                    <TableCell>Name</TableCell>
+                    <TableCell>Username</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {recentAddedStudents &&
+                    recentAddedStudents.map((student) => {
+                      return (
+                        <TableRow key={student.id}>
+                          <TableCell>
+                            {formatDate(student.dateCreated)}
+                          </TableCell>
+                          <TableCell>{student.name}</TableCell>
+                          <TableCell>{student.username}</TableCell>
+                        </TableRow>
+                      )
+                    })}
                 </TableBody>
               </Table>
             </TableContainer>
