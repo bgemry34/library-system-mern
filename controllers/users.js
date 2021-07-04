@@ -5,13 +5,21 @@ const userExtractor = require('../utils/middleware').userExtractor
 
 // GET all users
 usersRouter.get('/', userExtractor, async (req, res) => {
-  const users = await User.find({}).populate('borrowedBooks', {
-    status: 1,
-    dateBorrowed: 1,
-    dateApproved: 1,
-    returnDate: 1,
-    bookTitle: 1,
-  })
+  const users = await User.find({})
+    .populate('borrowedBooks', {
+      status: 1,
+      dateBorrowed: 1,
+      dateApproved: 1,
+      returnDate: 1,
+      bookTitle: 1,
+    })
+    .populate('reservedBooks', {
+      status: 1,
+      reservationDate: 1,
+      dateCreated: 1,
+      dateApproved: 1,
+      bookTitle: 1,
+    })
   return res.json(users)
 })
 

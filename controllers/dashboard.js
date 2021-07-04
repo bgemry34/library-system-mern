@@ -47,9 +47,41 @@ dashboardRouter.get('/', async (req, res) => {
       recentBorrows: recentBorrows,
       recentReservations: recentReservations,
     }
+  } else if (userType === 'student') {
+    const userData = await User.findById(user._id)
+      .populate('borrowedBooks', {
+        status: 1,
+        dateBorrowed: 1,
+        dateCreated: 1,
+        dateApproved: 1,
+        returnDate: 1,
+        bookTitle: 1,
+      })
+      .populate('reservedBooks', {
+        status: 1,
+        reservationDate: 1,
+        dateCreated: 1,
+        dateApproved: 1,
+        bookTitle: 1,
+      })
+
+    const totalBorrow = userData.borrowedBooks.length
+    const totalBorrowedBooks = userData.borrowedBooks.filter(
+      (book) => book.status === 'approved'
+    ).length
+    const totalPendingReservations = userData.reservedBooks.filter(book => book.status === 'pending').length
+    const totalReservedBooks = userData.reservedBooks.filter(book => book.status === 'reserved').length
+    const cancelledReservation = userData.reservedBooks.filter(book => book.status === 'cancelled').length
+    const totalReserve = userData.reservedBooks.length
+    console.log('reserved:',totalReserve, cancelledReservation,totalPendingReservations, totalReservedBooks)
+    console.log('borrow:', totalBorrow, totalBorrowedBooks)
+
+    dashboardData = {
+      counts: { totalBorrowedBooks, totalReservedBooks, totalPendingReservations },
+    }
   }
 
-  return res.json(dashboardData)
+  return dashboardData ? res.json(dashboardData) : res.status(400).end()
 })
 
 module.exports = dashboardRouter
