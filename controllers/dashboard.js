@@ -13,27 +13,32 @@ dashboardRouter.get('/', async (req, res) => {
   let dashboardData = ''
 
   if (userType === 'admin') {
-    const books = await Book.find({})
+    //BOOKS
+    const books = await Book.find({}).sort({ dateCreated: -1 })
     const totalBooks = books.length
+    const recentAddedBooks = books.slice(0, 5)
+
+    //STUDENTS
+    const students = await User.find({ userType: 'student' }).sort({
+      dateCreated: -1,
+    })
+    const totalStudents = students.length
+    const recentAddedStudents = students.slice(0, 5)
+
+    //BORROW
     const totalBorrowedBooks = books.filter(
       (book) => book.status === 'borrowed'
     ).length
-    const students = await User.find({ userType: 'student' })
-    const totalStudents = students.length
-    const recentAddedBooks = await Book.find({})
-      .sort({ dateCreated: -1 })
-      .limit(5)
-    const recentAddedStudents = await User.find({ userType: 'student' })
-      .sort({ dateCreated: -1 })
-      .limit(5)
-    const recentReservations = await Reserve.find({})
+    const recentBorrows = await Borrow.find({})
       .sort({ dateCreated: -1 })
       .limit(5)
       .populate('user', {
         name: 1,
         username: 1,
       })
-    const recentBorrows = await Borrow.find({})
+
+    //RESERVE
+    const recentReservations = await Reserve.find({})
       .sort({ dateCreated: -1 })
       .limit(5)
       .populate('user', {
@@ -50,6 +55,7 @@ dashboardRouter.get('/', async (req, res) => {
     }
   } else if (userType === 'student') {
     const today = new Date()
+
     const userData = await User.findById(user._id)
       .populate('borrowedBooks', {
         status: 1,
