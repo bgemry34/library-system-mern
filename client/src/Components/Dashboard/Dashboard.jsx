@@ -15,6 +15,10 @@ const Dashboard = () => {
   const [recentAddedStudents, setRecentAddedStudents] = useState([])
   const [recentBorrows, setRecentBorrows] = useState([])
   const [recentReservations, setRecentReservations] = useState([])
+
+  const [forReturn, setForReturn] = useState([])
+  const [pendingReservations, setPendingReservations] = useState([])
+
   const history = useHistory()
   const [userType, setUserType] = useState(null)
 
@@ -33,6 +37,8 @@ const Dashboard = () => {
         setRecentReservations(data.recentReservations)
       } else {
         setCounts(data.counts)
+        setForReturn(data.forReturn)
+        setPendingReservations(data.pendingReservations)
       }
     }
     fetchApi()
@@ -48,7 +54,9 @@ const Dashboard = () => {
     })
   } else {
     return studentDashboard({
-      counts
+      counts,
+      forReturn,
+      pendingReservations,
     })
   }
 }

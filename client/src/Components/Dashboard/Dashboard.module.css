@@ -16,11 +16,19 @@
 }
 
 .Items .DepartmentsSideColor{
-    background-color:#AA12F1;
+    background-color:blue;
+}
+
+.Items .DateSideColor{
+    background-color: yellow
 }
 
 .Items .UsersSideColor{
-    background-color: rgba(255,0,0, 0.5)
+    background-color: orange
+}
+
+.Items .WarningSideColor {
+    background-color: red;
 }
 
 

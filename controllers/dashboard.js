@@ -3,6 +3,7 @@ const Book = require('../models/book')
 const User = require('../models/user')
 const Reserve = require('../models/reserve')
 const Borrow = require('../models/borrow')
+const moment = require('moment')
 
 //GET all data for admin
 dashboardRouter.get('/', async (req, res) => {
@@ -48,6 +49,7 @@ dashboardRouter.get('/', async (req, res) => {
       recentReservations: recentReservations,
     }
   } else if (userType === 'student') {
+    const today = new Date()
     const userData = await User.findById(user._id)
       .populate('borrowedBooks', {
         status: 1,
@@ -65,19 +67,42 @@ dashboardRouter.get('/', async (req, res) => {
         bookTitle: 1,
       })
 
-    const totalBorrow = userData.borrowedBooks.length
+    //COUNTS
     const totalBorrowedBooks = userData.borrowedBooks.filter(
       (book) => book.status === 'approved'
     ).length
-    const totalPendingReservations = userData.reservedBooks.filter(book => book.status === 'pending').length
-    const totalReservedBooks = userData.reservedBooks.filter(book => book.status === 'reserved').length
-    const cancelledReservation = userData.reservedBooks.filter(book => book.status === 'cancelled').length
-    const totalReserve = userData.reservedBooks.length
-    console.log('reserved:',totalReserve, cancelledReservation,totalPendingReservations, totalReservedBooks)
-    console.log('borrow:', totalBorrow, totalBorrowedBooks)
+    const totalPendingReservations = userData.reservedBooks.filter(
+      (book) => book.status === 'pending'
+    ).length
+    const totalReservedBooks = userData.reservedBooks.filter(
+      (book) => book.status === 'reserved'
+    ).length
+
+    //BORROW DATA
+    const borrowedBooks = userData.borrowedBooks
+      .filter((book) => book.status === 'approved')
+      .sort(function (left, right) {
+        return moment.utc(left.timeStamp).diff(moment.utc(right.timeStamp))
+      })
+
+    const forReturn = borrowedBooks.filter((book) =>
+      moment(today).isSameOrAfter(book.returnDate)
+    )
+    // RESERVATION DATA
+    const pendingReservations = userData.reservedBooks
+      .filter((book) => book.status === 'pending')
+      .sort(function (left, right) {
+        return moment.utc(left.timeStamp).diff(moment.utc(right.timeStamp))
+      })
 
     dashboardData = {
-      counts: { totalBorrowedBooks, totalReservedBooks, totalPendingReservations },
+      counts: {
+        totalBorrowedBooks,
+        totalReservedBooks,
+        totalPendingReservations,
+      },
+      forReturn,
+      pendingReservations,
     }
   }
 

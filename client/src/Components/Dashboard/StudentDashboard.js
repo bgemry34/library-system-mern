@@ -14,15 +14,18 @@ import {
 } from '@material-ui/core'
 
 import styles from './Dashboard.module.css'
-import PeopleIcon from '@material-ui/icons/People'
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks'
 import AccessTimeIcon from '@material-ui/icons/AccessTime'
-import GetAppIcon from '@material-ui/icons/GetApp'
 import Brightness5Icon from '@material-ui/icons/Brightness5'
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday'
 import { formatDate } from '../../Tools/Tools'
 
-export const studentDashboard = ({ counts }) => (
+export const studentDashboard = ({
+  counts,
+  forReturn,
+  pendingReservations,
+}) => (
   <div>
     <CssBaseline />
     <Container>
@@ -30,146 +33,158 @@ export const studentDashboard = ({ counts }) => (
         container
         spacing={1}
         direction="row"
-        justify="center"
-        xs={12}
-        
+        justify="flex-start"
         alignItems="stretch"
         className={styles.cardsContainer}
       >
-        <Grid item xs={12}>
-          <Grid
-            container
-            spacing={3}
-            justify="space-evenly"
-            alignItems="stretch"
-          >
-            <Grid item md={12}>
-              <Paper className={styles.Items}>
-                <div></div>
-                <div className={styles.Icons}>
-                  <Grid
-                    container
-                    direction="row"
-                    justify="center"
-                    alignItems="center"
-                    style={{ height: '100%' }}
-                  >
-                    <Grid item xs={12}>
-                      <Brightness5Icon className={styles.iconStyle} />
-                    </Grid>
+        <Grid container spacing={3} justify="flex-start" alignItems="stretch">
+          <Grid item md={4}>
+            <Paper className={styles.Items}>
+              <div className={styles.DateSideColor}></div>
+              <div className={styles.Icons}>
+                <Grid
+                  container
+                  direction="row"
+                  justify="center"
+                  alignItems="center"
+                  style={{ height: '100%' }}
+                >
+                  <Grid item xs={12}>
+                    <Brightness5Icon className={styles.iconStyle} />
                   </Grid>
-                </div>
-                <div className={styles.Content}>
-                  <Typography variant={'h5'} className={styles.ContentTitle}>
-                    Date Today
-                  </Typography>
-                  <Divider />
-                  <Typography variant={'h5'} className={styles.ContentValue}>
-                    {new Date().toDateString().split(' ').join(' ')}
-                  </Typography>
-                </div>
-              </Paper>
-            </Grid>
+                </Grid>
+              </div>
+              <div className={styles.Content}>
+                <Typography variant={'h5'} className={styles.ContentTitle}>
+                  Date Today
+                </Typography>
+                <Divider />
+                <Typography variant={'h5'} className={styles.ContentValue}>
+                  {new Date().toDateString()}
+                </Typography>
+              </div>
+            </Paper>
+          </Grid>
+          {/* next */}
+          <Grid item md={4}>
+            <Paper className={styles.Items}>
+              <div className={styles.WarningSideColor}></div>
+              <div className={styles.Icons}>
+                <Grid
+                  container
+                  direction="row"
+                  justify="center"
+                  alignItems="center"
+                  style={{ height: '100%' }}
+                >
+                  <Grid item xs={12}>
+                    <ErrorOutlineIcon className={styles.iconStyle} />
+                  </Grid>
+                </Grid>
+              </div>
+              <div className={styles.Content}>
+                <Typography variant={'h5'} className={styles.ContentTitle}>
+                  For Return
+                </Typography>
+                <Divider />
+                <Typography variant={'h5'} className={styles.ContentValue}>
+                  {forReturn.length}
+                </Typography>
+              </div>
+            </Paper>
+          </Grid>
+          <Grid item md={4}>
+            <Paper className={styles.Items}>
+              <div className={styles.UsersSideColor}></div>
+              <div className={styles.Icons}>
+                <Grid
+                  container
+                  direction="row"
+                  justify="center"
+                  alignItems="center"
+                  style={{ height: '100%' }}
+                >
+                  <Grid item xs={12}>
+                    <AccessTimeIcon className={styles.iconStyle} />
+                  </Grid>
+                </Grid>
+              </div>
+              <div className={styles.Content}>
+                <Typography variant={'h5'} className={styles.ContentTitle}>
+                  Waiting For Approval
+                </Typography>
+                <Divider />
+                <Typography variant={'h5'} className={styles.ContentValue}>
+                  {counts.totalPendingReservations}
+                </Typography>
+              </div>
+            </Paper>
           </Grid>
         </Grid>
       </Grid>
-      {/* cards */}
+      {/* next row */}
       <Grid
         container
         spacing={1}
         direction="row"
-        justify="center"
+        justify="flex-start"
         alignItems="stretch"
         className={styles.cardsContainer}
       >
-        <Grid item xs={12}>
-          <Grid
-            container
-            spacing={3}
-            justify="space-evenly"
-            alignItems="stretch"
-          >
-            <Grid item md={4}>
-              <Paper className={styles.Items}>
-                <div className={styles.ItemsSideColor}></div>
-                <div className={styles.Icons}>
-                  <Grid
-                    container
-                    direction="row"
-                    justify="center"
-                    alignItems="center"
-                    style={{ height: '100%' }}
-                  >
-                    <Grid item xs={12}>
-                      <LibraryBooksIcon className={styles.iconStyle} />
-                    </Grid>
+        <Grid container spacing={3} justify="flex-start" alignItems="stretch">
+          <Grid item md={4}>
+            <Paper className={styles.Items}>
+              <div className={styles.ItemsSideColor}></div>
+              <div className={styles.Icons}>
+                <Grid
+                  container
+                  direction="row"
+                  justify="center"
+                  alignItems="center"
+                  style={{ height: '100%' }}
+                >
+                  <Grid item xs={12}>
+                    <LibraryBooksIcon className={styles.iconStyle} />
                   </Grid>
-                </div>
-                <div className={styles.Content}>
-                  <Typography variant={'h5'} className={styles.ContentTitle}>
-                    Borrowed Books
-                  </Typography>
-                  <Divider />
-                  <Typography variant={'h5'} className={styles.ContentValue}>
-                    {counts.totalBorrowedBooks}
-                  </Typography>
-                </div>
-              </Paper>
-            </Grid>
-            <Grid item md={4}>
-              <Paper className={styles.Items}>
-                <div className={styles.DepartmentsSideColor}></div>
-                <div className={styles.Icons}>
-                  <Grid
-                    container
-                    direction="row"
-                    justify="center"
-                    alignItems="center"
-                    style={{ height: '100%' }}
-                  >
-                    <Grid item xs={12}>
-                      <CalendarTodayIcon className={styles.iconStyle} />
-                    </Grid>
+                </Grid>
+              </div>
+              <div className={styles.Content}>
+                <Typography variant={'h5'} className={styles.ContentTitle}>
+                  Borrowed Books
+                </Typography>
+                <Divider />
+                <Typography variant={'h5'} className={styles.ContentValue}>
+                  {counts.totalBorrowedBooks}
+                </Typography>
+              </div>
+            </Paper>
+          </Grid>
+          <Grid item md={4}>
+            <Paper className={styles.Items}>
+              <div className={styles.DepartmentsSideColor}></div>
+              <div className={styles.Icons}>
+                <Grid
+                  container
+                  direction="row"
+                  justify="center"
+                  alignItems="center"
+                  style={{ height: '100%' }}
+                >
+                  <Grid item xs={12}>
+                    <CalendarTodayIcon className={styles.iconStyle} />
                   </Grid>
-                </div>
-                <div className={styles.Content}>
-                  <Typography variant={'h5'} className={styles.ContentTitle}>
-                    Reserved Books
-                  </Typography>
-                  <Divider />
-                  <Typography variant={'h5'} className={styles.ContentValue}>
-                    {counts.totalReservedBooks}
-                  </Typography>
-                </div>
-              </Paper>
-            </Grid>
-            <Grid item md={4}>
-              <Paper className={styles.Items}>
-                <div className={styles.UsersSideColor}></div>
-                <div className={styles.Icons}>
-                  <Grid
-                    container
-                    direction="row"
-                    justify="center"
-                    alignItems="center"
-                    style={{ height: '100%' }}
-                  >
-                    <Grid item xs={12}>
-                      <AccessTimeIcon className={styles.iconStyle} />
-                    </Grid>
-                  </Grid>
-                </div>
-                <div className={styles.Content}>
-                  <Typography variant={'h5'} className={styles.ContentTitle}>
-                    Reservations Waiting For Approval
-                  </Typography>
-                  <Divider />
-                  <Typography variant={'h5'} className={styles.ContentValue}>
-                    {counts.totalPendingReservations}
-                  </Typography>
-                </div>
-              </Paper>
-            </Grid>
+                </Grid>
+              </div>
+              <div className={styles.Content}>
+                <Typography variant={'h5'} className={styles.ContentTitle}>
+                  Reserved Books
+                </Typography>
+                <Divider />
+                <Typography variant={'h5'} className={styles.ContentValue}>
+                  {counts.totalReservedBooks}
+                </Typography>
+              </div>
+            </Paper>
           </Grid>
         </Grid>
       </Grid>
@@ -187,7 +202,7 @@ export const studentDashboard = ({ counts }) => (
             style={{ opacity: 0.5, marginBottom: '10px' }}
             variant="h5"
           >
-            Due For Return
+            For Return
           </Typography>
           <TableContainer component={Paper}>
             <Table aria-label="simple table">
@@ -199,17 +214,16 @@ export const studentDashboard = ({ counts }) => (
                 </TableRow>
               </TableHead>
               <TableBody>
-                {/* {recentAddedBooks &&
-                  recentAddedBooks.map((book) => {
+                {forReturn &&
+                  forReturn.map((book) => {
                     return (
                       <TableRow key={book.id}>
-                        <TableCell>{formatDate(book.dateCreated)}</TableCell>
-                        <TableCell>{book.title}</TableCell>
-                        <TableCell>{book.author}</TableCell>
-                        <TableCell>{book.genre}</TableCell>
+                        <TableCell>{book.bookTitle}</TableCell>
+                        <TableCell>{formatDate(book.dateBorrowed)}</TableCell>
+                        <TableCell>{formatDate(book.returnDate)}</TableCell>
                       </TableRow>
                     )
-                  })} */}
+                  })}
               </TableBody>
             </Table>
           </TableContainer>
@@ -219,28 +233,32 @@ export const studentDashboard = ({ counts }) => (
             style={{ opacity: 0.5, marginBottom: '10px' }}
             variant="h5"
           >
-            Pending Reservations
+            Waiting For Approval
           </Typography>
           <TableContainer component={Paper}>
             <Table aria-label="simple table">
               <TableHead>
                 <TableRow>
-                  <TableCell>Date Created</TableCell>
                   <TableCell>Title</TableCell>
+                  <TableCell>Date Created</TableCell>
                   <TableCell>Reservation Date</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {/* {recentAddedStudents &&
-                  recentAddedStudents.map((student) => {
+                {pendingReservations &&
+                  pendingReservations.map((reservation) => {
                     return (
-                      <TableRow key={student.id}>
-                        <TableCell>{formatDate(student.dateCreated)}</TableCell>
-                        <TableCell>{student.name}</TableCell>
-                        <TableCell>{student.username}</TableCell>
+                      <TableRow key={reservation.id}>
+                        <TableCell>{reservation.bookTitle}</TableCell>
+                        <TableCell>
+                          {formatDate(reservation.dateCreated)}
+                        </TableCell>
+                        <TableCell>
+                          {formatDate(reservation.reservationDate)}
+                        </TableCell>
                       </TableRow>
                     )
-                  })} */}
+                  })}
               </TableBody>
             </Table>
           </TableContainer>
