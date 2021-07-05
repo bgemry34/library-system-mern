@@ -97,7 +97,7 @@ export default function ReservationRequest() {
         >
           <Tab label="Pending" {...a11yProps(0)} />
           <Tab label="Approved" {...a11yProps(1)} />
-          <Tab label="Cancel" {...a11yProps(2)} />
+          <Tab label="Cancelled" {...a11yProps(2)} />
         </Tabs>
       </AppBar>
       <SwipeableViews

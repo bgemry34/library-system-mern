@@ -4,7 +4,6 @@ import { ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
 import {
   Assignment as AssignmentIcon,
   AssignmentReturn as AssignmentReturnIcon,
-  //AssignmentReturned as AssignmentReturnedIcon,
   Dashboard as DashboardIcon,
   Event as EventIcon,
   LibraryAdd as LibraryAddIcon,
@@ -56,7 +55,7 @@ export const adminListItems = (
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
-      <ListItemText primary="Borrow Requests" />
+      <ListItemText primary="Requests" />
     </ListItem>
 
     <ListItem
@@ -73,21 +72,6 @@ export const adminListItems = (
       </ListItemIcon>
       <ListItemText primary="Borrow Book" />
     </ListItem>
-
-    {/* <ListItem
-      button
-      component={NavLink}
-      to="/return"
-      exact
-      activeStyle={{
-        backgroundColor: '#ecf0f1',
-      }}
-    >
-      <ListItemIcon>
-        <AssignmentReturnedIcon />
-      </ListItemIcon>
-      <ListItemText primary="Return Book" />
-    </ListItem> */}
 
     <ListItem
       button
@@ -135,7 +119,7 @@ export const studentListItems = (
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
-      <ListItemText primary="Borrow Requests" />
+      <ListItemText primary="Requests" />
     </ListItem>
 
     <ListItem

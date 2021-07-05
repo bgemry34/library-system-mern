@@ -18,7 +18,7 @@ import LibraryBooksIcon from '@material-ui/icons/LibraryBooks'
 import AccessTimeIcon from '@material-ui/icons/AccessTime'
 import Brightness5Icon from '@material-ui/icons/Brightness5'
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
-import CalendarTodayIcon from '@material-ui/icons/CalendarToday'
+import EventIcon from '@material-ui/icons/Event'
 import { formatDate } from '../../Tools/Tools'
 
 export const studentDashboard = ({
@@ -171,7 +171,7 @@ export const studentDashboard = ({
                   style={{ height: '100%' }}
                 >
                   <Grid item xs={12}>
-                    <CalendarTodayIcon className={styles.iconStyle} />
+                    <EventIcon className={styles.iconStyle} />
                   </Grid>
                 </Grid>
               </div>

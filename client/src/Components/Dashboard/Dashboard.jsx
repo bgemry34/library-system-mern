@@ -52,12 +52,14 @@ const Dashboard = () => {
       recentBorrows,
       recentReservations,
     })
-  } else {
+  } else if (userType === 'student') {
     return studentDashboard({
       counts,
       forReturn,
       pendingReservations,
     })
+  } else {
+    return <div></div>
   }
 }
 

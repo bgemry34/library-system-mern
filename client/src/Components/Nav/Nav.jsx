@@ -19,19 +19,6 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import { useHistory } from 'react-router'
 import { checkToken } from './../../Api/Users/Users'
 
-// function Copyright() {
-//   return (
-//     <Typography variant="body2" color="textSecondary" align="center">
-//       {'Copyright © '}
-//       <Link color="inherit" href="https://material-ui.com/">
-//         Your Website
-//       </Link>{' '}
-//       {new Date().getFullYear()}
-//       {'.'}
-//     </Typography>
-//   );
-// }
-
 export default function Nav(props) {
   const classes = useStyles()
   const [open, setOpen] = useState(true)
@@ -51,8 +38,6 @@ export default function Nav(props) {
   const handleDrawer = () => {
     setOpen(!open)
   }
-
-  //const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   const logout = () => {
     sessionStorage.clear()
@@ -103,7 +88,13 @@ export default function Nav(props) {
           </p>
         </div>
         <Divider />
-        <List>{userType === 'admin' ? adminListItems : studentListItems}</List>
+        <List>
+          {userType === 'admin'
+            ? adminListItems
+            : userType === 'student'
+            ? studentListItems
+            : ''}
+        </List>
         <Divider />
         <List>{secondaryListItems}</List>
       </Drawer>
