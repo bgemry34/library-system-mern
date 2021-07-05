@@ -156,7 +156,7 @@ function BorrowData({ data, status }) {
                 <TableCell>{borrow.bookTitle}</TableCell>
                 <TableCell>{formatDate(borrow.dateBorrowed)}</TableCell>
                 <TableCell>{formatDate(borrow.returnDate)}</TableCell>
-                <TableCell align="flext-start">
+                <TableCell align="left">
                   <div className="">{getActionByStatus(borrow)}</div>
                 </TableCell>
               </TableRow>

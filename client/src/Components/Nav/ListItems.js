@@ -31,21 +31,6 @@ export const adminListItems = (
     <ListItem
       button
       component={NavLink}
-      to="/books"
-      exact
-      activeStyle={{
-        backgroundColor: '#ecf0f1',
-      }}
-    >
-      <ListItemIcon>
-        <LibraryAddIcon />
-      </ListItemIcon>
-      <ListItemText primary="Book Management" />
-    </ListItem>
-
-    <ListItem
-      button
-      component={NavLink}
       to="/requests"
       exact
       activeStyle={{
@@ -71,6 +56,21 @@ export const adminListItems = (
         <AssignmentReturnIcon />
       </ListItemIcon>
       <ListItemText primary="Borrow Book" />
+    </ListItem>
+
+    <ListItem
+      button
+      component={NavLink}
+      to="/books"
+      exact
+      activeStyle={{
+        backgroundColor: '#ecf0f1',
+      }}
+    >
+      <ListItemIcon>
+        <LibraryAddIcon />
+      </ListItemIcon>
+      <ListItemText primary="Book Management" />
     </ListItem>
 
     <ListItem

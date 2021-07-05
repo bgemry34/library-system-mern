@@ -11,8 +11,7 @@ const borrowSchema = new mongoose.Schema({
   },
   borrowedBook: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Book',
-    
+    ref: 'Book',  
   },
   status: {
     type: String,

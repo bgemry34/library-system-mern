@@ -19,6 +19,7 @@ import AccessTimeIcon from '@material-ui/icons/AccessTime'
 import Brightness5Icon from '@material-ui/icons/Brightness5'
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
 import EventIcon from '@material-ui/icons/Event'
+import AssignmentReturnIcon from '@material-ui/icons/AssignmentReturn'
 import { formatDate } from '../../Tools/Tools'
 
 export const studentDashboard = ({
@@ -111,7 +112,7 @@ export const studentDashboard = ({
               </div>
               <div className={styles.Content}>
                 <Typography variant={'h5'} className={styles.ContentTitle}>
-                  Waiting For Approval
+                  Reservations Waiting For Approval
                 </Typography>
                 <Divider />
                 <Typography variant={'h5'} className={styles.ContentValue}>
@@ -144,7 +145,7 @@ export const studentDashboard = ({
                   style={{ height: '100%' }}
                 >
                   <Grid item xs={12}>
-                    <LibraryBooksIcon className={styles.iconStyle} />
+                    <AssignmentReturnIcon className={styles.iconStyle} />
                   </Grid>
                 </Grid>
               </div>
@@ -233,7 +234,7 @@ export const studentDashboard = ({
             style={{ opacity: 0.5, marginBottom: '10px' }}
             variant="h5"
           >
-            Waiting For Approval
+            Reservations Waiting For Approval
           </Typography>
           <TableContainer component={Paper}>
             <Table aria-label="simple table">

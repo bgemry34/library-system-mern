@@ -22,32 +22,45 @@ dashboardRouter.get('/', async (req, res) => {
     const students = await User.find({ userType: 'student' }).sort({
       dateCreated: -1,
     })
-    const totalStudents = students.length
     const recentAddedStudents = students.slice(0, 5)
+    const totalStudents = students.length
 
     //BORROW
+    const borrows = await Borrow.find({ status: 'approved' })
+      .sort({ approvedDate: -1 })
+      .populate('user', {
+        name: 1,
+        username: 1,
+      })
+    console.log(borrows[0])
+    const recentBorrows = borrows.slice(0, 5)
     const totalBorrowedBooks = books.filter(
       (book) => book.status === 'borrowed'
     ).length
-    const recentBorrows = await Borrow.find({})
-      .sort({ dateCreated: -1 })
-      .limit(5)
-      .populate('user', {
-        name: 1,
-        username: 1,
-      })
 
     //RESERVE
-    const recentReservations = await Reserve.find({})
+    const reservations = await Reserve.find({})
       .sort({ dateCreated: -1 })
-      .limit(5)
       .populate('user', {
         name: 1,
         username: 1,
       })
+    const recentReservations = reservations.slice(0, 5)
+    const totalReservedBooks = reservations.filter(
+      (reservation) => reservation.status === 'reserved'
+    ).length
+    const totalPendingReservations = reservations.filter(
+      (reservation) => reservation.status === 'pending'
+    ).length
 
     dashboardData = {
-      counts: { totalBooks, totalBorrowedBooks, totalStudents },
+      counts: {
+        totalBooks,
+        totalStudents,
+        totalBorrowedBooks,
+        totalReservedBooks,
+        totalPendingReservations,
+      },
       recentBooks: recentAddedBooks,
       recentStudents: recentAddedStudents,
       recentBorrows: recentBorrows,

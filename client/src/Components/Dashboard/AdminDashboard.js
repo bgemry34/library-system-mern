@@ -16,7 +16,9 @@ import {
 import styles from './Dashboard.module.css'
 import PeopleIcon from '@material-ui/icons/People'
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks'
-import GetAppIcon from '@material-ui/icons/GetApp'
+import AssignmentReturnIcon from '@material-ui/icons/AssignmentReturn'
+import AccessTimeIcon from '@material-ui/icons/AccessTime'
+import EventIcon from '@material-ui/icons/Event'
 import { formatDate } from '../../Tools/Tools'
 
 export const adminDashboard = ({
@@ -30,6 +32,99 @@ export const adminDashboard = ({
     <CssBaseline />
     <Container>
       {/* cards */}
+      <Grid
+        container
+        spacing={1}
+        direction="row"
+        justify="flex-start"
+        alignItems="stretch"
+        className={styles.cardsContainer}
+      >
+        <Grid container spacing={3} justify="center" alignItems="stretch">
+          <Grid item md={4}>
+            <Paper className={styles.Items}>
+              <div className={styles.DepartmentsSideColor}></div>
+              <div className={styles.Icons}>
+                <Grid
+                  container
+                  direction="row"
+                  justify="center"
+                  alignItems="center"
+                  style={{ height: '100%' }}
+                >
+                  <Grid item xs={12}>
+                    <AssignmentReturnIcon className={styles.iconStyle} />
+                  </Grid>
+                </Grid>
+              </div>
+              <div className={styles.Content}>
+                <Typography variant={'h5'} className={styles.ContentTitle}>
+                  Borrowed Books
+                </Typography>
+                <Divider />
+                <Typography variant={'h5'} className={styles.ContentValue}>
+                  {counts.totalBorrowedBooks}
+                </Typography>
+              </div>
+            </Paper>
+          </Grid>
+          <Grid item md={4}>
+            <Paper className={styles.Items}>
+              <div className={styles.ItemsSideColor}></div>
+              <div className={styles.Icons}>
+                <Grid
+                  container
+                  direction="row"
+                  justify="center"
+                  alignItems="center"
+                  style={{ height: '100%' }}
+                >
+                  <Grid item xs={12}>
+                    <EventIcon className={styles.iconStyle} />
+                  </Grid>
+                </Grid>
+              </div>
+              <div className={styles.Content}>
+                <Typography variant={'h5'} className={styles.ContentTitle}>
+                  Reserved Books
+                </Typography>
+                <Divider />
+                <Typography variant={'h5'} className={styles.ContentValue}>
+                  {counts.totalReservedBooks}
+                </Typography>
+              </div>
+            </Paper>
+          </Grid>
+          <Grid item md={4}>
+            <Paper className={styles.Items}>
+              <div className={styles.DepartmentsSideColor}></div>
+              <div className={styles.Icons}>
+                <Grid
+                  container
+                  direction="row"
+                  justify="center"
+                  alignItems="center"
+                  style={{ height: '100%' }}
+                >
+                  <Grid item xs={12}>
+                    <AccessTimeIcon className={styles.iconStyle} />
+                  </Grid>
+                </Grid>
+              </div>
+              <div className={styles.Content}>
+                <Typography variant={'h5'} className={styles.ContentTitle}>
+                  Reservations Waiting For Approval
+                </Typography>
+                <Divider />
+                <Typography variant={'h5'} className={styles.ContentValue}>
+                  {counts.totalPendingReservations}
+                </Typography>
+              </div>
+            </Paper>
+          </Grid>
+        </Grid>
+      </Grid>
+      {/* 2nd row grid */}
       <Grid
         container
         spacing={1}
@@ -66,33 +161,7 @@ export const adminDashboard = ({
               </div>
             </Paper>
           </Grid>
-          <Grid item md={4}>
-            <Paper className={styles.Items}>
-              <div className={styles.DepartmentsSideColor}></div>
-              <div className={styles.Icons}>
-                <Grid
-                  container
-                  direction="row"
-                  justify="center"
-                  alignItems="center"
-                  style={{ height: '100%' }}
-                >
-                  <Grid item xs={12}>
-                    <GetAppIcon className={styles.iconStyle} />
-                  </Grid>
-                </Grid>
-              </div>
-              <div className={styles.Content}>
-                <Typography variant={'h5'} className={styles.ContentTitle}>
-                  Borrowed Books
-                </Typography>
-                <Divider />
-                <Typography variant={'h5'} className={styles.ContentValue}>
-                  {counts.totalBorrowedBooks}
-                </Typography>
-              </div>
-            </Paper>
-          </Grid>
+
           <Grid item md={4}>
             <Paper className={styles.Items}>
               <div className={styles.UsersSideColor}></div>
@@ -135,16 +204,16 @@ export const adminDashboard = ({
             style={{ opacity: 0.5, marginBottom: '10px' }}
             variant="h5"
           >
-            Recent Borrow Requests
+            Recently Borrowed Books
           </Typography>
           <TableContainer component={Paper}>
             <Table aria-label="simple table">
               <TableHead>
                 <TableRow>
-                  <TableCell>Date Created</TableCell>
-                  <TableCell>Borrower</TableCell>
                   <TableCell>Title</TableCell>
-                  <TableCell>Status</TableCell>
+                  <TableCell>Borrower</TableCell>
+                  <TableCell>Date Approved</TableCell>
+                  <TableCell>Return Date</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -152,10 +221,10 @@ export const adminDashboard = ({
                   recentBorrows.map((borrow) => {
                     return (
                       <TableRow key={borrow.id}>
-                        <TableCell>{formatDate(borrow.dateCreated)}</TableCell>
-                        <TableCell>{borrow.user.name}</TableCell>
                         <TableCell>{borrow.bookTitle}</TableCell>
-                        <TableCell>{borrow.status}</TableCell>
+                        <TableCell>{borrow.user.name}</TableCell>
+                        <TableCell>{formatDate(borrow.approvedDate)}</TableCell>
+                        <TableCell>{formatDate(borrow.returnDate)}</TableCell>
                       </TableRow>
                     )
                   })}
@@ -168,7 +237,7 @@ export const adminDashboard = ({
             style={{ opacity: 0.5, marginBottom: '10px' }}
             variant="h5"
           >
-            Recent Reservation Requests
+            Recent Book Reservations
           </Typography>
           <TableContainer component={Paper}>
             <Table aria-label="simple table">
