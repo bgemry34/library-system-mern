@@ -244,7 +244,7 @@ function Borrow() {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label="Choose a borrower"
+                  label="Choose borrower"
                   variant="outlined"
                   className={styles.mt2}
                 />

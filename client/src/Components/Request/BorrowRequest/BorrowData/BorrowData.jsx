@@ -139,10 +139,12 @@ function BorrowData({ data, status }) {
                 <strong>Book Title</strong>
               </TableCell>
               <TableCell>
-                <strong>Borrowed Date</strong>
+                <strong>Date Borrowed</strong>
               </TableCell>
               <TableCell>
-                <strong>Returned Date</strong>
+                <strong>
+                  {status === 'approved' ? 'Return Date' : 'Date Returned'}
+                </strong>
               </TableCell>
               <TableCell>
                 <strong>{status === 'approved' ? 'Action' : ''}</strong>
