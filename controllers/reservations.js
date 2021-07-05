@@ -91,7 +91,7 @@ reservationRouter.post('/', async (req, res, next) => {
     (book) => book.reservedBook
   )
   if (userReservationList.indexOf(body.bookId) !== -1) {
-    return next(new Error(`You can only reserve this book once`))
+    return next(new Error(`You can only reserve ${bookData.title} once`))
   }
 
   //check if book is available for reservation on specified date

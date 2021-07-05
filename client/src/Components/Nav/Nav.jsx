@@ -41,9 +41,14 @@ export default function Nav(props) {
   useEffect(() => {
     const fetchApi = async () => {
       const res = await checkToken()
-      if (res === undefined) history.push('/')
-      else if (res.status === 401) history.push('/')
-      setUserType(res.data.userType)
+      if (res === undefined) 
+      history.push('/');
+      else if (res.status === 401) 
+      history.push('/');
+      else if(res.status == 200){
+        sessionStorage.setItem('user', JSON.stringify(res.data));
+        setUserType(res.data.userType);
+      }
     }
     fetchApi()
   }, [history])

@@ -59,7 +59,7 @@ export const approvedReservationRequest = async (reserve) => {
             }, {
                 headers: {
                     Authorization: 'Bearer ' + token //the token is a variable which holds the token
-                }
+                }   
               })
         return data;
     }catch(error){
@@ -73,6 +73,22 @@ export const cancelReservationRequest = async (reserve) => {
     try{
             const data = await axios.put(`${url}/reserve/cancel/`+id, {
                 
+            }, {
+                headers: {
+                    Authorization: 'Bearer ' + token //the token is a variable which holds the token
+                }
+              })
+        return data;
+    }catch(error){
+        return error.response;
+    }
+}
+
+export const reserveBook = async (reservationDate, bookId) =>{
+    const token = await sessionStorage.getItem("userToken")
+    try{
+        const data = await axios.post(`${url}/reserve`, {
+                bookId, reservationDate
             }, {
                 headers: {
                     Authorization: 'Bearer ' + token //the token is a variable which holds the token
