@@ -38,7 +38,7 @@ export const adminDashboard = ({
         alignItems="stretch"
         className={styles.cardsContainer}
       >
-        <Grid container spacing={3} justify="flex-start" alignItems="stretch">
+        <Grid container spacing={3} justify="center" alignItems="stretch">
           <Grid item md={4}>
             <Paper className={styles.Items}>
               <div className={styles.ItemsSideColor}></div>
