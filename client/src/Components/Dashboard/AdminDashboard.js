@@ -18,6 +18,7 @@ import PeopleIcon from '@material-ui/icons/People'
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks'
 import AssignmentReturnIcon from '@material-ui/icons/AssignmentReturn'
 import AccessTimeIcon from '@material-ui/icons/AccessTime'
+import Brightness5Icon from '@material-ui/icons/Brightness5'
 import EventIcon from '@material-ui/icons/Event'
 import { formatDate } from '../../Tools/Tools'
 
@@ -42,6 +43,103 @@ export const adminDashboard = ({
           className={styles.cardsContainer}
         >
           <Grid container spacing={3} justify="center" alignItems="stretch">
+            {/* start row */}
+            <Grid item md={4}>
+              <Paper className={styles.Items}>
+                <div className={styles.TodaySideColor}></div>
+                <div className={styles.Icons}>
+                  <Grid
+                    container
+                    direction="row"
+                    justify="center"
+                    alignItems="center"
+                    style={{ height: '100%' }}
+                  >
+                    <Grid item xs={12}>
+                      <Brightness5Icon className={styles.iconStyle} />
+                    </Grid>
+                  </Grid>
+                </div>
+                <div className={styles.Content}>
+                  <Typography variant={'h5'} className={styles.ContentTitle}>
+                    Date Today
+                  </Typography>
+                  <Divider />
+                  <Typography variant={'h5'} className={styles.ContentValue}>
+                    {new Date().toDateString()}
+                  </Typography>
+                </div>
+              </Paper>
+            </Grid>
+            <Grid item md={4}>
+              <Paper className={styles.Items}>
+                <div className={styles.BookSideColor}></div>
+                <div className={styles.Icons}>
+                  <Grid
+                    container
+                    direction="row"
+                    justify="center"
+                    alignItems="center"
+                    style={{ height: '100%' }}
+                  >
+                    <Grid item xs={12}>
+                      <LibraryBooksIcon className={styles.iconStyle} />
+                    </Grid>
+                  </Grid>
+                </div>
+                <div className={styles.Content}>
+                  <Typography variant={'h5'} className={styles.ContentTitle}>
+                    Books
+                  </Typography>
+                  <Divider />
+                  <Typography variant={'h5'} className={styles.ContentValue}>
+                    {counts.totalBooks}
+                  </Typography>
+                </div>
+              </Paper>
+            </Grid>
+
+            <Grid item md={4}>
+              <Paper className={styles.Items}>
+                <div className={styles.StudentSideColor}></div>
+                <div className={styles.Icons}>
+                  <Grid
+                    container
+                    direction="row"
+                    justify="center"
+                    alignItems="center"
+                    style={{ height: '100%' }}
+                  >
+                    <Grid item xs={12}>
+                      <PeopleIcon className={styles.iconStyle} />
+                    </Grid>
+                  </Grid>
+                </div>
+                <div className={styles.Content}>
+                  <Typography variant={'h5'} className={styles.ContentTitle}>
+                    Students
+                  </Typography>
+                  <Divider />
+                  <Typography variant={'h5'} className={styles.ContentValue}>
+                    {counts.totalStudents}
+                  </Typography>
+                </div>
+              </Paper>
+            </Grid>
+            {/* end row */}
+          </Grid>
+        </Grid>
+        {/* 2nd row grid */}
+        <Grid
+          container
+          spacing={0}
+          direction="row"
+          justify="flex-start"
+          alignItems="stretch"
+          className={styles.cardsContainer}
+        >
+          <Grid container spacing={3} justify="center" alignItems="stretch">
+            {/* start row */}
             <Grid item md={4}>
               <Paper className={styles.Items}>
                 <div className={styles.BorrowSideColor}></div>
@@ -114,7 +212,7 @@ export const adminDashboard = ({
                 </div>
                 <div className={styles.Content}>
                   <Typography variant={'h5'} className={styles.ContentTitle}>
-                    Reservations Waiting For Approval
+                    For Approval
                   </Typography>
                   <Divider />
                   <Typography variant={'h5'} className={styles.ContentValue}>
@@ -123,73 +221,7 @@ export const adminDashboard = ({
                 </div>
               </Paper>
             </Grid>
-          </Grid>
-        </Grid>
-        {/* 2nd row grid */}
-        <Grid
-          container
-          spacing={1}
-          direction="row"
-          justify="flex-start"
-          alignItems="stretch"
-          className={styles.cardsContainer}
-        >
-          <Grid container spacing={3} justify="center" alignItems="stretch">
-            <Grid item md={4}>
-              <Paper className={styles.Items}>
-                <div className={styles.BookSideColor}></div>
-                <div className={styles.Icons}>
-                  <Grid
-                    container
-                    direction="row"
-                    justify="center"
-                    alignItems="center"
-                    style={{ height: '100%' }}
-                  >
-                    <Grid item xs={12}>
-                      <LibraryBooksIcon className={styles.iconStyle} />
-                    </Grid>
-                  </Grid>
-                </div>
-                <div className={styles.Content}>
-                  <Typography variant={'h5'} className={styles.ContentTitle}>
-                    Books
-                  </Typography>
-                  <Divider />
-                  <Typography variant={'h5'} className={styles.ContentValue}>
-                    {counts.totalBooks}
-                  </Typography>
-                </div>
-              </Paper>
-            </Grid>
-
-            <Grid item md={4}>
-              <Paper className={styles.Items}>
-                <div className={styles.StudentSideColor}></div>
-                <div className={styles.Icons}>
-                  <Grid
-                    container
-                    direction="row"
-                    justify="center"
-                    alignItems="center"
-                    style={{ height: '100%' }}
-                  >
-                    <Grid item xs={12}>
-                      <PeopleIcon className={styles.iconStyle} />
-                    </Grid>
-                  </Grid>
-                </div>
-                <div className={styles.Content}>
-                  <Typography variant={'h5'} className={styles.ContentTitle}>
-                    Students
-                  </Typography>
-                  <Divider />
-                  <Typography variant={'h5'} className={styles.ContentValue}>
-                    {counts.totalStudents}
-                  </Typography>
-                </div>
-              </Paper>
-            </Grid>
+            {/* end row */}
           </Grid>
         </Grid>
         {/* 2 tables */}

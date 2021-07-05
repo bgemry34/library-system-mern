@@ -112,7 +112,7 @@ export const studentDashboard = ({
                 </div>
                 <div className={styles.Content}>
                   <Typography variant={'h5'} className={styles.ContentTitle}>
-                    Reservations Waiting For Approval
+                    For Approval
                   </Typography>
                   <Divider />
                   <Typography variant={'h5'} className={styles.ContentValue}>
