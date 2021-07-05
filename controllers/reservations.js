@@ -40,10 +40,21 @@ reservationRouter.get('/', async (req, res) => {
 // GET all 'pending/approved/cancelled' requests
 reservationRouter.get('/:id', async (req, res) => {
   const id = req.params.id
-  let reserveList = await Reserve.find({}).populate('user', {
-    name: 1,
-    username: 1,
-  })
+  const user = req.user
+  const userType = user.userType
+  let reserveList = {}
+
+  if (userType === 'admin') {
+    reserveList = await Reserve.find({}).populate('user', {
+      name: 1,
+      username: 1,
+    }).sort({bookTitle: 1})
+  } else if (userType === 'student') {
+    reserveList = await Reserve.find({ user: user._id }).populate('user', {
+      name: 1,
+      username: 1,
+    }).sort({bookTitle: 1})
+  }
   filteredReserveList = reserveList.filter((list) => list.status === id)
   return res.json(filteredReserveList)
 })

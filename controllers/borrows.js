@@ -22,20 +22,43 @@ const addDays = (date, days) => {
 
 // GET all borrow data
 borrowRouter.get('/', async (req, res) => {
-  const borrowList = await Borrow.find({}).populate('user', {
-    name: 1,
-    username: 1,
-  })
+  const user = req.user
+  const userType = user.userType
+  let borrowList = {}
+
+  if (userType === 'admin') {
+    borrowList = await Borrow.find({}).populate('user', {
+      name: 1,
+      username: 1,
+    })
+  } else if (userType === 'student') {
+    borrowList = await Borrow.findById(user._id).populate('user', {
+      name: 1,
+      username: 1,
+    })
+  }
+
   return res.json(borrowList)
 })
 
 // GET all 'pending/approved/cancelled' requests
 borrowRouter.get('/:id', async (req, res) => {
   const id = req.params.id
-  let borrowList = await Borrow.find({}).populate('user', {
-    name: 1,
-    username: 1,
-  })
+  const user = req.user
+  const userType = user.userType
+  let borrowList = {}
+
+  if (userType === 'admin') {
+    borrowList = await Borrow.find({}).populate('user', {
+      name: 1,
+      username: 1,
+    }).sort({bookTitle: 1})
+  } else if (userType === 'student') {
+    borrowList = await Borrow.find({ user: user._id }).populate('user', {
+      name: 1,
+      username: 1,
+    }).sort({bookTitle: 1})
+  }
   filteredBorrowList = borrowList.filter((list) => list.status === id)
   return res.json(filteredBorrowList)
 })
