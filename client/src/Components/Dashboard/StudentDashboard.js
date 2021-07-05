@@ -29,10 +29,7 @@ export const studentDashboard = ({
   <div>
     <CssBaseline />
     <Container>
-      <Grid
-        direction="column"
-        style={{ height: '100vh', paddingBottom: '200vh' }}
-      >
+      <Grid direction="column" style={{ height: '100%', paddingBottom: '10%' }}>
         <Grid
           container
           spacing={1}
@@ -44,7 +41,7 @@ export const studentDashboard = ({
           <Grid container spacing={3} justify="center" alignItems="stretch">
             <Grid item md={4}>
               <Paper className={styles.Items}>
-                <div className={styles.DateSideColor}></div>
+                <div className={styles.TodaySideColor}></div>
                 <div className={styles.Icons}>
                   <Grid
                     container
@@ -99,7 +96,7 @@ export const studentDashboard = ({
             </Grid>
             <Grid item md={4}>
               <Paper className={styles.Items}>
-                <div className={styles.UsersSideColor}></div>
+                <div className={styles.WaitingSideColor}></div>
                 <div className={styles.Icons}>
                   <Grid
                     container
@@ -138,7 +135,7 @@ export const studentDashboard = ({
           <Grid container spacing={3} justify="center" alignItems="stretch">
             <Grid item md={4}>
               <Paper className={styles.Items}>
-                <div className={styles.ItemsSideColor}></div>
+                <div className={styles.BorrowSideColor}></div>
                 <div className={styles.Icons}>
                   <Grid
                     container
@@ -165,7 +162,7 @@ export const studentDashboard = ({
             </Grid>
             <Grid item md={4}>
               <Paper className={styles.Items}>
-                <div className={styles.DepartmentsSideColor}></div>
+                <div className={styles.ReserveSideColor}></div>
                 <div className={styles.Icons}>
                   <Grid
                     container

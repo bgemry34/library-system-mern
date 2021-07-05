@@ -32,7 +32,7 @@ export const adminDashboard = ({
     <CssBaseline />
     <Container>
       {/* cards */}
-      <Grid style={{ height: '100vh', paddingBottom: '200vh' }}>
+      <Grid style={{ height: '100%', paddingBottom: '10%' }}>
         <Grid
           container
           spacing={0}
@@ -44,7 +44,7 @@ export const adminDashboard = ({
           <Grid container spacing={3} justify="center" alignItems="stretch">
             <Grid item md={4}>
               <Paper className={styles.Items}>
-                <div className={styles.DepartmentsSideColor}></div>
+                <div className={styles.BorrowSideColor}></div>
                 <div className={styles.Icons}>
                   <Grid
                     container
@@ -71,7 +71,7 @@ export const adminDashboard = ({
             </Grid>
             <Grid item md={4}>
               <Paper className={styles.Items}>
-                <div className={styles.ItemsSideColor}></div>
+                <div className={styles.ReserveSideColor}></div>
                 <div className={styles.Icons}>
                   <Grid
                     container
@@ -98,7 +98,7 @@ export const adminDashboard = ({
             </Grid>
             <Grid item md={4}>
               <Paper className={styles.Items}>
-                <div className={styles.DepartmentsSideColor}></div>
+                <div className={styles.WaitingSideColor}></div>
                 <div className={styles.Icons}>
                   <Grid
                     container
@@ -137,7 +137,7 @@ export const adminDashboard = ({
           <Grid container spacing={3} justify="center" alignItems="stretch">
             <Grid item md={4}>
               <Paper className={styles.Items}>
-                <div className={styles.ItemsSideColor}></div>
+                <div className={styles.BookSideColor}></div>
                 <div className={styles.Icons}>
                   <Grid
                     container
@@ -165,7 +165,7 @@ export const adminDashboard = ({
 
             <Grid item md={4}>
               <Paper className={styles.Items}>
-                <div className={styles.UsersSideColor}></div>
+                <div className={styles.StudentSideColor}></div>
                 <div className={styles.Icons}>
                   <Grid
                     container

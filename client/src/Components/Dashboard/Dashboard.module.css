@@ -1,71 +1,75 @@
-.cardsContainer{
-    margin-top: 25px !important;
+.cardsContainer {
+  margin-top: 25px !important;
 }
 
-.Items{
-    height:121px;
-    width: 344px;
-    display:grid;
-    grid-template-columns: 8px 92px 244px;
-    border-top-right-radius: 10px !important;
-    border-bottom-right-radius: 10px !important;
+.Items {
+  height: 121px;
+  width: 344px;
+  display: grid;
+  grid-template-columns: 8px 92px 244px;
+  border-top-right-radius: 10px !important;
+  border-bottom-right-radius: 10px !important;
 }
 
-.Items .ItemsSideColor{
-    background-color:#27AE60;
+.Items .BorrowSideColor {
+  background-color: #27ae60;
 }
 
-.Items .DepartmentsSideColor{
-    background-color:blue;
+.Items .ReserveSideColor {
+  background-color: orange;
 }
 
-.Items .DateSideColor{
-    background-color: yellow
+.Items .WaitingSideColor {
+  background-color: yellow;
 }
 
-.Items .UsersSideColor{
-    background-color: orange
+.Items .StudentSideColor {
+  background-color: violet;
+}
+
+.Items .BookSideColor {
+  background-color: blue;
 }
 
 .Items .WarningSideColor {
-    background-color: red;
+  background-color: red;
 }
 
-
-
-
-.iconStyle{
-    font-size: 54px !important;
-    color: rgba(0,0,0,0.5) !important;
-    margin-left: 9px !important;
-    margin-right: 9px !important;
+.Items .TodaySideColor {
+  background-color: pink;
 }
 
-.Content{
-    color: rgba(0,0,0,0.5) !important;
+.iconStyle {
+  font-size: 54px !important;
+  color: rgba(0, 0, 0, 0.5) !important;
+  margin-left: 9px !important;
+  margin-right: 9px !important;
 }
 
-.ContentTitle{
-    margin-top:25px !important;
-    margin-bottom: 2.5px;
-    font-size: 1.4em !important;
-    font-weight: bold !important;
+.Content {
+  color: rgba(0, 0, 0, 0.5) !important;
 }
 
-.ContentValue{
-    margin-top:5px !important;
-    font-size: 1.847em !important;
+.ContentTitle {
+  margin-top: 25px !important;
+  margin-bottom: 2.5px;
+  font-size: 1.4em !important;
+  font-weight: bold !important;
 }
 
-.Department{
-    height:121px;
-    width: 344px;
-    background-color: violet;
+.ContentValue {
+  margin-top: 5px !important;
+  font-size: 1.847em !important;
 }
 
-.Users{
-    height:121px;
-    width: 344px;
-    background-color: orangered;
+.Department {
+  height: 121px;
+  width: 344px;
+  background-color: violet;
 }
 
+.Users {
+  height: 121px;
+  width: 344px;
+  background-color: orangered;
+}
