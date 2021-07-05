@@ -3,9 +3,18 @@ Content-Type: application/json
 
 {
   "username": "sarah",
-  "password": "sarah"
+  "password": "sarah",
+  "userType": "student"
 }
 
+###
+POST http://localhost:4000/api/login/
+Content-Type: application/json
+
+{
+  "username": "sarah",
+  "password": "sarah"
+}
 ###
 
 POST http://localhost:4000/api/login/
@@ -13,7 +22,8 @@ Content-Type: application/json
 
 {
   "username": "gemry",
-  "password": "gemry"
+  "password": "gemry",
+  "userType": "student"
 }
 ###
 POST http://localhost:4000/api/login/me/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNhcmFoIiwiaWQiOiI2MGNkZjlmNzkxMjQ4MjI3YjBiNTEzYzEiLCJ1c2VyVHlwZSI6ImFkbWluIiwiaWF0IjoxNjI0MTg4NzQzfQ.SidqRTjETLXnmqf4LIa4lrLSGxxf7Qvz2zQ7DAifPxI
