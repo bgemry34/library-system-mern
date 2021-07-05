@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import SwipeableViews from 'react-swipeable-views';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -6,6 +6,8 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
+import ReservationData from './ReservationData/ReservationData'
+import {fetchPending, fetchApproved, fetchCancelled} from './../../../Api/Reservation/Reservation'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -52,6 +54,28 @@ export default function ReservationRequest() {
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
 
+  const [pendings, setPendings] = useState([]);
+  const [approves, setApproved] = useState([]);
+  const [cancels, setCancels] = useState([]);
+
+  useEffect(()=>{
+    let isCancelled = false;
+        const fetchApi = async () =>{
+            const pendingData = await fetchPending();
+            const approvedData = await fetchApproved();
+            const cancelData = await fetchCancelled();
+            console.log(approvedData)
+            if(!isCancelled){
+              setPendings(pendingData);
+              setApproved(approvedData);
+              setCancels(cancelData);
+            }
+        }
+        fetchApi();
+        return ()=>isCancelled=true;
+  }, [])
+  
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -73,7 +97,7 @@ export default function ReservationRequest() {
         >
           <Tab label="Pending" {...a11yProps(0)} />
           <Tab label="Approved" {...a11yProps(1)} />
-          <Tab label="Disapproved" {...a11yProps(2)} />
+          <Tab label="Cancel" {...a11yProps(2)} />
         </Tabs>
       </AppBar>
       <SwipeableViews
@@ -82,13 +106,13 @@ export default function ReservationRequest() {
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-            Pending
+            <ReservationData data={[pendings, setPendings, setApproved, setCancels]} status={'pending'}  />
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-            Approved
+          <ReservationData data={[approves, setPendings, setApproved, setCancels]} status={'approved'} />
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
-            Disapproved
+          <ReservationData data={[cancels, setPendings, setApproved, setCancels]} status={'cancel'} />
         </TabPanel>
       </SwipeableViews>
     </div>

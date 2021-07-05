@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
 export default function ReservationRequest() {
   const classes = useStyles();
   const theme = useTheme();
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
   const [approves, setApproved] = useState([]);
   const [returned, setReturned] = useState([]);
 
