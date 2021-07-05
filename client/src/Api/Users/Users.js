@@ -43,6 +43,22 @@ export const fetchUsers = async () => {
     }
 }
 
+export const fetchUser = async (id) => {    
+    const token = await sessionStorage.getItem("userToken")
+    try{
+        const res = await axios.get(`${url}/users/`+id, {
+        headers: {
+            Authorization: 'Bearer ' + token //the token is a variable which holds the token
+        }
+        });
+        const {data} = res;
+        return data;
+    }catch(error){
+        return []
+        //return error.response
+    }
+}
+
 export const createUser = async (user) => {
     const token = await sessionStorage.getItem("userToken")
     const {name, username, password, userType} = user

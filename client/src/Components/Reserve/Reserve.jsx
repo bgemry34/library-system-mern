@@ -18,14 +18,13 @@ import {
   TableBody,
   Typography,
 } from '@material-ui/core'
-import { fetchUsers } from './../../Api/Users/Users'
-import Autocomplete from '@material-ui/lab/Autocomplete'
+//import Autocomplete from '@material-ui/lab/Autocomplete'
 import ClearIcon from '@material-ui/icons/Clear'
-import { formatDate } from './../../Tools/Tools'
+import { formatDate } from '../../Tools/Tools'
 import SendIcon from '@material-ui/icons/Send'
-import { borrowBook } from './../../Api/Borrower/Borrower'
+import { reserveBook } from '../../Api/Reservation/Reservation'
 import cx from 'classnames'
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -38,22 +37,21 @@ function Reserve() {
   const classes = useStyles()
 
   const [books, setBooks] = useState([])
-  const [borrowedBooksContainer, setBorrowedBooksContainer] = useState([])
-  const [users, setUsers] = useState([])
-  const [selectedUser, setSelectedUser] = useState('')
+  const [reservedBooksContainer, setReservedBooksContainer] = useState([])
   const [loading, setLoading] = useState(false)
-  const [loadingProgress, setLoadingProgress] = useState(0)
-  const [reservationDate, setReservationDate] = useState(null)
+  const [loadingProgress, setLoadingProgress] = useState(0);
+  const [successReserved, setSuccessReserved] = useState(0);
+  const [failedReserved, setFailedReserved] = useState(0);
+  const [reservationDate, setReservationDate] = useState(formatDate(new Date(new Date().getTime()+(5*24*60*60*1000))))
+  const [failedReservedErrorContainer, setFailedReservedErrorContainer] = useState([]);
 
   useEffect(() => {
-    let isCancelled = false
+    let isCancelled = false;
 
     const fetchApi = async () => {
       let booksData = await fetchBooks()
-      let usersData = await fetchUsers()
       if (!isCancelled) {
-        setBooks(booksData)
-        setUsers(usersData)
+        setBooks(booksData);
       }
     }
     try {
@@ -70,10 +68,8 @@ function Reserve() {
 
     const fetchApi = async () => {
       let booksData = await fetchBooks()
-      let usersData = await fetchUsers()
       if (!isCancelled) {
         setBooks(booksData)
-        setUsers(usersData)
       }
     }
     try {
@@ -107,45 +103,68 @@ function Reserve() {
   }
 
   const addBorrowBook = (book) => {
-    setBorrowedBooksContainer([book, ...borrowedBooksContainer])
+    setReservedBooksContainer([book, ...reservedBooksContainer])
     setBooks(books.filter((_book) => _book.id !== book.id))
   }
 
   const revertBook = (book) => {
     setBooks([book, ...books])
-    setBorrowedBooksContainer(
-      borrowedBooksContainer.filter((_book) => _book.id !== book.id)
+    setReservedBooksContainer(
+      reservedBooksContainer.filter((_book) => _book.id !== book.id)
     )
   }
 
   const clearBorrowBooks = () => {
-    setBooks([...borrowedBooksContainer, ...books])
-    setBorrowedBooksContainer([])
+    setBooks([...reservedBooksContainer, ...books])
+    setReservedBooksContainer([])
   }
 
   //sequenction fetching borring request using reduce
-  const BorrowBook = async () => {
+  const _ReserveBook = async () => {
     setLoadingProgress(0)
     setLoading(true)
     let count = 0
-    await borrowedBooksContainer.reduce(async (memo, book) => {
+    await reservedBooksContainer.reduce(async (memo, book) => {
       await memo
-      const res = await borrowBook(selectedUser.id, book.id)
+      const res = await reserveBook(reservationDate, book.id);
       if (!res) return 0
       else if (res.status === 200 || res.status === 201) {
         count++
-        setLoadingProgress((count / borrowedBooksContainer.length) * 100)
+        setLoadingProgress((count / reservedBooksContainer.length) * 100);
+        setSuccessReserved(s=>s+=1);
+      }else if(res.status === 400){
+        setFailedReserved(f=>f+=1);
+        setFailedReservedErrorContainer(failBook=>{
+          return [...failBook, res.data.error];
+        })
       }
     }, undefined)
-    setLoadingProgress(100)
-    clearBorrowBooks()
-    refreshBook()
-    setSelectedUser('')
+    setLoadingProgress(100);
+    clearBorrowBooks();
+    refreshBook();
+    setReservationDate(formatDate(new Date(new Date().getTime()+(5*24*60*60*1000))));
+  }
+
+  const errorDispenser = () => {
+    if(failedReservedErrorContainer.length>0){
+      return (
+          <div>
+            <Typography style={{ textAlign: 'left', marginTop: '10px' }}>
+              Errors:
+          </Typography>
+          {failedReservedErrorContainer.map(err=>(
+            <Typography style={{ textAlign: 'left', marginTop: '10px' }}>
+            {err}
+        </Typography>
+          ))}
+          </div>
+      )
+    }
   }
 
   const overlayLoading = (
-    <Backdrop className={classes.backdrop} open={loading}>
-      <div style={{ width: '50%' }}>
+    <Backdrop style={{backgroundColor:'rgba(0,0,0,0.75) !important'}} className={classes.backdrop} open={loading}>
+      <div style={{ width: '50%'}}>
         {loadingProgress !== 100 ? (
           <>
             <CircularProgress
@@ -158,12 +177,22 @@ function Reserve() {
           </>
         ) : (
           <>
-            <Typography style={{ textAlign: 'center', marginTop: '10px' }}>
-              Successfully Borrow Book
+            <Typography variant="h4" style={{ textAlign: 'center', marginTop: '10px' }}>
+              Reserved Book Done!
             </Typography>
+            <Typography style={{ textAlign: 'center', marginTop: '10px' }}>
+              Successful Reserved Book : {successReserved}
+            </Typography>
+            <Typography style={{ textAlign: 'center', marginTop: '10px' }}>
+              Failed Reserved Book : {failedReserved}
+            </Typography>
+            {errorDispenser()}
             <Button
               onClick={() => {
                 setLoading(false)
+                setSuccessReserved(0);
+                setFailedReserved(0);
+                setFailedReservedErrorContainer([]);
               }}
               variant="contained"
               color="primary"
@@ -238,19 +267,20 @@ function Reserve() {
               id="date"
               label="Date of Reservation"
               type="date"
-              defaultValue={formatDate(new Date())}
+              defaultValue={formatDate(new Date(new Date().getTime()+(5*24*60*60*1000)))}
               className={styles.mt2}
               InputLabelProps={{
                 shrink: true,
               }}
               fullWidth
-              onChange={(event, newValue) => {
-                // setSelectedUser(newValue)
-                console.log('date:',newValue)
+              InputProps={{inputProps: { min:formatDate(new Date(new Date().getTime()+(5*24*60*60*1000)))}}}
+              onChange={(e)=>{
+                setReservationDate(e.target.value)
+                console.log(e.target.value)
               }}
             />
             <Typography className={styles.mt2} variant={'h6'}>
-              Borrowed Books:
+              Reserved Books:
             </Typography>
             {/* Borrow book section */}
             <div className={styles.borrowedBookContainer}>
@@ -263,7 +293,7 @@ function Reserve() {
                                         </TableRow>
                                         </TableHead> */}
                   <TableBody>
-                    {borrowedBooksContainer.map((book) => (
+                    {reservedBooksContainer.map((book) => (
                       <TableRow key={book.id}>
                         <TableCell>{book.title}</TableCell>
                         <TableCell align="center">
@@ -298,7 +328,7 @@ function Reserve() {
                 clearBorrowBooks()
               }}
             >
-              Clear Borrowed Books
+              Clear Reserved Books
             </Button>
             <div className="mt-1"></div>
             <Button
@@ -307,9 +337,9 @@ function Reserve() {
               className={cx(styles.mt2, styles.bgSuccess)}
               style={{ padding: '10px' }}
               startIcon={<SendIcon />}
-              disabled={(borrowedBooksContainer.length && selectedUser) <= 0}
+              disabled={(reservedBooksContainer.length && reservationDate) <= 0}
               fullWidth
-              onClick={BorrowBook}
+              onClick={_ReserveBook}
             >
               Submit
             </Button>

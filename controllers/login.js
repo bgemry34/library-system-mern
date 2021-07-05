@@ -48,7 +48,8 @@ loginRouter.post('/me/:token', async (req, res) => {
       const {username, userType} = user
       return res.json({
         username,
-        userType
+        userType,
+        id:decoded.id
       })
     }else{
       return res.status(401).json({
