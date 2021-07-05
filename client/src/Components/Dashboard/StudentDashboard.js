@@ -29,7 +29,7 @@ export const studentDashboard = ({
   <div>
     <CssBaseline />
     <Container>
-      <Grid direction="column" style={{ height: '100%', paddingBottom: '10%' }}>
+      <Grid style={{ height: '100%', paddingBottom: '10%' }}>
         <Grid
           container
           spacing={1}
