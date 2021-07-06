@@ -283,7 +283,7 @@ function ReservationData({ data, status }) {
                 ) : (
                   <TableCell>{formatDate(reserve.reservationDate)}</TableCell>
                 )}
-                {checkTableCellUser()}
+                {checkTableCellUser(reserve)}
               </TableRow>
             ))}
           </TableBody>
