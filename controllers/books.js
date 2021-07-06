@@ -8,7 +8,7 @@ function sanitizeString(str) {
 
 // GET all books
 booksRouter.get('/', async (req, res) => {
-  const books = await Book.find({})
+  const books = await Book.find({}).sort({title: 1})
   return res.json(books)
 })
 

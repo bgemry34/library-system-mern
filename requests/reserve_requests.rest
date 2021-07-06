@@ -1,5 +1,5 @@
 GET http://localhost:4000/api/reserve/60d7f343f961f72f04328665
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNhcmFoIiwiaWQiOiI2MGNkZjlmNzkxMjQ4MjI3YjBiNTEzYzEiLCJ1c2VyVHlwZSI6ImFkbWluIiwiaWF0IjoxNjI0MTExNjY0fQ.nUfpgGl7vg1JO62zdMqnIAza25_gswLB_CbNfy_D5vU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImdlbXJ5IiwiaWQiOiI2MGNkZmExMzkxMjQ4MjI3YjBiNTEzYzIiLCJ1c2VyVHlwZSI6InN0dWRlbnQiLCJpYXQiOjE2MjUzOTMyMTV9.47ZSuV1oY6bYKomqx9fXxcib_uR5uA4EiSbWsjMEVbI
 
 ###
 
@@ -10,11 +10,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNhc
 
 POST http://localhost:4000/api/reserve/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNhcmFoIiwiaWQiOiI2MGNkZjlmNzkxMjQ4MjI3YjBiNTEzYzEiLCJ1c2VyVHlwZSI6ImFkbWluIiwiaWF0IjoxNjI0MTExNjY0fQ.nUfpgGl7vg1JO62zdMqnIAza25_gswLB_CbNfy_D5vU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImdlbXJ5IiwiaWQiOiI2MGNkZmExMzkxMjQ4MjI3YjBiNTEzYzIiLCJ1c2VyVHlwZSI6InN0dWRlbnQiLCJpYXQiOjE2MjUzOTMyMTV9.47ZSuV1oY6bYKomqx9fXxcib_uR5uA4EiSbWsjMEVbI
 
 {
-  "bookId": "60cf2c41b9b55145c0e99c92",
-  "reservationDate": "2021/07/30"
+  "bookId": "60cf2c41b9b55145c0e99d39",
+  "reservationDate": "2021-07-30"
 }
 
 ###

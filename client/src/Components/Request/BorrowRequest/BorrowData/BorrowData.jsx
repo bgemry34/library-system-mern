@@ -12,98 +12,98 @@ import {
   TableRow,
   TableCell,
   TableBody,
-} from "@material-ui/core";
-import React, { useState } from "react";
-import { formatDate } from "../../../../Tools/Tools";
-import KeyboardReturnOutlinedIcon from "@material-ui/icons/KeyboardReturnOutlined";
-import { returnBorrowedRequest } from "./../../../../Api/Borrower/Borrower";
+} from '@material-ui/core'
+import React, { useState } from 'react'
+import { formatDate } from '../../../../Tools/Tools'
+import KeyboardReturnOutlinedIcon from '@material-ui/icons/KeyboardReturnOutlined'
+import { returnBorrowedRequest } from './../../../../Api/Borrower/Borrower'
 
 function BorrowData({ data, status }) {
-  const [borrows, setApproved, setReturned] = data;
-  const [selectedRequest, setSelectedRequest] = useState({ bookTitle: "" });
-  const [returnDialog, setReturnDialog] = useState(false);
-  const [processing, setProcessing] = useState(false);
+  const [borrows, setApproved, setReturned] = data
+  const [selectedRequest, setSelectedRequest] = useState({ bookTitle: '' })
+  const [returnDialog, setReturnDialog] = useState(false)
+  const [processing, setProcessing] = useState(false)
 
   const _returnBorrowedRequest = async () => {
-    setProcessing(true);
+    setProcessing(true)
     try {
-      const res = await returnBorrowedRequest(selectedRequest);
+      const res = await returnBorrowedRequest(selectedRequest)
       if (res.status === 200) {
-        setReturned((c) => [res.data, ...c]);
+        setReturned((c) => [res.data, ...c])
         setApproved((a) => {
           return a.filter((_a) => {
-            return _a.id !== selectedRequest.id;
-          });
-        });
-        setReturnDialog(false);
-        setSelectedRequest({ bookTitle: "" });
+            return _a.id !== selectedRequest.id
+          })
+        })
+        setReturnDialog(false)
+        setSelectedRequest({ bookTitle: '' })
       }
     } catch (e) {
-      console.log(e);
+      console.log(e)
     }
-    setProcessing(false);
-  };
+    setProcessing(false)
+  }
 
   const getActionByStatus = (borrow) => {
     switch (status) {
-      case "approved":
+      case 'approved':
         return (
           <>
             <Tooltip title="Set As Returned">
               <KeyboardReturnOutlinedIcon
                 style={{
-                  color: "#27ae60",
-                  marginLeft: "5px",
-                  cursor: "pointer",
+                  color: '#27ae60',
+                  marginLeft: '5px',
+                  cursor: 'pointer',
                 }}
                 onClick={() => {
-                  setSelectedRequest(borrow);
-                  setReturnDialog(true);
+                  setSelectedRequest(borrow)
+                  setReturnDialog(true)
                 }}
               />
             </Tooltip>
           </>
-        );
+        )
 
       default:
     }
-  };
+  }
 
   const returnModal = (
     <div>
       <Dialog
         open={returnDialog}
         onClose={() => {
-          setSelectedRequest({ bookTitle: "" });
-          setReturnDialog(false);
+          setSelectedRequest({ bookTitle: '' })
+          setReturnDialog(false)
         }}
-        maxWidth={"xs"}
+        maxWidth={'xs'}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
         <DialogContent>
           <KeyboardReturnOutlinedIcon
             style={{
-              color: "#2ecc71",
-              marginLeft: "auto",
-              marginRight: "auto",
-              textAlign: "center",
-              display: "block",
-              fontSize: "250px",
+              color: '#2ecc71',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              textAlign: 'center',
+              display: 'block',
+              fontSize: '250px',
             }}
           />
           <DialogContentText
-            style={{ textAlign: "center" }}
+            style={{ textAlign: 'center' }}
             id="alert-dialog-description"
           >
-            Are you sure you want to return{" "}
+            Are you sure you want to return{' '}
             <strong>{selectedRequest.bookTitle}</strong>?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button
             onClick={() => {
-              _returnBorrowedRequest();
+              _returnBorrowedRequest()
             }}
             disabled={processing}
             color="primary"
@@ -115,8 +115,8 @@ function BorrowData({ data, status }) {
             autoFocus
             disabled={processing}
             onClick={() => {
-              setSelectedRequest({ bookTitle: "" });
-              setReturnDialog(false);
+              setSelectedRequest({ bookTitle: '' })
+              setReturnDialog(false)
             }}
           >
             No
@@ -124,7 +124,7 @@ function BorrowData({ data, status }) {
         </DialogActions>
       </Dialog>
     </div>
-  );
+  )
 
   return (
     <div>
@@ -139,18 +139,16 @@ function BorrowData({ data, status }) {
                 <strong>Book Title</strong>
               </TableCell>
               <TableCell>
-                <strong>Borrowed Date</strong>
+                <strong>Date Borrowed</strong>
               </TableCell>
               <TableCell>
-                <strong>Returned Date</strong>
+                <strong>
+                  {status === 'approved' ? 'Return Date' : 'Date Returned'}
+                </strong>
               </TableCell>
-              {status !== "pending" ? (
-                ""
-              ) : (
-                <TableCell align="center">
-                  <strong>Action</strong>
-                </TableCell>
-              )}
+              <TableCell>
+                <strong>{status === 'approved' ? 'Action' : ''}</strong>
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -160,7 +158,7 @@ function BorrowData({ data, status }) {
                 <TableCell>{borrow.bookTitle}</TableCell>
                 <TableCell>{formatDate(borrow.dateBorrowed)}</TableCell>
                 <TableCell>{formatDate(borrow.returnDate)}</TableCell>
-                <TableCell align="center">
+                <TableCell align="left">
                   <div className="">{getActionByStatus(borrow)}</div>
                 </TableCell>
               </TableRow>
@@ -170,7 +168,7 @@ function BorrowData({ data, status }) {
         {returnModal}
       </TableContainer>
     </div>
-  );
+  )
 }
 
-export default BorrowData;
+export default BorrowData

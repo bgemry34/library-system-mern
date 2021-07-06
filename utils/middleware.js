@@ -46,11 +46,11 @@ const errorHandler = (error, req, res, next) => {
   } else if (error.name === 'ValidationError') {
     if (error.message.includes('User validation failed')) {
       if (error.message.includes('unique')) {
-        return res.status(400).json({ error: 'username must be unique' })
+        return res.status(400).json({ error: 'username already exists' })
       } else if (error.message.includes('`username` is required.')) {
         return res.status(400).json({ error: 'username is required' })
       } else if (error.message.includes('`userType` is required.')) {
-        return res.status(400).json({ error: 'userType is required' })
+        return res.status(400).json({ error: 'user Type is required' })
       } else if (error.message.includes('`password` is required.')) {
         return res.status(400).json({ error: 'password is required' })
       } else {

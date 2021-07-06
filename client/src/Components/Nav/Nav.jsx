@@ -9,6 +9,7 @@ import Typography from '@material-ui/core/Typography'
 import Divider from '@material-ui/core/Divider'
 import IconButton from '@material-ui/core/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
+import FaceIcon from '@material-ui/icons/Face'
 import {
   adminListItems,
   studentListItems,
@@ -19,24 +20,12 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import { useHistory } from 'react-router'
 import { checkToken } from './../../Api/Users/Users'
 
-// function Copyright() {
-//   return (
-//     <Typography variant="body2" color="textSecondary" align="center">
-//       {'Copyright © '}
-//       <Link color="inherit" href="https://material-ui.com/">
-//         Your Website
-//       </Link>{' '}
-//       {new Date().getFullYear()}
-//       {'.'}
-//     </Typography>
-//   );
-// }
-
 export default function Nav(props) {
   const classes = useStyles()
   const [open, setOpen] = useState(true)
   const history = useHistory()
   const [userType, setUserType] = useState(null)
+  const [username, setUsername] = useState(null)
 
   useEffect(() => {
     const fetchApi = async () => {
@@ -56,8 +45,6 @@ export default function Nav(props) {
   const handleDrawer = () => {
     setOpen(!open)
   }
-
-  //const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   const logout = () => {
     sessionStorage.clear()
@@ -81,6 +68,7 @@ export default function Nav(props) {
           >
             <MenuIcon />
           </IconButton>
+          <FaceIcon />
           <Typography
             component="h1"
             variant="h6"
@@ -88,8 +76,9 @@ export default function Nav(props) {
             noWrap
             className={classes.title}
           >
-            {/* Title here */}
+            {username && `: ${username}`}
           </Typography>
+
           <IconButton onClick={logout} color="inherit">
             <ExitToAppIcon />
           </IconButton>
@@ -108,7 +97,13 @@ export default function Nav(props) {
           </p>
         </div>
         <Divider />
-        <List>{userType === 'admin' ? adminListItems : studentListItems}</List>
+        <List>
+          {userType === 'admin'
+            ? adminListItems
+            : userType === 'student'
+            ? studentListItems
+            : ''}
+        </List>
         <Divider />
         <List>{secondaryListItems}</List>
       </Drawer>
