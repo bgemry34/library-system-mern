@@ -299,7 +299,6 @@ function Reserve() {
               }}
               onChange={(e) => {
                 setReservationDate(e.target.value)
-                console.log(e.target.value)
               }}
             />
             <Typography className={styles.mt2} variant={'h6'}>

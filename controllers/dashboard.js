@@ -32,7 +32,6 @@ dashboardRouter.get('/', async (req, res) => {
         name: 1,
         username: 1,
       })
-    console.log(borrows[0])
     const recentBorrows = borrows.slice(0, 5)
     const totalBorrowedBooks = books.filter(
       (book) => book.status === 'borrowed'

@@ -50,13 +50,22 @@ function Books() {
   const history = useHistory()
 
   useEffect(() => {
+    let isCancelled = false
     const fetchApi = async () => {
       const res = await checkToken()
       if (res === undefined) history.push('/')
       else if (res.status === 401) history.push('/')
-      setUserType(res.data.userType)
+
+      if (!isCancelled) {
+        setUserType(res.data.userType)
+      }
     }
-    fetchApi()
+    try {
+      fetchApi()
+    } catch (e) {
+      console.log(e)
+    }
+    return () => (isCancelled = true)
   }, [history])
 
   const [bookForm, handleChange, setBookForm] = useForm({
@@ -117,7 +126,6 @@ function Books() {
   const destroyBook = async () => {
     setProcessing(true)
     const res = await deleteBook(bookForm)
-    console.log(res)
     if (res.status === 200 || res.status === 204) {
       setProcessing(false)
       setDeleteAlert(false)
