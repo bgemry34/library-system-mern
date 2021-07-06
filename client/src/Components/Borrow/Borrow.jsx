@@ -25,6 +25,7 @@ import SendIcon from '@material-ui/icons/Send'
 import { borrowBook } from './../../Api/Borrower/Borrower'
 import cx from 'classnames'
 import { makeStyles } from '@material-ui/core/styles'
+import {debounce} from 'lodash';
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -103,6 +104,18 @@ function Borrow() {
         textTransform: 'capitalize',
       }
   }
+
+  const searchChange = debounce( async (text) =>{
+    
+    let isCancelled = false
+
+    let booksData = await fetchBooks(text);
+    console.log(booksData, text)
+    if(!isCancelled)
+    setBooks(booksData);
+
+    return () => (isCancelled = true)
+  }, 1500)
 
   const addBorrowBook = (book) => {
     setBorrowedBooksContainer([book, ...borrowedBooksContainer])
@@ -191,7 +204,11 @@ function Borrow() {
           spacing={3}
         >
           <Grid item xs={6}>
-            <TextField id="standard-basic" fullWidth label="Search Book" />
+            <TextField 
+            id="standard-basic" 
+            fullWidth 
+            onChange={(e)=>searchChange(e.target.value)}
+            label="Search Book" />
             {/* book list container */}
             <div className={styles.bookContainer}>
               <TableContainer component={Paper}>

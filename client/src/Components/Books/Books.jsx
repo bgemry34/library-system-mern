@@ -34,7 +34,8 @@ import { checkToken } from '../../Api/Users/Users'
 import { useHistory } from 'react-router'
 import { formatDate } from './../../Tools/Tools'
 import Alert from '@material-ui/lab/Alert'
-import CancelOutlinedIcon from '@material-ui/icons/CancelOutlined'
+import CancelOutlinedIcon from '@material-ui/icons/CancelOutlined';
+import {debounce} from 'lodash';
 
 function Books() {
   const [createModal, setCreateModal] = useState(false)
@@ -280,13 +281,29 @@ function Books() {
     </div>
   )
 
+  const searchChange = debounce( async (text) =>{
+    
+    let isCancelled = false
+
+    let booksData = await fetchBooks(text);
+    console.log(booksData, text)
+    if(!isCancelled)
+    setBooks(booksData);
+
+    return () => (isCancelled = true)
+  }, 1500)
+
   return (
     <div>
       <Container>
         <Grid container spacing={1}>
           <Grid item xs={6}>
             <div className={styles.w60}>
-              <TextField fullWidth id="standard-basic" label="Find Book..." />
+              <TextField
+               fullWidth 
+               id="standard-basic" 
+               onChange={(e)=>searchChange(e.target.value)}
+               label="Find Book..." />
             </div>
           </Grid>
           <Grid item xs={6}>

@@ -3,10 +3,10 @@ import axios from 'axios'
 
 const url = 'http://localhost:4000/api';
 
-export const fetchBooks = async () => {    
+export const fetchBooks = async (search = '') => {    
     const token = await sessionStorage.getItem("userToken")
     try{
-        const res = await axios.get(`${url}/books`, {
+        const res = await axios.get(`${url}/books/`+search, {
         headers: {
             Authorization: 'Bearer ' + token //the token is a variable which holds the token
         }
