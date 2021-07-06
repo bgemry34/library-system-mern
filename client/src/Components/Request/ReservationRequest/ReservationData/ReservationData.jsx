@@ -22,7 +22,7 @@ import {
   approvedReservationRequest,
 } from './../../../../Api/Reservation/Reservation'
 
-const _user = JSON.parse(sessionStorage.getItem("user"));
+const _user = JSON.parse(sessionStorage.getItem('user'))
 
 function ReservationData({ data, status }) {
   const [reserves, setPendings, setApproved, setCancels] = data
@@ -109,10 +109,9 @@ function ReservationData({ data, status }) {
     }
   }
 
-
-  const checkTableUser = () =>{
-    if(_user){
-      if(_user.userType === 'admin'){
+  const checkTableUser = () => {
+    if (_user) {
+      if (_user.userType === 'admin') {
         return (
           <TableCell align="center">
             <strong>Action</strong>
@@ -121,13 +120,13 @@ function ReservationData({ data, status }) {
       }
     }
   }
-  const checkTableCellUser = (reserve) =>{
-    if(_user){
-      if(_user.userType === 'admin'){
+  const checkTableCellUser = (reserve) => {
+    if (_user) {
+      if (_user.userType === 'admin') {
         return (
           <TableCell align="center">
-          <div className="">{getActionByStatus(reserve)}</div>
-        </TableCell>
+            <div className="">{getActionByStatus(reserve)}</div>
+          </TableCell>
         )
       }
     }
@@ -253,24 +252,14 @@ function ReservationData({ data, status }) {
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>
-                <strong>Students Name</strong>
-              </TableCell>
-              <TableCell>
-                <strong>Book Title</strong>
-              </TableCell>
+              <TableCell><strong>Students Name</strong></TableCell>
+              <TableCell><strong>Book Title</strong></TableCell>
               {status === 'cancel' ? (
-                <TableCell>
-                  <strong>Date Cancelled</strong>
-                </TableCell>
+                <TableCell><strong>Date Cancelled</strong></TableCell>
               ) : (
-                <TableCell>
-                  <strong>Reservation Date</strong>
-                </TableCell>
+                <TableCell><strong>Reservation Date</strong></TableCell>
               )}
-              {status === 'pending' ? checkTableUser() : (
-                ''
-              )}
+              {status === 'pending' ? checkTableUser() : null}
             </TableRow>
           </TableHead>
           <TableBody>

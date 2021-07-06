@@ -18,14 +18,14 @@ import { formatDate } from '../../../../Tools/Tools'
 import KeyboardReturnOutlinedIcon from '@material-ui/icons/KeyboardReturnOutlined'
 import { returnBorrowedRequest } from './../../../../Api/Borrower/Borrower'
 
-const _user = JSON.parse(sessionStorage.getItem("user"));
+const _user = JSON.parse(sessionStorage.getItem('user'))
 
 function BorrowData({ data, status }) {
   const [borrows, setApproved, setReturned] = data
   const [selectedRequest, setSelectedRequest] = useState({ bookTitle: '' })
   const [returnDialog, setReturnDialog] = useState(false)
   const [processing, setProcessing] = useState(false)
-  
+
   const _returnBorrowedRequest = async () => {
     setProcessing(true)
     try {
@@ -43,7 +43,7 @@ function BorrowData({ data, status }) {
     } catch (e) {
       console.log(e)
     }
-    setProcessing(false);
+    setProcessing(false)
   }
 
   const getActionByStatus = (borrow) => {
@@ -71,24 +71,24 @@ function BorrowData({ data, status }) {
     }
   }
 
-  const checkTableUser = () =>{
-    if(_user){
-      if(_user.userType === 'admin'){
+  const checkTableUser = () => {
+    if (_user) {
+      if (_user.userType === 'admin') {
         return (
-              <TableCell>
-                <strong>{status === 'approved' ? 'Action' : ''}</strong>
-              </TableCell>
+          <TableCell>
+            <strong>{status === 'approved' ? 'Action' : ''}</strong>
+          </TableCell>
         )
       }
     }
   }
-  const checkTableCellUser = (borrow) =>{
-    if(_user){
-      if(_user.userType === 'admin'){
+  const checkTableCellUser = (borrow) => {
+    if (_user) {
+      if (_user.userType === 'admin') {
         return (
           <TableCell align="left">
-          <div className="">{getActionByStatus(borrow)}</div>
-        </TableCell>
+            <div className="">{getActionByStatus(borrow)}</div>
+          </TableCell>
         )
       }
     }

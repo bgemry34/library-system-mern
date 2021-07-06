@@ -24,7 +24,7 @@ import { formatDate } from '../../Tools/Tools'
 import SendIcon from '@material-ui/icons/Send'
 import { reserveBook } from '../../Api/Reservation/Reservation'
 import cx from 'classnames'
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -39,19 +39,22 @@ function Reserve() {
   const [books, setBooks] = useState([])
   const [reservedBooksContainer, setReservedBooksContainer] = useState([])
   const [loading, setLoading] = useState(false)
-  const [loadingProgress, setLoadingProgress] = useState(0);
-  const [successReserved, setSuccessReserved] = useState(0);
-  const [failedReserved, setFailedReserved] = useState(0);
-  const [reservationDate, setReservationDate] = useState(formatDate(new Date(new Date().getTime()+(5*24*60*60*1000))))
-  const [failedReservedErrorContainer, setFailedReservedErrorContainer] = useState([]);
+  const [loadingProgress, setLoadingProgress] = useState(0)
+  const [successReserved, setSuccessReserved] = useState(0)
+  const [failedReserved, setFailedReserved] = useState(0)
+  const [reservationDate, setReservationDate] = useState(
+    formatDate(new Date(new Date().getTime() + 5 * 24 * 60 * 60 * 1000))
+  )
+  const [failedReservedErrorContainer, setFailedReservedErrorContainer] =
+    useState([])
 
   useEffect(() => {
-    let isCancelled = false;
+    let isCancelled = false
 
     const fetchApi = async () => {
       let booksData = await fetchBooks()
       if (!isCancelled) {
-        setBooks(booksData);
+        setBooks(booksData)
       }
     }
     try {
@@ -126,47 +129,54 @@ function Reserve() {
     let count = 0
     await reservedBooksContainer.reduce(async (memo, book) => {
       await memo
-      const res = await reserveBook(reservationDate, book.id);
+      const res = await reserveBook(reservationDate, book.id)
       if (!res) return 0
       else if (res.status === 200 || res.status === 201) {
         count++
-        setLoadingProgress((count / reservedBooksContainer.length) * 100);
-        setSuccessReserved(s=>s+=1);
-      }else if(res.status === 400){
-        setFailedReserved(f=>f+=1);
-        setFailedReservedErrorContainer(failBook=>{
-          return [...failBook, res.data.error];
+        setLoadingProgress((count / reservedBooksContainer.length) * 100)
+        setSuccessReserved((s) => (s += 1))
+      } else if (res.status === 400) {
+        setFailedReserved((f) => (f += 1))
+        setFailedReservedErrorContainer((failBook) => {
+          return [...failBook, res.data.error]
         })
       }
     }, undefined)
-    setLoadingProgress(100);
-    clearBorrowBooks();
-    refreshBook();
-    setReservationDate(formatDate(new Date(new Date().getTime()+(5*24*60*60*1000))));
+    setLoadingProgress(100)
+    clearBorrowBooks()
+    refreshBook()
+    setReservationDate(
+      formatDate(new Date(new Date().getTime() + 5 * 24 * 60 * 60 * 1000))
+    )
   }
 
   const errorDispenser = () => {
-    if(failedReservedErrorContainer.length>0){
+    if (failedReservedErrorContainer.length > 0) {
       return (
-          <div>
-            <Typography style={{ textAlign: 'left', marginTop: '10px' }}>
-              Errors:
+        <div>
+          <Typography style={{ textAlign: 'left', marginTop: '10px' }}>
+            Errors:
           </Typography>
-          {failedReservedErrorContainer.map((err, index)=>(
-            <React.Fragment key={index} >
+          {failedReservedErrorContainer.map((err, index) => (
+            <React.Fragment key={index}>
               <Typography style={{ textAlign: 'left', marginTop: '10px' }}>
                 {err}
               </Typography>
             </React.Fragment>
-          ))}1
-          </div>
+          ))}
+          1
+        </div>
       )
     }
   }
 
   const overlayLoading = (
-    <Backdrop style={{backgroundColor:'rgba(0,0,0,0.75) !important'}} className={classes.backdrop} open={loading}>
-      <div style={{ width: '50%'}}>
+    <Backdrop
+      style={{ backgroundColor: 'rgba(0,0,0,0.75) !important' }}
+      className={classes.backdrop}
+      open={loading}
+    >
+      <div style={{ width: '50%' }}>
         {loadingProgress !== 100 ? (
           <>
             <CircularProgress
@@ -179,7 +189,10 @@ function Reserve() {
           </>
         ) : (
           <>
-            <Typography variant="h4" style={{ textAlign: 'center', marginTop: '10px' }}>
+            <Typography
+              variant="h4"
+              style={{ textAlign: 'center', marginTop: '10px' }}
+            >
               Reserved Book Done!
             </Typography>
             <Typography style={{ textAlign: 'center', marginTop: '10px' }}>
@@ -192,9 +205,9 @@ function Reserve() {
             <Button
               onClick={() => {
                 setLoading(false)
-                setSuccessReserved(0);
-                setFailedReserved(0);
-                setFailedReservedErrorContainer([]);
+                setSuccessReserved(0)
+                setFailedReserved(0)
+                setFailedReservedErrorContainer([])
               }}
               variant="contained"
               color="primary"
@@ -254,7 +267,7 @@ function Reserve() {
                               onClick={() => addBorrowBook(book)}
                             />
                           ) : (
-                            ''
+                            null
                           )}
                         </TableCell>
                       </TableRow>
@@ -269,14 +282,22 @@ function Reserve() {
               id="date"
               label="Date of Reservation"
               type="date"
-              defaultValue={formatDate(new Date(new Date().getTime()+(5*24*60*60*1000)))}
+              defaultValue={formatDate(
+                new Date(new Date().getTime() + 5 * 24 * 60 * 60 * 1000)
+              )}
               className={styles.mt2}
               InputLabelProps={{
                 shrink: true,
               }}
               fullWidth
-              InputProps={{inputProps: { min:formatDate(new Date(new Date().getTime()+(5*24*60*60*1000)))}}}
-              onChange={(e)=>{
+              InputProps={{
+                inputProps: {
+                  min: formatDate(
+                    new Date(new Date().getTime() + 5 * 24 * 60 * 60 * 1000)
+                  ),
+                },
+              }}
+              onChange={(e) => {
                 setReservationDate(e.target.value)
                 console.log(e.target.value)
               }}
