@@ -13,7 +13,7 @@ import {
   TableCell,
   TableBody,
 } from '@material-ui/core'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { formatDate } from '../../../../Tools/Tools'
 import CheckIcon from '@material-ui/icons/Check'
 import ClearIcon from '@material-ui/icons/Clear'
@@ -22,7 +22,6 @@ import {
   approvedReservationRequest,
 } from './../../../../Api/Reservation/Reservation'
 
-const _user = JSON.parse(sessionStorage.getItem('user'))
 
 function ReservationData({ data, status }) {
   const [reserves, setPendings, setApproved, setCancels] = data
@@ -30,7 +29,12 @@ function ReservationData({ data, status }) {
   const [processing, setProcessing] = useState(false)
 
   const [approvedDialog, setApprovedDialog] = useState(false)
-  const [cancelDialog, setCancelDialog] = useState(false)
+  const [cancelDialog, setCancelDialog] = useState(false);
+  const [_user, setUser] = useState({userType:''});
+
+  useEffect(() => {
+    setUser(JSON.parse(sessionStorage.getItem('user')));
+  }, [])
 
   const _approvedReservationRequest = async () => {
     setProcessing(true)
