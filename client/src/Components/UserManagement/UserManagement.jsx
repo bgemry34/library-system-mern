@@ -54,7 +54,6 @@ function UserManagement() {
     e.preventDefault()
     setProcessing(true)
     const res = await createUser(userForm)
-    console.log(res)
     if (res.status === 200 || res.status === 201) {
       setCreateModal(false)
       setUsers([res.data, ...users])
@@ -194,7 +193,6 @@ function UserManagement() {
                 endIcon={<AddIcon />}
                 onClick={() => {
                   setCreateModal(true)
-                  //console.log('Clicked')
                 }}
                 fullWidth
               >

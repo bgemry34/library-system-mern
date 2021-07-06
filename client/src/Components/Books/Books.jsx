@@ -125,7 +125,6 @@ function Books() {
   const destroyBook = async () => {
     setProcessing(true)
     const res = await deleteBook(bookForm)
-    console.log(res)
     if (res.status === 200 || res.status === 204) {
       setProcessing(false)
       setDeleteAlert(false)
