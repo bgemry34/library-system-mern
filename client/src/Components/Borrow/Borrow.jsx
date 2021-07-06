@@ -21,7 +21,6 @@ import {
 import { fetchUsers } from './../../Api/Users/Users'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import ClearIcon from '@material-ui/icons/Clear'
-// import { formatDate } from './../../Tools/Tools'
 import SendIcon from '@material-ui/icons/Send'
 import { borrowBook } from './../../Api/Borrower/Borrower'
 import cx from 'classnames'

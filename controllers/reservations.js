@@ -45,15 +45,19 @@ reservationRouter.get('/:id', async (req, res) => {
   let reserveList = {}
 
   if (userType === 'admin') {
-    reserveList = await Reserve.find({}).populate('user', {
-      name: 1,
-      username: 1,
-    }).sort({bookTitle: 1})
+    reserveList = await Reserve.find({})
+      .populate('user', {
+        name: 1,
+        username: 1,
+      })
+      .sort({ bookTitle: 1 })
   } else if (userType === 'student') {
-    reserveList = await Reserve.find({ user: user._id }).populate('user', {
-      name: 1,
-      username: 1,
-    }).sort({bookTitle: 1})
+    reserveList = await Reserve.find({ user: user._id })
+      .populate('user', {
+        name: 1,
+        username: 1,
+      })
+      .sort({ bookTitle: 1 })
   }
   filteredReserveList = reserveList.filter((list) => list.status === id)
   return res.json(filteredReserveList)
@@ -166,7 +170,11 @@ reservationRouter.post('/', async (req, res, next) => {
 reservationRouter.put('/approve/:id', async (req, res, next) => {
   const id = req.params.id
   const reserveData = await Reserve.findById(id)
+  const userType = req.user.userType
 
+  if (userType !== 'admin') {
+    return next(new Error('Unauthorized user'))
+  }
   if (!reserveData) {
     return next(new Error('Invalid reservation request'))
   }
@@ -193,7 +201,11 @@ reservationRouter.put('/approve/:id', async (req, res, next) => {
 reservationRouter.put('/cancel/:id', async (req, res, next) => {
   const id = req.params.id
   const reserveData = await Reserve.findById(id)
+  const userType = req.user.userType
 
+  if (userType !== 'admin') {
+    return next(new Error('Unauthorized user'))
+  }
   if (!reserveData) {
     return next(new Error('Invalid reservation request'))
   }

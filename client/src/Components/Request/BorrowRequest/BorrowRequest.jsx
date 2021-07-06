@@ -1,12 +1,12 @@
-import React, {useState, useEffect} from 'react';
-import PropTypes from 'prop-types';
-import SwipeableViews from 'react-swipeable-views';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Box from '@material-ui/core/Box';
-import {fetchApproved, fetchReturned} from './../../../Api/Borrower/Borrower'
+import React, { useState, useEffect } from 'react'
+import PropTypes from 'prop-types'
+import SwipeableViews from 'react-swipeable-views'
+import { makeStyles, useTheme } from '@material-ui/core/styles'
+import AppBar from '@material-ui/core/AppBar'
+import Tabs from '@material-ui/core/Tabs'
+import Tab from '@material-ui/core/Tab'
+import Box from '@material-ui/core/Box'
+import { fetchApproved, fetchReturned } from './../../../Api/Borrower/Borrower'
 import BorrowData from './BorrowData/BorrowData'
 
 function TabPanel(props) {
@@ -50,28 +50,25 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export default function ReservationRequest() {
-  const classes = useStyles();
-  const theme = useTheme();
-  const [value, setValue] = useState(0);
-  const [approves, setApproved] = useState([]);
-  const [returned, setReturned] = useState([]);
+  const classes = useStyles()
+  const theme = useTheme()
+  const [value, setValue] = useState(0)
+  const [approves, setApproved] = useState([])
+  const [returned, setReturned] = useState([])
 
-  useEffect(()=>{
-    let isCancelled = false;
-    
-    const fetchApi = async () =>{
-        let approvedData = await fetchApproved();
-        let returnedData = await fetchReturned();
-        console.log(returnedData);
-        if(!isCancelled){
-          setApproved(approvedData);
-          setReturned(returnedData)
-        }
+  useEffect(() => {
+    let isCancelled = false
+    const fetchApi = async () => {
+      let approvedData = await fetchApproved()
+      let returnedData = await fetchReturned()
+      if (!isCancelled) {
+        setApproved(approvedData)
+        setReturned(returnedData)
+      }
     }
     try {
       fetchApi()
     } catch (e) {}
-
     return () => (isCancelled = true)
   }, [])
 
@@ -104,12 +101,17 @@ export default function ReservationRequest() {
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-            <BorrowData data={[approves, setApproved, setReturned]} status={'approved'} />
+          <BorrowData
+            data={[approves, setApproved, setReturned]}
+            status={'approved'}
+          />
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-            <BorrowData data={[returned, setApproved, setReturned]} status={'returned'} />
+          <BorrowData
+            data={[returned, setApproved, setReturned]}
+            status={'returned'}
+          />
         </TabPanel>
-
       </SwipeableViews>
     </div>
   )
