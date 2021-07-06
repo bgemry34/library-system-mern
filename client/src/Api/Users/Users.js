@@ -4,11 +4,13 @@ import axios from 'axios'
 const url = 'http://localhost:4000/api';
 
 export const loginUser = async (login) => {
-    const {username, password} = login 
+    const {username, password, usertype} = login 
+    console.log(login)
     try{
         const data = await axios.post(`${url}/login`, {
             username,
-            password
+            password,
+            userType:usertype
         });
         return data;
     }catch(error){

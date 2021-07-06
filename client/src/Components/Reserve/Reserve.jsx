@@ -152,11 +152,13 @@ function Reserve() {
             <Typography style={{ textAlign: 'left', marginTop: '10px' }}>
               Errors:
           </Typography>
-          {failedReservedErrorContainer.map(err=>(
-            <Typography style={{ textAlign: 'left', marginTop: '10px' }}>
-            {err}
-        </Typography>
-          ))}
+          {failedReservedErrorContainer.map((err, index)=>(
+            <React.Fragment key={index} >
+              <Typography style={{ textAlign: 'left', marginTop: '10px' }}>
+                {err}
+              </Typography>
+            </React.Fragment>
+          ))}1
           </div>
       )
     }
