@@ -64,7 +64,6 @@ export default function ReservationRequest() {
       const pendingData = await fetchPending()
       const approvedData = await fetchApproved()
       const cancelData = await fetchCancelled()
-      console.log(approvedData)
       if (!isCancelled) {
         setPendings(pendingData)
         setApproved(approvedData)

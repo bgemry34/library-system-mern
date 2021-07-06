@@ -70,7 +70,6 @@ function Inventory() {
         const fetchSearch = async () =>{
           try{
             let items = searchItem.trim() !== '' ? await searchItems(searchItem) : await fetchItems();
-            console.log(items)
             if(!isCancelled){
               setItems(items.data);
             }
@@ -205,7 +204,6 @@ function Inventory() {
     };
 
     const searchChange = debounce((text) =>{
-        console.log(text);
         setSearchItem(text)
     }, 1500)
 
