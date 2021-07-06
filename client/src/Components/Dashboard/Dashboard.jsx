@@ -23,25 +23,34 @@ const Dashboard = () => {
   const [userType, setUserType] = useState(null)
 
   useEffect(() => {
+    let isCancelled = false
+
     const fetchApi = async () => {
       const res = await checkToken()
       if (res === undefined) history.push('/')
       else if (res.status === 401) history.push('/')
       setUserType(res.data.userType)
       const data = await fetchDashBoardData()
-      if (userType === 'admin') {
-        setCounts(data.counts)
-        setRecentAddedBooks(data.recentBooks)
-        setRecentAddedStudents(data.recentStudents)
-        setRecentBorrows(data.recentBorrows)
-        setRecentReservations(data.recentReservations)
-      } else {
-        setCounts(data.counts)
-        setForReturn(data.forReturn)
-        setPendingReservations(data.pendingReservations)
+      if (!isCancelled) {
+        if (userType === 'admin') {
+          setCounts(data.counts)
+          setRecentAddedBooks(data.recentBooks)
+          setRecentAddedStudents(data.recentStudents)
+          setRecentBorrows(data.recentBorrows)
+          setRecentReservations(data.recentReservations)
+        } else {
+          setCounts(data.counts)
+          setForReturn(data.forReturn)
+          setPendingReservations(data.pendingReservations)
+        }
       }
     }
-    fetchApi()
+    try {
+      fetchApi()
+    } catch (e) {
+      console.log(e)
+    }
+    return () => (isCancelled = true)
   }, [history, userType])
 
   if (userType === 'admin') {

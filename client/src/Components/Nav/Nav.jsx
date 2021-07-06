@@ -27,17 +27,26 @@ export default function Nav(props) {
   const [username, setUsername] = useState(null)
 
   useEffect(() => {
+    let isCancelled = false
+
     const fetchApi = async () => {
       const res = await checkToken()
       if (res === undefined) history.push('/')
       else if (res.status === 401) history.push('/')
       else if (res.status === 200) {
-        sessionStorage.setItem('user', JSON.stringify(res.data))
-        setUserType(res.data.userType)
-        setUsername(res.data.username)
+        if (!isCancelled) {
+          sessionStorage.setItem('user', JSON.stringify(res.data))
+          setUserType(res.data.userType)
+          setUsername(res.data.username)
+        }
       }
     }
-    fetchApi()
+    try {
+      fetchApi()
+    } catch (e) {
+      console.log(e)
+    }
+    return () => (isCancelled = true)
   }, [history])
 
   const handleDrawer = () => {

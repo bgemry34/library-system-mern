@@ -58,7 +58,7 @@ export default function Login() {
         history.push('/dashboard')
       }else{
         setAlert((
-          <Alert style={{marginBottom:'20px'}} severity="error">Incorrect username or password. Pls Try Again</Alert>
+          <Alert style={{marginBottom:'20px'}} severity="error">Incorrect username, usertype or password. Pls Try Again</Alert>
         ));
         setTimeout(()=>{
           setAlert('');

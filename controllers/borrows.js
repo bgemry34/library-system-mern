@@ -49,15 +49,19 @@ borrowRouter.get('/:id', async (req, res) => {
   let borrowList = {}
 
   if (userType === 'admin') {
-    borrowList = await Borrow.find({}).populate('user', {
-      name: 1,
-      username: 1,
-    }).sort({bookTitle: 1})
+    borrowList = await Borrow.find({})
+      .populate('user', {
+        name: 1,
+        username: 1,
+      })
+      .sort({ bookTitle: 1 })
   } else if (userType === 'student') {
-    borrowList = await Borrow.find({ user: user._id }).populate('user', {
-      name: 1,
-      username: 1,
-    }).sort({bookTitle: 1})
+    borrowList = await Borrow.find({ user: user._id })
+      .populate('user', {
+        name: 1,
+        username: 1,
+      })
+      .sort({ bookTitle: 1 })
   }
   filteredBorrowList = borrowList.filter((list) => list.status === id)
   return res.json(filteredBorrowList)
