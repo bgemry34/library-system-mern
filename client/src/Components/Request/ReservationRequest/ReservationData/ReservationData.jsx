@@ -22,6 +22,8 @@ import {
   approvedReservationRequest,
 } from './../../../../Api/Reservation/Reservation'
 
+const _user = JSON.parse(sessionStorage.getItem("user"));
+
 function ReservationData({ data, status }) {
   const [reserves, setPendings, setApproved, setCancels] = data
   const [selectedReserved, setSelectedReserved] = useState({ bookTitle: '' })
@@ -104,6 +106,30 @@ function ReservationData({ data, status }) {
           </>
         )
       default:
+    }
+  }
+
+
+  const checkTableUser = () =>{
+    if(_user){
+      if(_user.userType === 'admin'){
+        return (
+          <TableCell align="center">
+            <strong>Action</strong>
+          </TableCell>
+        )
+      }
+    }
+  }
+  const checkTableCellUser = (reserve) =>{
+    if(_user){
+      if(_user.userType === 'admin'){
+        return (
+          <TableCell align="center">
+          <div className="">{getActionByStatus(reserve)}</div>
+        </TableCell>
+        )
+      }
     }
   }
 
@@ -242,11 +268,7 @@ function ReservationData({ data, status }) {
                   <strong>Reservation Date</strong>
                 </TableCell>
               )}
-              {status === 'pending' ? (
-                <TableCell align="center">
-                  <strong>Action</strong>
-                </TableCell>
-              ) : (
+              {status === 'pending' ? checkTableUser() : (
                 ''
               )}
             </TableRow>
@@ -261,9 +283,7 @@ function ReservationData({ data, status }) {
                 ) : (
                   <TableCell>{formatDate(reserve.reservationDate)}</TableCell>
                 )}
-                <TableCell align="center">
-                  <div className="">{getActionByStatus(reserve)}</div>
-                </TableCell>
+                {checkTableCellUser()}
               </TableRow>
             ))}
           </TableBody>
