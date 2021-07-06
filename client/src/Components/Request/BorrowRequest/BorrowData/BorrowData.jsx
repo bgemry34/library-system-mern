@@ -13,18 +13,22 @@ import {
   TableCell,
   TableBody,
 } from '@material-ui/core'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { formatDate } from '../../../../Tools/Tools'
 import KeyboardReturnOutlinedIcon from '@material-ui/icons/KeyboardReturnOutlined'
 import { returnBorrowedRequest } from './../../../../Api/Borrower/Borrower'
-
-const _user = JSON.parse(sessionStorage.getItem('user'))
 
 function BorrowData({ data, status }) {
   const [borrows, setApproved, setReturned] = data
   const [selectedRequest, setSelectedRequest] = useState({ bookTitle: '' })
   const [returnDialog, setReturnDialog] = useState(false)
   const [processing, setProcessing] = useState(false)
+  const [_user, setUser] = useState({userType:''})
+
+
+  useEffect(() => {
+    setUser(JSON.parse(sessionStorage.getItem('user')));
+  }, [])
 
   const _returnBorrowedRequest = async () => {
     setProcessing(true)
