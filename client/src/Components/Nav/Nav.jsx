@@ -9,7 +9,6 @@ import Typography from '@material-ui/core/Typography'
 import Divider from '@material-ui/core/Divider'
 import IconButton from '@material-ui/core/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
-import FaceIcon from '@material-ui/icons/Face'
 import {
   adminListItems,
   studentListItems,
@@ -30,13 +29,12 @@ export default function Nav(props) {
   useEffect(() => {
     const fetchApi = async () => {
       const res = await checkToken()
-      if (res === undefined) 
-      history.push('/');
-      else if (res.status === 401) 
-      history.push('/');
-      else if(res.status == 200){
-        sessionStorage.setItem('user', JSON.stringify(res.data));
-        setUserType(res.data.userType);
+      if (res === undefined) history.push('/')
+      else if (res.status === 401) history.push('/')
+      else if (res.status === 200) {
+        sessionStorage.setItem('user', JSON.stringify(res.data))
+        setUserType(res.data.userType)
+        setUsername(res.data.username)
       }
     }
     fetchApi()
@@ -68,17 +66,15 @@ export default function Nav(props) {
           >
             <MenuIcon />
           </IconButton>
-          <FaceIcon />
           <Typography
             component="h1"
             variant="h6"
             color="inherit"
-            noWrap
+            align="right"
             className={classes.title}
           >
-            {username && `: ${username}`}
+            {username}
           </Typography>
-
           <IconButton onClick={logout} color="inherit">
             <ExitToAppIcon />
           </IconButton>

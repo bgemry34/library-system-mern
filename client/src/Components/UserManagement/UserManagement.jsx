@@ -42,7 +42,6 @@ function UserManagement() {
     let isCancelled = false
     const fetchApi = async () => {
       const res = await fetchUsers()
-      console.log(res)
       if (!isCancelled) {
         setUsers(res)
       }
