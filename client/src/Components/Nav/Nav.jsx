@@ -25,7 +25,7 @@ export default function Nav(props) {
   const [open, setOpen] = useState(true)
   const history = useHistory()
   const [userType, setUserType] = useState(null)
-  const [username, setUsername] = useState(null)
+  const [username] = useState(null)
 
   useEffect(() => {
     const fetchApi = async () => {
@@ -34,7 +34,7 @@ export default function Nav(props) {
       history.push('/');
       else if (res.status === 401) 
       history.push('/');
-      else if(res.status == 200){
+      else if(res.status === 200){
         sessionStorage.setItem('user', JSON.stringify(res.data));
         setUserType(res.data.userType);
       }
