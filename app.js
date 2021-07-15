@@ -3,6 +3,7 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 require('express-async-errors')
+const path = require('path')
 
 const booksRouter = require('./controllers/books')
 const usersRouter = require('./controllers/users')
@@ -41,6 +42,15 @@ app.use('/api/login', loginRouter)
 app.use('/api/borrow', userExtractor, borrowRouter)
 app.use('/api/reserve', userExtractor, reservationRouter)
 app.use('/api/dashboard', userExtractor, dashboardRouter)
+
+// serve static assets in production
+if (process.env.NODE_ENV === 'production') {
+  // set static folder
+  app.use(express.static('client/build'))
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+  })
+}
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
