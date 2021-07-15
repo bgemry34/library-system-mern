@@ -1,7 +1,7 @@
 
 import axios from 'axios'
 
-const url = 'http://localhost:4000/api';
+const url = '/api';
 
 export const fetchBooks = async (search = '') => {    
     const token = await sessionStorage.getItem("userToken")
