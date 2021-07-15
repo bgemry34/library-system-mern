@@ -1,22 +1,21 @@
-import React, { useState } from 'react';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
+import React, { useState } from 'react'
+import Avatar from '@material-ui/core/Avatar'
+import Button from '@material-ui/core/Button'
+import CssBaseline from '@material-ui/core/CssBaseline'
+import TextField from '@material-ui/core/TextField'
 // import Box from '@material-ui/core/Box';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import { useHistory } from 'react-router-dom';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
+import Typography from '@material-ui/core/Typography'
+import { Link } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import Container from '@material-ui/core/Container'
+import { useHistory } from 'react-router-dom'
 // import {loginUser} from './../../Api/users';
 // import { Alert } from '@material-ui/lab';
-import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
-import {useForm} from './../../Custom-Hook/userForm';
-import {loginUser} from './../../Api/Users/Users';
-import Alert from '@material-ui/lab/Alert';
-
-
+import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core'
+import { useForm } from './../../Custom-Hook/userForm'
+import { loginUser } from './../../Api/Users/Users'
+import Alert from '@material-ui/lab/Alert'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -36,36 +35,40 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
-}));
+}))
 
 export default function Login() {
-  const classes = useStyles();
-  const history = useHistory();
+  const classes = useStyles()
+  const history = useHistory()
 
-  const [values, handleChange] = useForm({username:'', password:'', usertype:''});
-  const [alert, setAlert] = useState('');
+  const [values, handleChange] = useForm({
+    username: '',
+    password: '',
+    usertype: '',
+  })
+  const [alert, setAlert] = useState('')
 
+  const login = async (e) => {
+    e.preventDefault()
+    setAlert('')
 
-  const login = async (e) =>{
-    e.preventDefault();
-    setAlert('');
-
-    try{
-      const res = await loginUser(values);
-      if(res.status===200){
-        const {token} = res.data;
-        sessionStorage.setItem("userToken", token);
+    try {
+      const res = await loginUser(values)
+      if (res.status === 200) {
+        const { token } = res.data
+        sessionStorage.setItem('userToken', token)
         history.push('/dashboard')
-      }else{
-        setAlert((
-          <Alert style={{marginBottom:'20px'}} severity="error">Incorrect username, usertype or password. Pls Try Again</Alert>
-        ));
-        setTimeout(()=>{
-          setAlert('');
+      } else {
+        setAlert(
+          <Alert style={{ marginBottom: '20px' }} severity="error">
+            Incorrect username, usertype or password. Pls Try Again
+          </Alert>
+        )
+        setTimeout(() => {
+          setAlert('')
         }, 10000)
       }
-    }catch(e){
-    }
+    } catch (e) {}
   }
 
   return (
@@ -78,27 +81,40 @@ export default function Login() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        
+        <Typography component="h2" variant="subtitle1">
+          Visit{' '}
+          <Link
+            component="a"
+            target="_blank"
+            href="https://github.com/bgemry34/library-system-mern#usage"
+          >
+            README.md
+          </Link>{' '}
+          for login credentials
+        </Typography>
+
         <form onSubmit={login} className={classes.form}>
           {alert}
-     <FormControl variant="outlined" fullWidth={true}>
-        <InputLabel id="demo-simple-select-outlined-label">Select User Type</InputLabel>
-        <Select
-          labelId="demo-simple-select-outlined-label"
-          id="demo-simple-select-outlined"
-          value={values.usertype}
-          name="usertype"
-          onChange={handleChange}
-          required
-          label="Select User Type"
-        >
-          <MenuItem value="">
-            <em>--Select User Type--</em>
-          </MenuItem>
-          <MenuItem value={'student'}>Student</MenuItem>
-          <MenuItem value={'admin'}>Admin</MenuItem>
-        </Select>
-      </FormControl>
+          <FormControl variant="outlined" fullWidth={true}>
+            <InputLabel id="demo-simple-select-outlined-label">
+              Select User Type
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-outlined-label"
+              id="demo-simple-select-outlined"
+              value={values.usertype}
+              name="usertype"
+              onChange={handleChange}
+              required
+              label="Select User Type"
+            >
+              <MenuItem value="">
+                <em>--Select User Type--</em>
+              </MenuItem>
+              <MenuItem value={'student'}>Student</MenuItem>
+              <MenuItem value={'admin'}>Admin</MenuItem>
+            </Select>
+          </FormControl>
           <TextField
             variant="outlined"
             margin="normal"
@@ -126,20 +142,20 @@ export default function Login() {
             autoComplete="current-password"
           />
 
-            <Button
-              fullWidth
-              variant="contained"
-              color="primary"
-              type="submit"
-              className={classes.submit}
-            >
-              Sign In
-            </Button>
+          <Button
+            fullWidth
+            variant="contained"
+            color="primary"
+            type="submit"
+            className={classes.submit}
+          >
+            Sign In
+          </Button>
         </form>
       </div>
       {/* <Box mt={8}>
         <Copyright />
       </Box> */}
     </Container>
-  );
+  )
 }
