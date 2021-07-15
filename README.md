@@ -8,17 +8,23 @@
   </p>
 </p>
 
+## Usage
+ - Admin: 
+    <code>{username: 'sarah', password: 'sarah'}</code>
+ - Student: 
+    <code>{username: 'gemry', password: 'gemry'}</code>
+
 ## Built With
 
 ### Frontent
 
-- [React](https://reactjs.org/){:target="\_blank"}
-- [Material-ui](https://material-ui.com/){:target="\_blank"}
+- [React](https://reactjs.org/)
+- [Material-ui](https://material-ui.com/)
 
 ### Backend
 
-- [Node](https://nodejs.org/en/){:target="\_blank"}
-- [Express](https://expressjs.com/){:target="\_blank"}
-- [MongoDB](https://www.mongodb.com/){:target="\_blank"}
-- [Mongoose](https://mongoosejs.com/){:target="\_blank"}
-- [JWT](https://jwt.io/){:target="\_blank"}
+- [Node](https://nodejs.org/en/)
+- [Express](https://expressjs.com/)
+- [MongoDB](https://www.mongodb.com/)
+- [Mongoose](https://mongoosejs.com/)
+- [JWT](https://jwt.io/)
