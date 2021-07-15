@@ -29,16 +29,17 @@ const Dashboard = () => {
       const res = await checkToken()
       if (res === undefined) history.push('/')
       else if (res.status === 401) history.push('/')
-      setUserType(res.data.userType)
       const data = await fetchDashBoardData()
       if (!isCancelled) {
         if (userType === 'admin') {
+          setUserType(res.data.userType)
           setCounts(data.counts)
           setRecentAddedBooks(data.recentBooks)
           setRecentAddedStudents(data.recentStudents)
           setRecentBorrows(data.recentBorrows)
           setRecentReservations(data.recentReservations)
         } else {
+          setUserType(res.data.userType)
           setCounts(data.counts)
           setForReturn(data.forReturn)
           setPendingReservations(data.pendingReservations)

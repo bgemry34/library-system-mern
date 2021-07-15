@@ -10,6 +10,7 @@ import {
   People as PeopleIcon,
   Search as SearchIcon,
 } from '@material-ui/icons'
+import GitHubIcon from '@material-ui/icons/GitHub'
 
 export const adminListItems = (
   <div>
@@ -156,31 +157,19 @@ export const studentListItems = (
 
 export const secondaryListItems = (
   <div>
-    {/* <ListSubheader inset>Saved reports</ListSubheader>
-    <ListItem button>
+    <ListItem
+      button
+      component="a"
+      href="https://github.com/bgemry34/library-system-mern"
+      target="_blank"
+      activeStyle={{
+        backgroundColor: '#ecf0f1',
+      }}
+    >
       <ListItemIcon>
-        <AssignmentIcon />
+        <GitHubIcon />
       </ListItemIcon>
-      <ListItemText primary="Missing Items" />
+      <ListItemText primary="View Code" />
     </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText>
-        <Typography >
-          Returns and 
-        </Typography>
-        <Typography>
-          Defective Items
-        </Typography>
-      </ListItemText>
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Receivee History" />
-    </ListItem> */}
   </div>
 )
