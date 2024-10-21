@@ -1,0 +1,32 @@
+[
+  {
+    "username": "Root",
+    "name": "Root",
+    "password": "LibrarySystemMERN@2024",
+    "userType": "admin"
+  },
+  {
+    "username": "srhqmp",
+    "name": "Sarah Quimpo",
+    "password": "LibrarySystemMERN@2024",
+    "userType": "admin"
+  },
+  {
+    "username": "jd2024",
+    "name": "Juan Dela Cruz",
+    "password": "LibrarySystemMERN@2024",
+    "userType": "student"
+  },
+  {
+    "username": "sarah",
+    "name": "Sarah Jane",
+    "password": "sarah",
+    "userType": "admin"
+  },
+  {
+    "username": "gemry",
+    "name": "Gemry Bulante",
+    "password": "gemry",
+    "userType": "student"
+  }
+]

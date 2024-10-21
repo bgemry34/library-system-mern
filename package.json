@@ -4,6 +4,7 @@
   "description": "library system build with the mern stack",
   "main": "index.js",
   "scripts": {
+    "seed": "node seeder.js",
     "client-install": "npm install --prefix client",
     "start": "node index.js",
     "server": "nodemon index.js",
@@ -21,7 +22,7 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^3.1.2",
     "moment": "^2.29.1",
     "mongoose": "^5.12.13",
